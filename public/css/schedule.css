@@ -1,0 +1,61 @@
+/* Style for the table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+    font-size: 16px;
+    background-color: #f8f9fa;
+}
+
+thead.thead-dark th {
+    background-color: #343a40;
+    color: #fff;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+tbody tr {
+    border-bottom: 1px solid #dee2e6;
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: #f2f2f2; /* Alternating row color */
+}
+
+tbody td {
+    padding: 12px 15px;
+}
+
+/* Action buttons */
+.btn {
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 3px;
+    text-decoration: none;
+}
+
+.btn-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Add some hover effects for buttons */
+.btn-success:hover, .btn-danger:hover {
+    opacity: 0.8;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+
+    tbody td, thead th {
+        padding: 8px;
+    }
+}

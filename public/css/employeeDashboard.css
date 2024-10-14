@@ -1,0 +1,226 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #e3e9f7;
+}
+
+.header {
+    position: fixed; /* Membuat header tetap di bagian atas layar */
+    top: 0; /* Pastikan berada di bagian paling atas */
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Pastikan header berada di depan elemen lain */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+    height: 70px;
+}
+
+.container {
+    margin-top: 70px; /* Menghindari konten tertutup oleh header */
+}
+
+.header-left h1 {
+    font-size: 24px;
+    padding: 50px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+}
+
+.profile {
+    display: flex;
+    align-items: center;
+    margin-right: 70px;
+}
+
+.profile-pic {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.logout button {
+    padding: 5px 12px;
+    background-color: #685cfe;
+    color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.container {
+    display: flex;
+    flex: 1;
+}
+.toggle-sidebar{
+    position: fixed;
+    top: 10px;  /* Posisi di pojok kiri atas */
+    left: 10px; /* Posisi di pojok kiri */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 18px;
+    z-index: 1000; /* Pastikan di depan elemen lain */
+
+}.sidebar {
+    width: 250px;
+    background-color: #ffffff; /* Warna latar belakang sidebar */
+    color: rgb(0, 0, 0);
+    padding: 20px;
+    box-shadow: 2px 0px 10px rgba(0, 0, 0, 0.2); /* Shadow ke kanan saja */
+    height: 100vh; /* Sidebar mengisi penuh tinggi viewport */
+    transition: transform 0.3s ease; /* Animasi transisi */
+    transform: translateX(0); /* Posisi normal */
+}
+
+.sidebar ul {
+    list-style-type: none; /* Menghilangkan bullet points */
+    padding: 0; /* Menghilangkan padding */
+    margin: 0; /* Menghilangkan margin */
+}
+
+.sidebar li {
+    margin-bottom: 20px; /* Jarak antara item menu */
+}
+
+.sidebar li.sidebar-title {
+    font-size: 16px; /* Ukuran font untuk judul sidebar */
+    font-weight: bold; /* Tebal */
+    margin-bottom: 10px; /* Jarak bawah untuk judul */
+}
+
+.sidebar a {
+    color: rgb(0, 0, 0); /* Warna teks link */
+    text-decoration: none; /* Menghilangkan garis bawah */
+    font-size: 14px; /* Ukuran font untuk link */
+    display: flex; /* Menampilkan dalam flex untuk ikon dan teks */
+    align-items: center; /* Vertikal align ke tengah */
+    padding: 10px; /* Padding untuk link */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transisi untuk efek hover */
+}
+
+.sidebar a:hover {
+    background-color: #685cfe; /* Warna latar belakang saat hover */
+    color: #ffffff; /* Warna teks saat hover */
+    border-radius: 7px; /* Membuat sudut link membulat saat hover */
+}
+
+.sidebar a i {
+    margin-right: 10px; /* Jarak antara ikon dan teks */
+    font-size: 18px; /* Ukuran ikon */
+}
+.sidebar.hidden {
+    transform: translateX(-100%); /* Menutup sidebar */
+}
+
+.employee-dashboard {
+    display: grid;
+    padding: 20px;
+    width: 100%; /* Pastikan dashboard mengambil lebar penuh */
+    height: 80vh;
+    transition: margin-left 0.3s ease; /* Animasi saat margin berubah */
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 15px;
+    display: flex;
+}
+
+.text-section {
+    margin-left: 20px;
+}
+
+.image-section img {
+    width: 300px;
+    height: 300px;
+    border-radius: 15px;
+    margin-left: 10px;
+}
+
+.employee-dashboard h1 {
+    font-size: 22px;
+    text-align: left;
+    margin-bottom: 0px;
+    color: #333;
+}
+
+.employee-dashboard h2 {
+    font-size: 25px;
+    color: #685cfe;
+    margin-bottom: 10px;
+}
+
+.employee-dashboard p {
+    display: flex;
+    font-size: 15px;
+    color: #000000;
+    line-height: 1.5;
+    margin-top: auto;
+}
+
+.main-dashboard {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 4 kolom */
+    gap: 20px; /* Jarak antar card */
+    padding: 20px;
+    width: 100%; /* Pastikan dashboard mengambil lebar penuh */
+    height: 30vh;
+    margin-left: 0px;
+    margin: 0 auto; /* Memastikan dashboard terletak di tengah */
+    transition: margin-left 0.3s ease; /* Animasi saat margin berubah */
+}
+
+.main-card, .card-dashboard {
+    background-color: #685cfe; /* Warna latar belakang card */
+    color: white;
+    height: 30vh;
+    border-radius: 8px;
+    box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-width: 0; /* Mencegah overflow */
+    transition: margin-left 0.3s ease; /* Animasi saat margin berubah */   
+}
+
+.main-dashboard i {
+    font-size: 71px; /* Mengatur ukuran ikon menjadi lebih besar */
+    color: #ffffff; /* Warna ikon sesuai kebutuhan */
+    margin-bottom: 10px; /* Memberi jarak antara ikon dan teks */
+}
+
+
+/* Responsive */
+@media screen and (max-width: 1024px) {
+    .dashboard {
+        grid-template-columns: repeat(2, 1fr); /* Dua kolom untuk tablet */
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dashboard {
+        grid-template-columns: 1fr; /* Satu kolom untuk mobile */
+    }
+}
