@@ -56,10 +56,21 @@
         <div id="map">
                 
         </div>
-            
+        @if ($cek > 0)
         <button id="ambil_absen" type="submit">
-        Absen Masuk
-        </button>    
+            Absen pulang
+            </button>
+            
+           
+                
+            @else
+            <button id="ambil_absen" type="submit">
+                Absen Masuk
+                </button>      
+          
+        @endif
+            
+          
 
         <script>
             Webcam.set({
@@ -120,8 +131,11 @@
                     },
                     cache: false,
                     success: function(respond) {
-                    if (respond == 0) {
+                        if (respond == 0) {
                         alert('Success');
+                        setTimeout(function() {
+                            location.href = '/dashboard';
+                        }, 3000); // Waktu delay dalam milidetik (3000 ms = 3 detik)
                     } else if (respond == 1) {
                         alert('Error');
                     }
