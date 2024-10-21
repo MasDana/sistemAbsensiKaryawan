@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Karyawan;
+use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -23,62 +25,141 @@ class AbsensiController extends Controller
         return view('absensi.create', compact('cek'));
     }
 
+
     public function store(Request $request)
     {
         $karyawan_id = Auth::guard('karyawan')->user()->id;
         $tanggal_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
+        $latitudekantor = -8.6726734046125;
+        $longitudekantor = 115.21915951745375;
+        $lokasiuser = explode(",", $lokasi);
+        $latitudeuser = $lokasiuser[0];
+        $longitudeuser = $lokasiuser[1];
+
+        $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
+        $radius = round($jarak["meters"]);
         $image = $request->image;
         $folderPath = "upload/absensi";
-        $formatName = $karyawan_id . "-" . $tanggal_presensi . "-" . time(); // Menambahkan timestamp ke nama file
+        $formatName = $karyawan_id . "-" . $tanggal_presensi . "-" . time();
         $image_parts = explode(";base64", $image);
         $image_base64 = base64_decode($image_parts[1]);
         $fileName = $formatName . ".png";
-        $file = $folderPath . "/" . $fileName;
 
         // Cek apakah karyawan sudah presensi hari ini
         $cek = DB::table('presensi')
             ->where('tanggal_presensi', $tanggal_presensi)
-            ->where('karyawan_id', $karyawan_id) // Menggunakan karyawan_id, bukan id
+            ->where('karyawan_id', $karyawan_id)
             ->count();
 
-        if ($cek > 0) {
-            // Jika sudah presensi masuk, lakukan update untuk absensi pulang
-            $data_pulang = [
-                'jam_keluar' => $jam,
-                'foto_keluar' => $fileName,
-                'lokasi_out' => $lokasi
-            ];
-            $update = DB::table('presensi')
-                ->where('tanggal_presensi', $tanggal_presensi)
-                ->where('karyawan_id', $karyawan_id)
-                ->update($data_pulang);
-
-            if ($update) {
-                echo 0;
-                // Simpan foto ke storage
-                Storage::disk('public')->put($folderPath . "/" . $fileName, $image_base64);
-            } else {
-                echo 1;
-            }
+        if ($radius > 100) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Maaf, anda berada di luar radius. Jarak anda ' . $radius . ' meter dari kantor.'
+            ]);
         } else {
-            // Jika belum presensi masuk, lakukan insert
-            $data_masuk = [
-                'karyawan_id' => $karyawan_id,
-                'tanggal_presensi' => $tanggal_presensi,
-                'jam_masuk' => $jam,
-                'foto_masuk' => $fileName,
-                'lokasi_in' => $lokasi
-            ];
-            $simpan = DB::table('presensi')->insert($data_masuk);
-            if ($simpan) {
-                echo 0;
-                // Simpan foto ke storage
-                Storage::disk('public')->put($folderPath . "/" . $fileName, $image_base64);
+            if ($cek > 0) {
+                // Cek apakah sudah ada jam_keluar di record presensi
+                $presensi = DB::table('presensi')
+                    ->where('tanggal_presensi', $tanggal_presensi)
+                    ->where('karyawan_id', $karyawan_id)
+                    ->first();
+
+                if ($presensi->jam_keluar != null) {
+                    // Jika jam_keluar sudah diisi, absen pulang tidak bisa dilakukan lagi
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Anda sudah melakukan absen pulang hari ini.'
+                    ]);
+                }
+
+                // Jika belum ada jam_keluar, lakukan update untuk absen pulang
+                $data_pulang = [
+                    'jam_keluar' => $jam,
+                    'foto_keluar' => $fileName,
+                    'lokasi_out' => $lokasi
+                ];
+                $update = DB::table('presensi')
+                    ->where('tanggal_presensi', $tanggal_presensi)
+                    ->where('karyawan_id', $karyawan_id)
+                    ->update($data_pulang);
+
+                if ($update) {
+                    Storage::disk('public')->put($folderPath . "/" . $fileName, $image_base64);
+                    return response()->json(['status' => 'success', 'message' => 'Terima kasih, absen pulang berhasil dicatat']);
+                } else {
+                    return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan. Hubungi tim IT.']);
+                }
             } else {
-                echo 1;
+                // Jika belum presensi masuk, lakukan insert
+                $data_masuk = [
+                    'karyawan_id' => $karyawan_id,
+                    'tanggal_presensi' => $tanggal_presensi,
+                    'jam_masuk' => $jam,
+                    'foto_masuk' => $fileName,
+                    'lokasi_in' => $lokasi
+                ];
+                $simpan = DB::table('presensi')->insert($data_masuk);
+                if ($simpan) {
+                    Storage::disk('public')->put($folderPath . "/" . $fileName, $image_base64);
+                    return response()->json(['status' => 'success', 'message' => 'Absen masuk berhasil dicatat']);
+                } else {
+                    return response()->json(['status' => 'error', 'message' => 'Terjadi kesalahan. Hubungi tim IT.']);
+                }
             }
         }
+    }
+
+
+    function distance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+        $miles = acos($miles);
+        $miles = rad2deg($miles);
+        $miles = $miles * 60 * 1.1515;
+        $feet = $miles * 5280;
+        $yards = $feet / 3;
+        $kilometers = $miles * 1.609344;
+        $meters = $kilometers * 1000;
+        return compact('meters');
+    }
+
+    public function dashboard()
+    {
+
+        $hariini = date("Y-m-d");
+        $bulanini = date("m");
+        $tahunini = date("Y");
+        $karyawan_id = Auth::guard('karyawan')->user()->id_karyawan;
+        $presensihariini = DB::table('presensi')->where('tanggal_presensi', $hariini)->first();
+        $historibulanini = DB::table('presensi')->whereRaw('MONTH(tanggal_presensi)="' . $bulanini . '"')
+            ->whereRaw('YEAR(tanggal_presensi)="' . $tahunini . '"')
+            ->orderBy('tanggal_presensi')
+            ->get();
+
+        return view('absensi.dashboard', compact('presensihariini', 'historibulanini'));
+    }
+
+    public function histori()
+    {
+        $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('absensi.histori', compact('namabulan'));
+    }
+
+    public function gethistori(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+
+        $karyawan_id = Auth::guard('karyawan')->user()->id;
+        $histori = DB::table('presensi')->whereRaw('MONTH(tanggal_presensi)="' . $bulan . '"')
+            ->whereRaw('YEAR(tanggal_presensi)="' . $tahun . '"')
+            ->where('karyawan_id', $karyawan_id)
+            ->orderBy('tanggal_presensi')
+            ->get();
+
+        return view('absensi.gethistori', compact('histori'));
     }
 }

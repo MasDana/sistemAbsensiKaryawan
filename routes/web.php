@@ -44,3 +44,8 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('cek
 
 Route::get('/absensi', [AbsensiController::class, 'index']);
 Route::post('/absensi/store', [AbsensiController::class, 'store']);
+
+Route::get('/dashkar', [AbsensiController::class, 'dashboard']);
+
+Route::get('/presensi/histori', [AbsensiController::class, 'histori']);
+Route::post('/gethistori', [AbsensiController::class, 'gethistori']);
