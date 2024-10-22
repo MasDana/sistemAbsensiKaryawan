@@ -53,4 +53,33 @@ class LoginController extends Controller
         // Redirect ke halaman login setelah logout
         return redirect('sesi');
     }
+
+    function loginadmin(Request $request)
+    {
+        // Validasi input
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required|min:3',
+        ], [
+            'email.required' => 'Email wajib diisi',
+            'email.email' => 'Format email tidak valid',
+            'password.required' => 'Password wajib diisi',
+            'password.min' => 'Password minimal 3 karakter',
+        ]);
+
+        // Info login yang dimasukkan
+        $credentials = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+
+        // Cek login menggunakan guard 'karyawan'
+        if (Auth::guard('user')->attempt($credentials)) {
+            // Jika login berhasil, redirect ke dashboard
+            return redirect('/dashboard');
+        } else {
+            // Jika gagal, kembali ke halaman login dengan pesan error
+            return redirect('admin.login')->withErrors(['default' => 'Email atau password yang Anda masukkan salah']);
+        }
+    }
 }

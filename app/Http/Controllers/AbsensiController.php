@@ -162,4 +162,24 @@ class AbsensiController extends Controller
 
         return view('absensi.gethistori', compact('histori'));
     }
+
+    public function monitoring()
+    {
+        return view('admin.monitoring');
+    }
+
+    public function getpresensi(Request $request)
+    {
+        $tanggal_presensi = $request->tanggal_presensi;
+        // dd($tanggal_presensi);
+        // $tanggal_presensi = $request->tanggal;
+        $presensi = DB::table('presensi')
+            ->select('presensi.*', 'nama_karyawan')
+            ->join('karyawan', 'presensi.karyawan_id', '=', 'karyawan.id')
+            ->where('tanggal_presensi', $tanggal_presensi)  // Ganti 'tanggal_presensi' dengan 'tanggal' jika ini nama kolom yang benar
+            ->get();
+
+
+        return view('admin.getpresensi', compact('presensi'));
+    }
 }

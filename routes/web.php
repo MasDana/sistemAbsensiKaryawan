@@ -49,3 +49,14 @@ Route::get('/dashkar', [AbsensiController::class, 'dashboard']);
 
 Route::get('/presensi/histori', [AbsensiController::class, 'histori']);
 Route::post('/gethistori', [AbsensiController::class, 'gethistori']);
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/panel', function () {
+        return view('admin.login');
+    })->name('loginadmin');
+
+    Route::post('/sesi/loginadmin', [LoginController::class, 'loginadmin']);
+});
+
+Route::get('/presensi/monitoring', [AbsensiController::class, 'monitoring']);
+Route::post('/getpresensi', [AbsensiController::class, 'getpresensi']);

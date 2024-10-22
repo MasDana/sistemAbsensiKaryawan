@@ -185,7 +185,7 @@
                     data: {  // Ganti titik koma dengan koma, dan perbaiki format 'data'
                         _token : "{{ csrf_token() }}",
                         bulan : bulan,
-                        tahun : tahun
+                        tahun : tahun,
                     },
                     cache : false,
                     success: function(respond){
