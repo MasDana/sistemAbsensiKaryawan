@@ -52,11 +52,6 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="{{ url('/absensi') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-calendar-check mr-2"></i> Kehadiran
-                    </a>
-                </li>
-                <li class="mb-2">
                     <a href="{{ url('/presensi/monitoring') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                         <i class="fas fa-calendar-check mr-2"></i> Monitor Presensi
                     </a>

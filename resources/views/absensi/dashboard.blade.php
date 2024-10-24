@@ -361,6 +361,23 @@
 
   <body class="bg-gray-100 min-h-screen flex flex-col">
 
+    @php
+function selisih($jam_masuk, $jam_keluar)
+{
+    list($h, $m, $s) = explode(":", $jam_masuk);
+    $dtAwal = mktime($h, $m, $s, "1", "1", "1");
+    list($h, $m, $s) = explode(":", $jam_keluar);
+    $dtAkhir = mktime($h, $m, $s, "1", "1", "1");
+    $dtSelisih = $dtAkhir - $dtAwal;
+    $totalmenit = $dtSelisih / 60;
+    $jam = explode(".", $totalmenit / 60);
+    $sisamenit = ($totalmenit / 60) - $jam[0];
+    $sisamenit2 = $sisamenit * 60;
+    $jml_jam = $jam[0];
+    return $jml_jam . ":" . round($sisamenit2);
+}
+@endphp
+
     <!-- Header -->
     <header class="bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-20 shadow-md flex-none">
         <div class="container mx-auto flex justify-between items-center">
@@ -369,7 +386,7 @@
             </div>
             <div class="header-right flex items-center space-x-2 md:space-x-4"> 
                 <div class="profile flex items-center space-x-2 md:space-x-4">
-                    <img src="assets/profile1.jpg" alt="Profile" class="w-12 h-12 rounded-full">
+                    <img src= "{{ asset('gambar/profile1.jpg')}}" alt="Profile" class="w-12 h-12 rounded-full">
                     <span class="text-black">Sariwati</span>
                 </div>
                 <form action="/sesi/logout" method="get">
@@ -384,15 +401,13 @@
     <!-- Sidebar dan Konten Utama -->
     <div class="flex flex-grow overflow-hidden">
 
-     
-
         <!-- Konten Utama -->
         <div class="flex-grow overflow-y-auto p-6">
 
             <!-- Card Profil -->
             <div class="card flex items-center bg-white p-6 rounded-lg shadow-md w-full mb-8">
                 <div class="image-section flex-shrink-0 flex items-center justify-center bg-indigo-600 p-1.5 w-40 h-40 rounded-full">
-                    <img src="assets/profile1.jpg" alt="Profile picture" class="w-full h-full rounded-full">
+                    <img src= "{{ asset('gambar/profile1.jpg')}}" alt="Profile picture" class="w-full h-full rounded-full">
                 </div>
                 <div class="text-section ml-8 flex flex-col justify-center">
                     <h2 class="text-2xl font-bold">I Putu Putri Kumala Sari</h2>
@@ -404,167 +419,150 @@
             </div>
 
             <!-- Menu-bar -->
-            <div class="card bg-white py-4 px-4 rounded-xl shadow-md mb-8">
-                <div class="grid grid-cols-4 gap-8">
-                    <div class="item-menu text-center">
-                        <a href="#" class="text-indigo-800 text-4xl">
-                            <i class="fas fa-user"></i> <!-- Ikon Profil -->
-                        </a>
-                        <span class="text-sm font-semibold mt-2 block">Profil</span>
-                    </div>
-            
-                    <div class="item-menu text-center">
-                        <a href="#" class="text-indigo-800 text-4xl">
-                            <i class="fas fa-calendar-alt"></i> <!-- Ikon Cuti -->
-                        </a>
-                        <span class="text-sm font-semibold mt-2 block">Cuti</span>
-                    </div>
-            
-                    <div class="item-menu text-center">
-                        <a href="#" class="text-indigo-800 text-4xl">
-                            <i class="fas fa-file-alt"></i> <!-- Ikon Histori -->
-                        </a>
-                        <span class="text-sm font-semibold mt-2 block">Histori</span>
-                    </div>
-            
-                    <div class="item-menu text-center">
-                        <a href="#" class="text-indigo-800 text-4xl">
-                            <i class="fas fa-map-marker-alt"></i> <!-- Ikon Lokasi -->
-                        </a>
-                        <span class="text-sm font-semibold mt-2 block">Lokasi</span>
-                    </div>
+            <div class="grid grid-cols-4 gap-24 mb-8">
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="#" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-user"></i> <!-- Ikon Profil -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Profil</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">3</span>
+                </div>
+
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="#" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-calendar-alt"></i> <!-- Ikon Cuti -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Cuti</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">1</span>
+                </div>
+
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="presensi/histori" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-file-alt"></i> <!-- Ikon Histori -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Histori</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">5</span>
+                </div>
+
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="#" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-map-marker-alt"></i> <!-- Ikon Lokasi -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Lokasi</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">2</span>
                 </div>
             </div>
-            
 
-            <div class="card bg-white p-6 rounded-lg shadow-md mb-8 h-80 flex flex-col"> <!-- Kartu Pembungkus dengan tinggi tetap -->
-                <div class="flex-grow grid grid-cols-2 gap-6 mb-8"> 
+           
+            {{-- Absen Masuk dan Pulang --}}     
+            <div class="card bg-white p-6 rounded-lg shadow-md mb-8 flex flex-col">
+                <div class="grid grid-cols-2 gap-6 mb-4"> <!-- Grid untuk dua kolom tanpa flex-grow -->
+                    <!-- Card Absen Masuk -->
                     <div class="card bg-green-600 text-white p-4 rounded-lg shadow-lg flex items-center justify-center">
                         <ion-icon name="camera" class="text-4xl mr-4"></ion-icon>
                         <div>
                             <h4 class="font-semibold">Masuk</h4>
-                            <span>{{ $presensihariini != null ? $presensihariini->jam_masuk : 'Belum absen' }}</span>                        </div>
+                            <span>{{ $presensihariini != null ? $presensihariini->jam_masuk : 'Belum absen' }}</span>
+                        </div>
                     </div>
+                    <!-- Card Absen Pulang -->
                     <div class="card bg-red-600 text-white p-4 rounded-lg shadow-lg flex items-center justify-center">
                         <ion-icon name="camera" class="text-4xl mr-4"></ion-icon>
                         <div>
                             <h4 class="font-semibold">Pulang</h4>
-                            <span>{{ $presensihariini != null && $presensihariini->jam_keluar != null ?  $presensihariini->jam_keluar: 'Belum absen' }}</span>
+                            <span>{{ $presensihariini != null && $presensihariini->jam_keluar != null ? $presensihariini->jam_keluar : 'Belum absen' }}</span>
                         </div>
                     </div>
                 </div>
-                <div class="flex-grow"></div>
-    
-                
+            </div>
 
-                  <div class="presencetab mt-2">
-                <div class="tab-pane fade show active" id="pilled" role="tabpanel">
-                    <ul class="nav nav-tabs style1" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#home" role="tab">
-                                Bulan Ini
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#profile" role="tab">
-                                Leaderboard
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="tab-content mt-2" style="margin-bottom:100px;">
+            {{-- Rincian Absen --}}     
+            <div class="card presencetab bg-white px-4 py-2 mb-24 rounded-lg shadow-md flex flex-col overflow-y-auto">
+                <div class="tab-content mt-1 p-2">
                     <div class="tab-pane fade show active" id="home" role="tabpanel">
                         <ul class="listview image-listview">
                             @foreach ($historibulanini as $item)
-                            <li>
-                                <div class="item">
+                            <li class="mb-4"> <!-- Tambahkan margin bawah -->
+                                <div class="item flex items-center space-x-4">
                                     <div class="icon-box bg-primary">
-                                        <ion-icon name="image-outline" role="img" class="md hydrated"
-                                            aria-label="image outline"></ion-icon>
+                                        <i class="fa-solid fa-fingerprint text-indigo-700 text-4xl"></i> <!-- Ikon -->
                                     </div>
-                                    <div class="in">
-                                        <div>   {{ date ("d-m-y", strtotime($item->tanggal_presensi)) }}</div>
-                                        <span class="badge badge-success">{{ $item -> jam_masuk }}</span>
-                                        <span class="badge badge-danger">{{ $presensihariini != null && $item -> jam_keluar != null ? $item ->jam_keluar : 'Belum absen' }}</span>
-
+                                    <div class="in flex-grow flex justify-between items-center">
+                                        <div class="text-lg font-semibold">
+                                            {{ date("d-m-y", strtotime($item->tanggal_presensi)) }}
+                                        </div>
+                                        <div class="flex space-x-2 items-center justify-end">
+                                            <span class="badge bg-green-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                {{ $item->jam_masuk }}
+                                            </span>
+                                            <span class="badge bg-red-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                {{ $presensihariini != null && $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
+                                            </span>
+                                            <span class="badge bg-blue-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                @if (strtotime($item->jam_masuk) >= strtotime('09:00:00'))
+                                                    @php
+                                                        $jamterlambat = selisih('09:00:00', $item->jam_masuk);
+                                                    @endphp
+                                                    <span>Terlambat {{ $jamterlambat }}</span>
+                                                @elseif (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
+                                                    <span>Tepat waktu</span>
+                                                @else
+                                                    <span>Terlambat {{ selisih('09:00:00', $item->jam_masuk) }}</span>
+                                                @endif
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
                             @endforeach
+                            
                         </ul>
                     </div>
-                   
-
                 </div>
             </div>
-        </div>
-    </div>
             
-            <!-- Section Histori Bulanan -->
-            <div class="section-histori-bulanan">
-                <!-- Card Utama -->
-                <div class="card bg-white rounded-lg shadow p-2 cursor-pointer relative" onclick="toggleDropdown()">
-                    <h2 class="text-xl font-bold text-center">Bulan Ini</h2>
-                    <div id="border" class="border-t border-gray-300 absolute w-full top-full left-0 hidden"></div> 
-                </div>
-            
-                <!-- Konten Dropdown -->
-                <div id="dropdown-content" class="hidden bg-white rounded-b-lg shadow-md p-4 transition-all duration-300 ease-in-out">
-                    <div class="flex items-center mb-2">
-                        <ion-icon name="image-outline" class="text-2xl text-gray-600 mr-2"></ion-icon>
-                        <span class="text-lg font-semibold">Foto Anda</span>
-                    </div>
-                    <div class="flex items-center mb-2">
-                        <ion-icon name="image-outline" class="text-2xl text-gray-600 mr-2"></ion-icon>
-                        <span class="text-lg font-semibold">Foto Anda</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    
     <!-- Bar bawah -->
     <footer class="fixed bottom-0 w-full bg-white shadow-md flex items-center px-0.5 py-0.5">
         <div class="grid grid-cols-5 gap-2 items-center justify-center w-full">
             <div class="item-menu text-center">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-5 w-5 flex items-center justify-center mx-auto">
+                <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                     <ion-icon name="file-tray-full-outline" class="text-4xl"></ion-icon>
                 </a>
                 <span class="text-xs font-semibold mt-1 block">Today</span>
             </div>
     
             <div class="item-menu text-center">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-5 w-5 flex items-center justify-center mx-auto">
+                <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                     <ion-icon name="calendar-outline" class="text-4xl"></ion-icon>
                 </a>
                 <span class="text-xs font-semibold mt-1 block">Calendar</span>
             </div>
     
             <div class="item-menu text-center flex flex-col items-center transform -translate-y-4"> 
-                <a href="#" class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg mx-auto">
+                <a href="{{ url('/absensi') }}" class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg mx-auto">
                     <ion-icon name="camera" class="text-3xl"></ion-icon>
                 </a>
                 <span class="text-xs font-semibold mt-1">Camera</span>
             </div>
     
             <div class="item-menu text-center">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-5 w-5 flex items-center justify-center mx-auto">
+                <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                     <ion-icon name="document-text-outline" class="text-4xl"></ion-icon>
                 </a>
                 <span class="text-xs font-semibold mt-1 block">Docs</span>
             </div>
     
-            <div class="item-menu text-center">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-5 w-5 flex items-center justify-center mx-auto">
-                    <i class="fa-regular fa-user text-4xl"></i>
+            <div class="item-menu text-center mt-3">
+                <a href="#" class="text-gray-700 hover:text-blue-500 h-5 w-10 flex items-center justify-center mx-auto">
+                    <i class="fa-regular fa-user text-2xl"></i> <!-- Mengubah dari text-4xl menjadi text-2xl -->
                 </a>
-                <span class="text-xs font-semibold mt-1 block">Profile</span>
-            </div>
+                <span class="text-xs font-semibold mt-2 block">Profile</span>
+            </div>            
         </div>
     </footer>
-    
     
     <script src="js/karyawan.js"></script>
 </body>
 
-</html>
+</html> 

@@ -32,8 +32,8 @@ class AbsensiController extends Controller
         $tanggal_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
-        $latitudekantor = -8.6726734046125;
-        $longitudekantor = 115.21915951745375;
+        $latitudekantor = -8.796397020446642;
+        $longitudekantor = 115.17630808535847;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
