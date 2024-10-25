@@ -56,4 +56,8 @@ class Karyawan extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+    }
 }
