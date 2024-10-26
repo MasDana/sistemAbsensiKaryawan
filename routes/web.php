@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeDashboardController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ScheduleController;
@@ -24,10 +25,9 @@ Route::get('/sesi/logout', [LoginController::class, 'logout']);
 // Route::get('/register', [SessionController::class, 'register']);
 // Route::post('/sesi/create', [SessionController::class, 'create']);
 Route::get('/employeeDashboard', [DashboardController::class, 'employee']);
-Route::resource('schedule', ScheduleController::class);
+// Route::resource('schedule', ScheduleController::class);
 
-// Route::get('/schedule', [ScheduleController::class, 'index']);
-// Route::get('schedule/{id}', [ScheduleController::class, 'detail'])->where('id', '[0-9]+');
+
 
 Route::get('/sesi', [LoginController::class, 'index']);
 Route::post('/sesi/login', [LoginController::class, 'login']);
@@ -56,7 +56,16 @@ Route::middleware(['guest'])->group(function () {
     })->name('loginadmin');
 
     Route::post('/sesi/loginadmin', [LoginController::class, 'loginadmin']);
+    Route::get('/editprofile', [AbsensiController::class, 'editprofile']);
+    Route::post('/presensi/{id}/updateprofile', [AbsensiController::class], 'updateprofile');
 });
 
 Route::get('/presensi/monitoring', [AbsensiController::class, 'monitoring']);
 Route::post('/getpresensi', [AbsensiController::class, 'getpresensi']);
+
+Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
+Route::put('/karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
+
+// Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
+// Route::put('/karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');
+// Route::get('/karyawan', [KaryawanController::class, 'index'])->name('karyawan.index');

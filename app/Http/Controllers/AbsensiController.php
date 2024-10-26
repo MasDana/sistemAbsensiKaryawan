@@ -7,6 +7,8 @@ use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
 class AbsensiController extends Controller
@@ -32,8 +34,8 @@ class AbsensiController extends Controller
         $tanggal_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
-        $latitudekantor = -8.6726734046125;
-        $longitudekantor = 115.21915951745375;
+        $latitudekantor = -8.796397020446642;
+        $longitudekantor = 115.17630808535847;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
@@ -181,5 +183,39 @@ class AbsensiController extends Controller
 
 
         return view('admin.getpresensi', compact('presensi'));
+    }
+
+    public function editprofile()
+    {
+        $id = Auth::guard('karyawan')->user()->id;
+        $karyawan = DB::table('karyawan')->where('id', $id)->first();
+        // dd($karyawan);
+        return view('karyawan.index', compact('karyawan'));
+    }
+
+    public function updateprofile(Request $request)
+    {
+        $id = Auth::guard('karyawan')->user()->id;
+        $nama_karyawan = $request->nama_karyawan;
+        $jabatan_id = $request->jabatan_id;
+        $no_hp = $request->no_hp;
+        $tanggal_lahir = $request->tanggal_lahir;
+        $gender = $request->gender;
+        $alamat = $request->jabatan_id;
+        $password = Hash::make($request->password);
+
+        $data = [
+            'nama_karyawan' => $nama_karyawan,
+            'jabatan_id' => $jabatan_id,
+            'no_hp' => $no_hp,
+            'tanggal_lahir' => $tanggal_lahir,
+            'gender' => $gender,
+            'alamat' => $jabatan_id,
+            'password' => Hash::make($request->password),
+        ];
+        $update = DB::table('karyawan')->where('id', $id)->update($data);
+        if ($update) {
+            return Redirect::back();
+        }
     }
 }

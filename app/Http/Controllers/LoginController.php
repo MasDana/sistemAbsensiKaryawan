@@ -37,7 +37,7 @@ class LoginController extends Controller
         // Cek login menggunakan guard 'karyawan'
         if (Auth::guard('karyawan')->attempt($credentials)) {
             // Jika login berhasil, redirect ke dashboard
-            return redirect('/dashboard');
+            return redirect('/dashkar');
         } else {
             // Jika gagal, kembali ke halaman login dengan pesan error
             return redirect('sesi')->withErrors(['default' => 'Email atau password yang Anda masukkan salah']);

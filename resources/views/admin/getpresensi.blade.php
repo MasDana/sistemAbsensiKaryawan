@@ -1,3 +1,21 @@
+@php
+function selisih($jam_masuk, $jam_keluar)
+{
+    list($h, $m, $s) = explode(":", $jam_masuk);
+    $dtAwal = mktime($h, $m, $s, "1", "1", "1");
+    list($h, $m, $s) = explode(":", $jam_keluar);
+    $dtAkhir = mktime($h, $m, $s, "1", "1", "1");
+    $dtSelisih = $dtAkhir - $dtAwal;
+    $totalmenit = $dtSelisih / 60;
+    $jam = explode(".", $totalmenit / 60);
+    $sisamenit = ($totalmenit / 60) - $jam[0];
+    $sisamenit2 = $sisamenit * 60;
+    $jml_jam = $jam[0];
+    return $jml_jam . ":" . round($sisamenit2);
+}
+@endphp
+
+
 @foreach ($presensi as $item)
 @php
     $foto_masuk=Storage::url('upload/absensi/'.$item->foto_masuk);
@@ -15,12 +33,19 @@
         {{-- <td>{{ $item->foto_keluar }}</td> --}}
         <td><img src="{{ url($foto_keluar) }}" alt="" class="avatar"></td>
         <td>
-            @if ($item -> jam_masuk >= '16:00')
-            <span>Terlambat</span>
+            @if (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
+                @php
+                    $jamterlambat = selisih('06:00:00', $item->jam_masuk);
+                @endphp
+                <span>Terlambat {{ $jamterlambat }}</span>
             @else
-                <span>tepat waktu</span>
+                <span>Tepat waktu</span>
             @endif
         </td>
+        
+        
 
     </tr>
 @endforeach
+
+

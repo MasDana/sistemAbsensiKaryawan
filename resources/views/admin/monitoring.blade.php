@@ -1,12 +1,32 @@
-{{-- @extends('layout/layout')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Absensi</title>
 
-@section('css')
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    {{-- <script src="{{ asset('js/dashboard.js') }}"></script> <!-- Hanya untuk menyertakan file eksternal --> --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-@endsection
 
-@section('konten')
+    @vite('resources/css/app.css')
 
+</head>
+
+<body>
 <div class="body bg-gray-100 min-h-screen flex flex-col">
+    <!-- Header -->
     <header class="bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-20 shadow-md">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center">
@@ -52,11 +72,6 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="{{ url('/absensi') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-calendar-check mr-2"></i> Kehadiran
-                    </a>
-                </li>
-                <li class="mb-2">
                     <a href="{{ url('/presensi/monitoring') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                         <i class="fas fa-calendar-check mr-2"></i> Monitor Presensi
                     </a>
@@ -74,46 +89,43 @@
             </ul>
         </nav>
 
-       <!-- Konten Utama -->
-<div class="flex-grow flex flex-col">
-    <main class="main-dashboard transition-all">
+        <!-- Konten Utama -->
+        <div class="flex-grow flex flex-col">
+            <main class="main-dashboard transition-all p-8">
+                <!-- Judul -->
+                <h2 class="text-3xl font-bold mb-6">Monitoring Presensi</h2>
 
-        <div class="relative max-w-sm">
-            <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                </svg>
-            </div>
-            <input datepicker id="tanggal" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-        </div>
+                <!-- Pemilihan Tanggal -->
+                <div class="relative mb-6">
+                    <input
+                        id="tanggal"
+                        class="peer h-full w-full rounded-lg border border-gray-300 px-4 py-2.5 bg-white text-sm text-gray-700 placeholder-gray-400 transition-all focus:border-indigo-600 focus:outline-none"
+                        placeholder=""
+                    />
+                    <label for="tanggal"
+                        class="absolute left-3 -top-2.5 bg-white px-1 text-xs  text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:left-3 peer-focus:text-xs peer-focus:text-indigo-600 rounded-lg">
+                        Pilih Tanggal
+                    </label>
+                </div>
 
-        <table class="min-w-full border-collapse border border-gray-300 mt-4">
-            <thead>
-                <tr class="bg-gray-200">
-                    <th class="border border-gray-300 px-4 py-2">No.</th>
-                    <th class="border border-gray-300 px-4 py-2">Nama</th>
-                    <th class="border border-gray-300 px-4 py-2">Jam Masuk</th>
-                    <th class="border border-gray-300 px-4 py-2">Foto</th>
-                    <th class="border border-gray-300 px-4 py-2">Jam Keluar</th>
-                    <th class="border border-gray-300 px-4 py-2">Foto</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Data tabel bisa ditambahkan di sini -->
-                <tr>
-                    <td class="border border-gray-300 px-4 py-2">1</td>
-                    <td class="border border-gray-300 px-4 py-2">John Doe</td>
-                    <td class="border border-gray-300 px-4 py-2">08:00</td>
-                    <td class="border border-gray-300 px-4 py-2">17:00</td>
-                </tr>
-                <!-- Tambahkan lebih banyak data jika diperlukan -->
-            </tbody>
-        </table>
+                <!-- Tabel -->
+                <table class="min-w-full border-collapse border border-gray-300 rounded-lg shadow-lg overflow-hidden">
+                    <thead>
+                        <tr class="bg-indigo-600 text-white">
+                            <th class="border border-gray-300 px-4 py-2 text-center">No.</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">ID</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Nama</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Jam Masuk</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Foto</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Jam Keluar</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Foto</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loadpresensi"></tbody>
+                </table>
+            </main>
 
-    </main>
-</div>
-
-            
             <!-- Footer -->
             <footer class="footer bg-white text-black py-4 px-4 sm:px-6 md:px-8 lg:px-20 mt-auto">
                 <div class="container mx-auto flex justify-between items-center">
@@ -125,109 +137,12 @@
                     </div>
                 </div>
             </footer>
-
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-<script src="{{ asset('js/dashboard.js') }}"></script> <!-- Hanya untuk menyertakan file eksternal -->
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const datepickerEl = document.getElementById('tanggal');
-
-        // Inisialisasi datepicker Flowbite
-        const datepicker = new Datepicker(datepickerEl, {
-            format: 'yyyy-mm-dd',
-            autoclose: true,
-            todayHighlight: true,
-        });
-
-        // Tampilkan datepicker saat elemen difokuskan
-        datepickerEl.addEventListener('focus', () => {
-            datepicker.show();
-        });
-        datepickerEl.addEventListener('change', () => {
-            console.log('Selected date:', datepickerEl.value);
-        });
-    });
-</script>
-
-@endsection --}}
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Absensi</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    {{-- <script src="{{ asset('js/dashboard.js') }}"></script> <!-- Hanya untuk menyertakan file eksternal --> --}}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-
-    @vite('resources/css/app.css')
-
-</head>
-<body>
-
-    <div class="flex-grow flex flex-col">
-        <main class="main-dashboard transition-all">
-    
-            {{-- <div class="relative max-w-sm">
-                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
-                    </svg>
-                </div>
-                <input datepicker id="tanggal" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date">
-            </div> --}}
-            
-    
-            <table class="min-w-full border-collapse border border-gray-300 mt-4">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border border-gray-300 px-4 py-2">No.</th>
-                        <th class="border border-gray-300 px-4 py-2">ID</th>
-                        <th class="border border-gray-300 px-4 py-2">Nama</th>
-                        <th class="border border-gray-300 px-4 py-2">Jam Masuk</th>
-                        <th class="border border-gray-300 px-4 py-2">Foto</th>
-                        <th class="border border-gray-300 px-4 py-2">Jam Keluar</th>
-                        <th class="border border-gray-300 px-4 py-2">Foto</th>
-                        <th class="border border-gray-300 px-4 py-2">Keterangan</th>
-
-                        
-                    </tr>
-                </thead>
-                <tbody id="loadpresensi"></tbody>
-                
-            </table>
-    
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
-            <div class="relative h-10 w-full min-w-[200px]">
-                <input
-                  id="tanggal"
-                  class="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                  placeholder=" "
-                />
-                <label class="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
-                  Select a Date
-                </label>
-              </div>
-        </main>
-    </div>
+@section('java')
+<script src="{{ asset('js/dashboard.js') }}"></script>
+@endsection
 
     {{-- <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -290,5 +205,5 @@
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    
+
 </body>
