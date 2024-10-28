@@ -335,6 +335,7 @@
 
 </html> --}}
 
+
     
 <!DOCTYPE html>
 <html lang="id">
@@ -378,6 +379,7 @@ function selisih($jam_masuk, $jam_keluar)
 }
 @endphp
 
+
     <!-- Header -->
     <header class="bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-20 shadow-md flex-none">
         <div class="container mx-auto flex justify-between items-center">
@@ -418,7 +420,7 @@ function selisih($jam_masuk, $jam_keluar)
                 </div>
             </div>
 
-            <!-- Menu-bar -->
+            {{-- <!-- Menu-bar -->
             <div class="grid grid-cols-4 gap-24 mb-8">
                 <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
                     <a href="#" class="text-indigo-800 text-4xl">
@@ -451,7 +453,7 @@ function selisih($jam_masuk, $jam_keluar)
                     <span class="text-sm font-semibold mt-2 block">Lokasi</span>
                     <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">2</span>
                 </div>
-            </div>
+            </div> --}}
 
            
             {{-- Absen Masuk dan Pulang --}}     
@@ -476,7 +478,44 @@ function selisih($jam_masuk, $jam_keluar)
                 </div>
             </div>
 
-            {{-- Rincian Absen --}}     
+             <!-- Menu-bar -->
+             <h1>Rekap Presensi Bulan  {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}</h1> <br>
+             <div class="grid grid-cols-4 gap-24 mb-8">
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="#" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-user"></i> <!-- Ikon Profil -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Profil</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi -> totalhadir }}</span>
+                </div>
+
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="#" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-calendar-alt"></i> <!-- Ikon Cuti -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Cuti</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">1</span>
+                </div>
+
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="presensi/histori" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-file-alt"></i> <!-- Ikon Histori -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Histori</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">5</span>
+                </div>
+
+                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
+                    <a href="#" class="text-indigo-800 text-4xl">
+                        <i class="fas fa-map-marker-alt"></i> <!-- Ikon Lokasi -->
+                    </a>
+                    <span class="text-sm font-semibold mt-2 block">Lokasi</span>
+                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi -> jumlah_tlt}}</span>
+                </div>
+            </div>
+
+
+            {{-- Rincian Absen --}} 
             <div class="card presencetab bg-white px-4 py-2 mb-24 rounded-lg shadow-md flex flex-col overflow-y-auto">
                 <div class="tab-content mt-1 p-2">
                     <div class="tab-pane fade show active" id="home" role="tabpanel">

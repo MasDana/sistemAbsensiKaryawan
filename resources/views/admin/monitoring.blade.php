@@ -61,7 +61,7 @@
             <ul>
                 <li class="sidebar-title text-lg font-semibold mb-2">Report</li>
                 <li class="mb-2">
-                    <a href="#" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                    <a href="{{ url('/dashboard') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                         <i class="fas fa-home mr-2"></i> Beranda
                     </a>
                 </li>
@@ -81,11 +81,11 @@
                         <i class="fas fa-briefcase mr-2"></i> Jabatan
                     </a>
                 </li>
-                <li class="mb-2">
-                    <a href="{{ route('schedule.index') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                {{-- <li class="mb-2">
+                    <a href="#"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                         <i class="fas fa-clock mr-2"></i> Schedule 
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </nav>
 
@@ -95,7 +95,6 @@
                 <!-- Judul -->
                 <h2 class="text-3xl font-bold mb-6">Monitoring Presensi</h2>
 
-                <!-- Pemilihan Tanggal -->
                 <div class="relative mb-6">
                     <input
                         id="tanggal"
@@ -103,10 +102,12 @@
                         placeholder=""
                     />
                     <label for="tanggal"
-                        class="absolute left-3 -top-2.5 bg-white px-1 text-xs  text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:left-3 peer-focus:text-xs peer-focus:text-indigo-600 rounded-lg">
-                        Pilih Tanggal
+                        class="absolute left-3 -top-2.5 bg-white px-1 text-xs text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:left-3 peer-focus:text-xs peer-focus:text-indigo-600 rounded-lg">
+                        Pilih Rentang Tanggal
                     </label>
+                    
                 </div>
+                
 
                 <!-- Tabel -->
                 <table class="min-w-full border-collapse border border-gray-300 rounded-lg shadow-lg overflow-hidden">
@@ -144,29 +145,51 @@
 <script src="{{ asset('js/dashboard.js') }}"></script>
 @endsection
 
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const datepickerEl = document.getElementById('tanggal');
-    
-            const datepicker = new Datepicker(datepickerEl, {
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
-            });
-    
-            datepickerEl.addEventListener('focus', () => {
-                datepicker.show();
-            });
-    
-            datepickerEl.addEventListener('change', () => {
-                console.log('Selected date:', datepickerEl.value); // Periksa nilai yang dipilih
-            });
-        });
-    </script> --}}
+
     <script>
-        const datepicker = flatpickr("#tanggal", {});
-    
-        // Tunggu sampai elemen datepicker siap diakses
+        // Inisialisasi datepicker dengan mode range
+        const datepicker = flatpickr("#tanggal", {
+            mode: "range", // Aktifkan pemilihan rentang tanggal
+            dateFormat: "Y-m-d", // Format yang dikirimkan dalam format 'YYYY-MM-DD'
+            onChange: function(selectedDates) {
+                // Pastikan ada dua tanggal yang dipilih
+                if (selectedDates.length === 2) {
+                    const startDate = selectedDates[0].toLocaleDateString('en-CA'); // Format YYYY-MM-DD
+                    const endDate = selectedDates[1].toLocaleDateString('en-CA');    
+                    // Kirim permintaan AJAX setelah kedua tanggal dipilih
+                    if (startDate === endDate) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/getpresensi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        tanggal_presensi: startDate // Kirim satu tanggal
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        $("#loadpresensi").html(respond);
+                    }
+                });
+            } else {
+                $.ajax({
+                    type: 'POST',
+                    url: '/getpresensi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        start_date: startDate,
+                        end_date: endDate
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        $("#loadpresensi").html(respond);
+                    }
+                });
+            }
+        }
+    }
+});
+        
+        // Styling tambahan untuk datepicker
         datepicker.config.onReady.push(function() {
             const calendarContainer = datepicker.calendarContainer;
             const calendarMonthNav = datepicker.monthNav;
@@ -174,33 +197,12 @@
             const calendarPrevMonthNav = datepicker.prevMonthNav;
             const calendarDaysContainer = datepicker.daysContainer;
     
-            // styling the date picker
+            // Styling elemen-elemen di dalam datepicker
             calendarContainer.className = `${calendarContainer.className} bg-white p-4 border border-blue-gray-50 rounded-lg shadow-lg shadow-blue-gray-500/10 font-sans text-sm font-normal text-blue-gray-500 focus:outline-none break-words whitespace-normal`;
-    
             calendarMonthNav.className = `${calendarMonthNav.className} flex items-center justify-between mb-4 [&>div.flatpickr-month]:-translate-y-3`;
-    
             calendarNextMonthNav.className = `${calendarNextMonthNav.className} absolute !top-2.5 !right-1.5 h-6 w-6 bg-transparent hover:bg-blue-gray-50 !p-1 rounded-md transition-colors duration-300`;
-    
             calendarPrevMonthNav.className = `${calendarPrevMonthNav.className} absolute !top-2.5 !left-1.5 h-6 w-6 bg-transparent hover:bg-blue-gray-50 !p-1 rounded-md transition-colors duration-300`;
-    
             calendarDaysContainer.className = `${calendarDaysContainer.className} [&_span.flatpickr-day]:!rounded-md [&_span.flatpickr-day.selected]:!bg-gray-900 [&_span.flatpickr-day.selected]:!border-gray-900`;
-        });
-    
-        // Event handler untuk change pada elemen dengan id tanggal
-        $("#tanggal").change(function(e){
-            var tanggal = $(this).val();
-            $.ajax({
-                type:'POST',
-                url:'/getpresensi',
-                data:{
-                    _token:"{{ csrf_token() }}",
-                    tanggal_presensi: tanggal
-                },
-                cache:false,
-                success:function(respond){
-                    $("#loadpresensi").html(respond);
-                }
-            });
         });
     </script>
     

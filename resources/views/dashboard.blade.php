@@ -22,7 +22,7 @@
             <div class="header-right flex items-center space-x-2 md:space-x-4"> 
                 <div class="profile flex items-center space-x-2 md:space-x-4">
                     <img src="{{ asset('gambar/tara.png') }}" alt="Profile" class="w-12 h-12 rounded-full">
-                    <span class="text-black">Nama</span>
+                    <span class="text-black">{{ $user -> name }}</span>
                 </div>
                 <div class="logout">
                     <form action="/sesi/logout" method="get">
@@ -62,7 +62,7 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="{{ route('schedule.index') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                    <a href="#"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                         <i class="fas fa-clock mr-2"></i> Schedule 
                     </a>
                 </li>

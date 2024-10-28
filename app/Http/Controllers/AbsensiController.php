@@ -27,6 +27,12 @@ class AbsensiController extends Controller
         return view('absensi.create', compact('cek'));
     }
 
+    public function dashboardadmin()
+    {
+        $user = Auth::guard('user')->user();
+        return view('dashboard', compact('user'));
+    }
+
 
     public function store(Request $request)
     {
@@ -34,12 +40,22 @@ class AbsensiController extends Controller
         $tanggal_presensi = date("Y-m-d");
         $jam = date("H:i:s");
         $lokasi = $request->lokasi;
-        $latitudekantor = -8.796397020446642;
-        $longitudekantor = 115.17630808535847;
+
+        $latitudekantor = -8.62954808664605;
+        $longitudekantor = 115.25287233635116;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
-
+        // dd([
+        //     'Lokasi Kantor' => [
+        //         'Latitude' => $latitudekantor,
+        //         'Longitude' => $longitudekantor,
+        //     ],
+        //     'Lokasi User' => [
+        //         'Latitude' => $latitudeuser,
+        //         'Longitude' => $longitudeuser,
+        //     ]
+        // ]);
         $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius = round($jarak["meters"]);
         $image = $request->image;
@@ -55,7 +71,7 @@ class AbsensiController extends Controller
             ->where('karyawan_id', $karyawan_id)
             ->count();
 
-        if ($radius > 100) {
+        if ($radius > 1000) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Maaf, anda berada di luar radius. Jarak anda ' . $radius . ' meter dari kantor.'
@@ -130,18 +146,34 @@ class AbsensiController extends Controller
 
     public function dashboard()
     {
-
         $hariini = date("Y-m-d");
         $bulanini = date("m");
         $tahunini = date("Y");
-        $karyawan_id = Auth::guard('karyawan')->user()->id_karyawan;
-        $presensihariini = DB::table('presensi')->where('tanggal_presensi', $hariini)->first();
-        $historibulanini = DB::table('presensi')->whereRaw('MONTH(tanggal_presensi)="' . $bulanini . '"')
-            ->whereRaw('YEAR(tanggal_presensi)="' . $tahunini . '"')
+        $karyawan_id = Auth::guard('karyawan')->user()->id;
+
+        $presensihariini = DB::table('presensi')
+            ->where('tanggal_presensi', $hariini)
+            ->first();
+
+
+        $historibulanini = DB::table('presensi')
+            ->where('karyawan_id', $karyawan_id)
+            ->whereRaw('MONTH(tanggal_presensi) = ?', [$bulanini])
+            ->whereRaw('YEAR(tanggal_presensi) = ?', [$tahunini])
             ->orderBy('tanggal_presensi')
             ->get();
 
-        return view('absensi.dashboard', compact('presensihariini', 'historibulanini'));
+
+        $rekappresensi = DB::table('presensi')
+            ->selectRaw('COUNT(karyawan_id) as totalhadir, SUM(IF(jam_masuk > "09:00:00", 1, 0)) as jumlah_tlt')
+            ->where('karyawan_id', $karyawan_id)
+            ->whereRaw('MONTH(tanggal_presensi) = ?', [$bulanini])
+            ->whereRaw('YEAR(tanggal_presensi) = ?', [$tahunini])
+            ->first();
+
+
+        $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('absensi.dashboard', compact('presensihariini', 'historibulanini', 'namabulan', 'bulanini', 'tahunini', 'rekappresensi'));
     }
 
     public function histori()
@@ -172,50 +204,97 @@ class AbsensiController extends Controller
 
     public function getpresensi(Request $request)
     {
-        $tanggal_presensi = $request->tanggal_presensi;
-        // dd($tanggal_presensi);
-        // $tanggal_presensi = $request->tanggal;
-        $presensi = DB::table('presensi')
-            ->select('presensi.*', 'nama_karyawan')
-            ->join('karyawan', 'presensi.karyawan_id', '=', 'karyawan.id')
-            ->where('tanggal_presensi', $tanggal_presensi)  // Ganti 'tanggal_presensi' dengan 'tanggal' jika ini nama kolom yang benar
-            ->get();
-
+        if ($request->has('tanggal_presensi')) {
+            // Query untuk satu tanggal
+            $presensi = DB::table('presensi')
+                ->select('presensi.*', 'nama_karyawan')
+                ->join('karyawan', 'presensi.karyawan_id', '=', 'karyawan.id')
+                ->where('tanggal_presensi', $request->tanggal_presensi)
+                ->get();
+        } else {
+            // Query untuk rentang tanggal
+            $presensi = DB::table('presensi')
+                ->select('presensi.*', 'nama_karyawan')
+                ->join('karyawan', 'presensi.karyawan_id', '=', 'karyawan.id')
+                ->whereBetween('tanggal_presensi', [$request->start_date, $request->end_date])
+                ->get();
+        }
 
         return view('admin.getpresensi', compact('presensi'));
     }
+
 
     public function editprofile()
     {
         $id = Auth::guard('karyawan')->user()->id;
         $karyawan = DB::table('karyawan')->where('id', $id)->first();
-        // dd($karyawan);
-        return view('karyawan.index', compact('karyawan'));
+
+        // Ambil semua jabatan untuk dropdown
+        $jabatan = DB::table('jabatan')->get();
+
+        return view('absensi.updatedata', compact('karyawan', 'jabatan'));
     }
+
 
     public function updateprofile(Request $request)
     {
         $id = Auth::guard('karyawan')->user()->id;
+
+        // Ambil data request
         $nama_karyawan = $request->nama_karyawan;
         $jabatan_id = $request->jabatan_id;
         $no_hp = $request->no_hp;
         $tanggal_lahir = $request->tanggal_lahir;
-        $gender = $request->gender;
-        $alamat = $request->jabatan_id;
-        $password = Hash::make($request->password);
+        $gender = $request->gender ?? 'Male';
+        $alamat = $request->alamat;
+        $email = $request->email;
 
-        $data = [
-            'nama_karyawan' => $nama_karyawan,
-            'jabatan_id' => $jabatan_id,
-            'no_hp' => $no_hp,
-            'tanggal_lahir' => $tanggal_lahir,
-            'gender' => $gender,
-            'alamat' => $jabatan_id,
-            'password' => Hash::make($request->password),
-        ];
-        $update = DB::table('karyawan')->where('id', $id)->update($data);
-        if ($update) {
-            return Redirect::back();
+        // Cek apakah password tidak kosong
+        if (!empty($request->password)) {
+            $password = Hash::make($request->password);
+
+            // Update semua data termasuk password
+            $data = [
+                'nama_karyawan' => $nama_karyawan,
+                'jabatan_id' => $jabatan_id,
+                'no_hp' => $no_hp,
+                'tanggal_lahir' => $tanggal_lahir,
+                'gender' => $gender,
+                'alamat' => $alamat,
+                'email' => $email,
+                'password' => $password
+            ];
+        } else {
+            // Update tanpa password jika tidak diisi
+            $data = [
+                'nama_karyawan' => $nama_karyawan,
+                'jabatan_id' => $jabatan_id,
+                'no_hp' => $no_hp,
+                'tanggal_lahir' => $tanggal_lahir,
+                'gender' => $gender,
+                'alamat' => $alamat,
+                'email' => $email
+            ];
         }
+
+        // Lakukan update pada database
+        $update = DB::table('karyawan')->where('id', $id)->update($data);
+
+        // Redirect back setelah update
+        if ($update) {
+            return Redirect::back()->with('success', 'Profile berhasil diupdate!');
+        } else {
+            return Redirect::back()->with('error', 'Gagal mengupdate profile!');
+        }
+    }
+
+    public function izin()
+    {
+        return view('absensi.izin');
+    }
+
+    public function buatizin()
+    {
+        return view('absensi.buatizin');
     }
 }

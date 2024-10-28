@@ -108,11 +108,6 @@
         </div>
     </div>
     
-    
-    
-    
-    
-    
 
     <script>
         Webcam.set({
@@ -146,7 +141,7 @@
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 500
+                radius: 100
             }).addTo(map);
         }
         
@@ -177,7 +172,7 @@
                 if (response.status === 'success') {
                     swal("Berhasil!", response.message, "success");
                     setTimeout(function() {
-                        location.href = '/dashboard';
+                        location.href = '/dashkar';
                     }, 3000); // Waktu delay dalam milidetik (3000 ms = 3 detik)
                 } else if (response.status === 'error') {
                     swal("Gagal!", response.message, "error");
