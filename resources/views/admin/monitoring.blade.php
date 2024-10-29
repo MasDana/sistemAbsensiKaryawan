@@ -81,11 +81,15 @@
                         <i class="fas fa-briefcase mr-2"></i> Jabatan
                     </a>
                 </li>
-                {{-- <li class="mb-2">
-                    <a href="#"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-clock mr-2"></i> Schedule 
-                    </a>
-                </li> --}}
+                <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+                        <div class="dropdown-menu-column">
+                            <a cass="dropdown-item" href="/konfigurasi/lokasikantor">
+                                Lokasi Kantor 
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </ul>
         </nav>
 

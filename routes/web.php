@@ -47,7 +47,7 @@ Route::post('/karyawan/{id}', [AbsensiController::class, 'updateprofile']);
 Route::get('/presensi/izin', [AbsensiController::class, 'izin']);
 Route::get('/presensi/buatizin', [AbsensiController::class, 'buatizin']);
 
-
+Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class, 'lokasikantor']);
 
 
 

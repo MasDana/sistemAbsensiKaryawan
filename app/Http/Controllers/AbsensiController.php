@@ -23,8 +23,11 @@ class AbsensiController extends Controller
             ->where('tanggal_presensi', $hariIni)
             ->where('karyawan_id', $karyawan_id) // Menggunakan karyawan_id, bukan id
             ->count();
+        $lok_kantor = DB::table('konfigurasi_lokasi')
+        ->where('id',1)
+        ->first();
 
-        return view('absensi.create', compact('cek'));
+        return view('absensi.create', compact('cek', 'lok_kantor'));
     }
 
     public function dashboardadmin()
@@ -39,23 +42,19 @@ class AbsensiController extends Controller
         $karyawan_id = Auth::guard('karyawan')->user()->id;
         $tanggal_presensi = date("Y-m-d");
         $jam = date("H:i:s");
-        $lokasi = $request->lokasi;
+       
 
-        $latitudekantor = -8.62954808664605;
-        $longitudekantor = 115.25287233635116;
+        $lok_kantor = DB::table('konfigurasi_lokasi')->where('id',1)->first();
+        $lok = explode(",",$lok_kantor->lokasi_kantor);
+
+        $latitudekantor = $lok[0];
+        $longitudekantor = $lok[1];
+
+        $lokasi = $request->lokasi;
         $lokasiuser = explode(",", $lokasi);
         $latitudeuser = $lokasiuser[0];
         $longitudeuser = $lokasiuser[1];
-        // dd([
-        //     'Lokasi Kantor' => [
-        //         'Latitude' => $latitudekantor,
-        //         'Longitude' => $longitudekantor,
-        //     ],
-        //     'Lokasi User' => [
-        //         'Latitude' => $latitudeuser,
-        //         'Longitude' => $longitudeuser,
-        //     ]
-        // ]);
+       
         $jarak = $this->distance($latitudekantor, $longitudekantor, $latitudeuser, $longitudeuser);
         $radius = round($jarak["meters"]);
         $image = $request->image;
@@ -71,7 +70,7 @@ class AbsensiController extends Controller
             ->where('karyawan_id', $karyawan_id)
             ->count();
 
-        if ($radius > 1000) {
+        if ($radius > $lok_kantor->radius) {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Maaf, anda berada di luar radius. Jarak anda ' . $radius . ' meter dari kantor.'

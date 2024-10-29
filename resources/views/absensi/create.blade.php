@@ -131,20 +131,82 @@
         
         function successCallback(position) {
             lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-            var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
+
+            var lokasi_kantor = "{{$lok_kantor->lokasi_kantor}}";
+            var lok = lokasi_kantor.split(",");
+            var latitudekantor = lok[0];
+            var longitudekantor = lok[1];
+            var radius = "{{$lok_kantor->radius}}";
+
+            // Logging untuk memastikan nilai latitudekantor dan longitudekantor
+            console.log("Latitude Kantor:", latitudekantor);
+            console.log("Longitude Kantor:", longitudekantor);
+
+            // Inisialisasi map pada posisi kantor
+            var map = L.map('map').setView([latitudekantor, longitudekantor], 13);
+
+            // Menambahkan tile layer ke map
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             }).addTo(map);
-            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-            var circle = L.circle([position.coords.latitude, position.coords.longitude], {
+            console.log("Map initialized.");
+
+            // Tambahkan marker dan circle untuk lokasi kantor
+            var kantorMarker = L.marker([latitudekantor, longitudekantor]).addTo(map);
+            console.log("Marker for kantor added.");
+
+            var kantorCircle = L.circle([latitudekantor, longitudekantor], {
                 color: 'red',
                 fillColor: '#f03',
                 fillOpacity: 0.5,
-                radius: 100
+                radius: radius
             }).addTo(map);
+            console.log("Circle for kantor radius added.");
+
+            // Tambahkan marker untuk lokasi pengguna
+            var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+            console.log("Marker for user location added.");
         }
-        
+
+
+    //     function successCallback(position) {
+    //         lokasi.value = position.coords.latitude + "," + position.coords.longitude;
+    //         var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
+
+
+    //         // Marker untuk lokasi pengguna
+    //         var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
+
+    //         var map = L.map('map').setView([latitudekantor, longitudekantor], 13);
+
+    //         // Marker dan lingkaran untuk lokasi kantor
+    //         var kantorMarker = L.marker([latitudekantor, longitudekantor]).addTo(map);
+    //         var kantorCircle = L.circle([latitudekantor, longitudekantor], {
+    //             color: 'red',
+    //             fillColor: '#f03',
+    //             fillOpacity: 0.5,
+    //             radius: radius
+    //         }).addTo(map);
+
+    //         var lokasi_kantor = "{{$lok_kantor->lokasi_kantor}}";
+    //         var lok = lokasi_kantor.split(",");
+    //         var latitudekantor = lok[0];
+    //         var longitudekantor = lok[1];
+    //         var radius = "{{$lok_kantor->radius}}";
+
+    //         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    //             maxZoom: 19,
+    //             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    //         }).addTo(map);
+    //         var circle = L.circle([position.coords.latitude, position.coords.longitude], {
+    //             color: 'red',
+    //             fillColor: '#f03',
+    //             fillOpacity: 0.5,
+    //             radius: radius
+    //         }).addTo(map);
+
+    // }
         function errorCallback() {
             swal("Error", "Geolocation gagal. Tidak dapat mengambil lokasi.", "error");
         }
