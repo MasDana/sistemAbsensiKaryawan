@@ -47,7 +47,7 @@
                 </li>
                 <li class="sidebar-title text-lg font-semibold mb-2 mt-4">Manage</li>
                 <li class="mb-2">
-                    <a href="#" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                    <a href="{{ url('/rekapkaryawan') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                         <i class="fas fa-users mr-2"></i> Karyawan
                     </a>
                 </li>

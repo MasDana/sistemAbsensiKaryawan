@@ -46,6 +46,7 @@ Route::get('/karyawan/{id}/edit', [AbsensiController::class, 'editprofile']);
 Route::post('/karyawan/{id}', [AbsensiController::class, 'updateprofile']);
 Route::get('/presensi/izin', [AbsensiController::class, 'izin']);
 Route::get('/presensi/buatizin', [AbsensiController::class, 'buatizin']);
+Route::get('/rekapkaryawan', [KaryawanController::class, 'index']);
 
 
 
