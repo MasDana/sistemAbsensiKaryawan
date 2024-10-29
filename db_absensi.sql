@@ -1,9 +1,13 @@
+DROP DATABASE db_absensi;
+
+CREATE DATABASE db_absensi;
+
 -- phpMyAdmin SQL Dump
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 22, 2024 at 12:28 PM
+-- Generation Time: Oct 22, 2024 at 01:59 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -28,10 +32,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cache` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `key` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` MEDIUMTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` INT NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -40,10 +44,10 @@ CREATE TABLE `cache` (
 --
 
 CREATE TABLE `cache_locks` (
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `expiration` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `key` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` INT NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -52,14 +56,14 @@ CREATE TABLE `cache_locks` (
 --
 
 CREATE TABLE `failed_jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` BIGINT UNSIGNED NOT NULL,
+  `uuid` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -68,11 +72,11 @@ CREATE TABLE `failed_jobs` (
 --
 
 CREATE TABLE `jabatan` (
-  `id` bigint UNSIGNED NOT NULL,
-  `nama_jabatan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` BIGINT UNSIGNED NOT NULL,
+  `nama_jabatan` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `jabatan`
@@ -88,14 +92,14 @@ INSERT INTO `jabatan` (`id`, `nama_jabatan`, `created_at`, `updated_at`) VALUES
 --
 
 CREATE TABLE `jobs` (
-  `id` bigint UNSIGNED NOT NULL,
-  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `attempts` tinyint UNSIGNED NOT NULL,
-  `reserved_at` int UNSIGNED DEFAULT NULL,
-  `available_at` int UNSIGNED NOT NULL,
-  `created_at` int UNSIGNED NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` BIGINT UNSIGNED NOT NULL,
+  `queue` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` TINYINT UNSIGNED NOT NULL,
+  `reserved_at` INT UNSIGNED DEFAULT NULL,
+  `available_at` INT UNSIGNED NOT NULL,
+  `created_at` INT UNSIGNED NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -104,17 +108,17 @@ CREATE TABLE `jobs` (
 --
 
 CREATE TABLE `job_batches` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `total_jobs` int NOT NULL,
-  `pending_jobs` int NOT NULL,
-  `failed_jobs` int NOT NULL,
-  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` mediumtext COLLATE utf8mb4_unicode_ci,
-  `cancelled_at` int DEFAULT NULL,
-  `created_at` int NOT NULL,
-  `finished_at` int DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_jobs` INT NOT NULL,
+  `pending_jobs` INT NOT NULL,
+  `failed_jobs` INT NOT NULL,
+  `failed_job_ids` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` MEDIUMTEXT COLLATE utf8mb4_unicode_ci,
+  `cancelled_at` INT DEFAULT NULL,
+  `created_at` INT NOT NULL,
+  `finished_at` INT DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -123,18 +127,18 @@ CREATE TABLE `job_batches` (
 --
 
 CREATE TABLE `karyawan` (
-  `id` bigint UNSIGNED NOT NULL,
-  `nama_karyawan` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `jabatan_id` bigint UNSIGNED NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `no_hp` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tanggal_lahir` date NOT NULL,
-  `gender` enum('male','female') COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alamat` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` BIGINT UNSIGNED NOT NULL,
+  `nama_karyawan` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `jabatan_id` BIGINT UNSIGNED NOT NULL,
+  `email` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `no_hp` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tanggal_lahir` DATE NOT NULL,
+  `gender` ENUM('male','female') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `alamat` TEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `karyawan`
@@ -152,10 +156,10 @@ INSERT INTO `karyawan` (`id`, `nama_karyawan`, `jabatan_id`, `email`, `no_hp`, `
 --
 
 CREATE TABLE `migrations` (
-  `id` int UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` INT UNSIGNED NOT NULL,
+  `migration` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` INT NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `migrations`
@@ -178,10 +182,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `email` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -190,18 +194,18 @@ CREATE TABLE `password_reset_tokens` (
 --
 
 CREATE TABLE `presensi` (
-  `id` bigint UNSIGNED NOT NULL,
-  `karyawan_id` bigint UNSIGNED NOT NULL,
-  `tanggal_presensi` date NOT NULL,
-  `jam_masuk` time NOT NULL,
-  `jam_keluar` time DEFAULT NULL,
-  `foto_masuk` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `foto_keluar` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lokasi_in` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lokasi_out` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` BIGINT UNSIGNED NOT NULL,
+  `karyawan_id` BIGINT UNSIGNED NOT NULL,
+  `tanggal_presensi` DATE NOT NULL,
+  `jam_masuk` TIME NOT NULL,
+  `jam_keluar` TIME DEFAULT NULL,
+  `foto_masuk` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto_keluar` VARCHAR(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lokasi_in` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lokasi_out` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `presensi`
@@ -219,20 +223,20 @@ INSERT INTO `presensi` (`id`, `karyawan_id`, `tanggal_presensi`, `jam_masuk`, `j
 --
 
 CREATE TABLE `sessions` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` bigint UNSIGNED DEFAULT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `user_agent` text COLLATE utf8mb4_unicode_ci,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_activity` int NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `id` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` BIGINT UNSIGNED DEFAULT NULL,
+  `ip_address` VARCHAR(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` TEXT COLLATE utf8mb4_unicode_ci,
+  `payload` LONGTEXT COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` INT NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `sessions`
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('Mq76V9bOeJq3jSiTpC7h8pGApUJb7jp4tpvPnu6j', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiWk9Sa2lhbVkydDJJdGZ4QUlOWWFZZkNab2pSNHpIVWRyMWNPR1pFTSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjY6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC90ZXN0Ijt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1MToibG9naW5fdXNlcl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjE7czo1NToibG9naW5fa2FyeWF3YW5fNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMDI7fQ==', 1729599576);
+('v8mrLl7BUVnjM7ros1IqVbfgS214aMWNj5Jlc5wy', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36 Edg/130.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoiajV2RTNCRnpaWDhTYzA5RWlZY1JxeU9OaHFWNnA0NmJyM0N1MUM5RyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjk6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9kYXNoa2FyIjt9czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo1NToibG9naW5fa2FyeWF3YW5fNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxMDI7fQ==', 1729524434);
 
 -- --------------------------------------------------------
 
@@ -241,22 +245,15 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 --
 
 CREATE TABLE `users` (
-  `id` bigint UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'admin1', 'admin1@gmail.com', NULL, '$2y$12$0eFt2tKJLMoZdH.GcNBfD.VzNwYTfjUwPrmaSWSs0KLmz54RS.M6.', NULL, NULL, '2024-10-22 07:35:23');
+  `id` BIGINT UNSIGNED NOT NULL,
+  `name` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` TIMESTAMP NULL DEFAULT NULL,
+  `password` VARCHAR(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` VARCHAR(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` TIMESTAMP NULL DEFAULT NULL,
+  `updated_at` TIMESTAMP NULL DEFAULT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Indexes for dumped tables
@@ -350,43 +347,43 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `jabatan`
 --
 ALTER TABLE `jabatan`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `jobs`
 --
 ALTER TABLE `jobs`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `karyawan`
 --
 ALTER TABLE `karyawan`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
+  MODIFY `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=104;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `presensi`
 --
 ALTER TABLE `presensi`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -408,3 +405,14 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+CREATE TABLE `konfigurasi_lokasi` (
+ `id` INT PRIMARY KEY,
+ `lokasi_kantor` VARCHAR(255) NOT NULL,
+ `radius` SMALLINT NOT NULL
+)
+
+ALTER TABLE konfigurasi_lokasi MODIFY COLUMN lokasi_kantor VARCHAR(255) NULL;
+
+ALTER TABLE konfigurasi_lokasi DROP PRIMARY KEY;
+
