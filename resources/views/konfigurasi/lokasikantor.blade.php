@@ -1,38 +1,17 @@
-@extends('layouts.admin')
-@section('content')
-
-<div class="page-header d-print-none">
-    <div class="container-xl">
-        <div class="row g-2 align-items-center">
-            <div class="col">
-
-                <h2 class="page-tittle">
-                    Konfigurasi Lokasi
-                </h2>
-            </div>
-
-        </div>
-    </div>
-</div>
-<div class="page-body">
-    <div class="container-xl">
-        <div class="row">
-            <div class="col-6">
-                <div class="card">
-                    <div class="card-body">
-                        <form action="/konfigurasi/updatelokasi" method="POST">
-                            @csrf
-                            <div class="row">
-                            </div>
-
-                        </form>
-                    </div>
-                </div>
-                
-            </div>
-
-        </div>
-    </div>
-</div>
-
-@endsection
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/konfigurasi/updatelok" method="post">
+        @csrf
+    <input type="text" name="lokasi_kantor" value="{{ $lok_kantor->lokasi_kantor }}" id="lokasi_kantor" placeholder="Lokasi Kantor">
+    <input type="text" name="radius" value="{{ $lok_kantor->radius }}" id="radius" placeholder="Radius">
+    <button type="submit">Update</button>
+        </form>
+</body>
+</html>

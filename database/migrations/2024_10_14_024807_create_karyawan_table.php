@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('karyawan', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->autoIncrement()->startingValue(101); // Use unsignedBigInteger
-            $table->string('nama_karyawan');
-            $table->foreignId('jabatan_id')->constrained('jabatan');
-            $table->string('email')->unique();
-            $table->string('no_hp');
-            $table->string('password');
-            $table->date('tanggal_lahir');
-            $table->enum('gender', ['male', 'female']);
-            $table->text('alamat');
-            $table->timestamps();
-        });
+            Schema::create('karyawan', function (Blueprint $table) {
+                $table->unsignedBigInteger('id')->autoIncrement()->startingValue(101); // Use unsignedBigInteger
+                $table->string('nama_karyawan');
+                $table->foreignId('jabatan_id')->constrained('jabatan');
+                $table->string('email')->unique();
+                $table->string('no_hp');
+                $table->string('password');
+                $table->date('tanggal_lahir');
+                $table->enum('gender', ['male', 'female']);
+                $table->text('alamat');
+                $table->timestamps();
+            });
     }
 
     /**

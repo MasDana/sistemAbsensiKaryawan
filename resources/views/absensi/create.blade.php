@@ -136,6 +136,7 @@
             var lok = lokasi_kantor.split(",");
             var latitudekantor = lok[0];
             var longitudekantor = lok[1];
+
             var radius = "{{$lok_kantor->radius}}";
 
             // Logging untuk memastikan nilai latitudekantor dan longitudekantor
@@ -153,7 +154,7 @@
             console.log("Map initialized.");
 
             // Tambahkan marker dan circle untuk lokasi kantor
-            var kantorMarker = L.marker([latitudekantor, longitudekantor]).addTo(map);
+            var kantorMarker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
             console.log("Marker for kantor added.");
 
             var kantorCircle = L.circle([latitudekantor, longitudekantor], {

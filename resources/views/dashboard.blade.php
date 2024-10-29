@@ -62,9 +62,9 @@
                     </a>
                 </li>
                 <li class="mb-2">
-                    <a href="#"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-clock mr-2"></i> Schedule 
-                    </a>
+                    <a href="{{ url('/konfigurasi/lokasikantor') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                        <i class="fas fa-clock mr-2"></i> Lokasi
+                    </a>    
                 </li>
             </ul>
         </nav>
@@ -84,6 +84,7 @@
                     <i class="fas fa-calendar-check text-6xl mb-2"></i>
                     <h3 class="text-xl">Kehadiran</h3>
                 </div>
+                
             </main>
             
             <!-- Footer -->

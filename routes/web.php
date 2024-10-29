@@ -4,6 +4,7 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeDashboardController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\ScheduleController;
@@ -48,7 +49,10 @@ Route::get('/presensi/izin', [AbsensiController::class, 'izin']);
 Route::get('/presensi/buatizin', [AbsensiController::class, 'buatizin']);
 Route::get('/rekapkaryawan', [KaryawanController::class, 'index']);
 
-Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class, 'lokasikantor']);
+Route::get('/konfigurasi/lokasikantor', [KonfigurasiController::class, 'lokasikantor']);
+Route::post('/konfigurasi/updatelok', [KonfigurasiController::class, 'updatelokasi']);
+
+Route::post('/store/karyawan-data', [KaryawanController::class, 'simpan']);
 
 
 
