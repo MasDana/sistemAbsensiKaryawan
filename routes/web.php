@@ -48,7 +48,7 @@ Route::get('/presensi/izin', [AbsensiController::class, 'izin']);
 Route::get('/presensi/buatizin', [AbsensiController::class, 'buatizin']);
 Route::get('/rekapkaryawan', [KaryawanController::class, 'index']);
 
-
+Route::get('/konfigurasi/lokasikantor',[KonfigurasiController::class, 'lokasikantor']);
 
 
 
