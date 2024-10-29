@@ -94,7 +94,6 @@
                     <div class="links space-x-4">
                         <a href="#" class="hover:text-indigo-400">Terms of Service</a>
                         <a href="#" class="hover:text-indigo-400">Privacy Policy</a>
-                        <a href="#" class="hover:text-indigo-400">English</a>
                     </div>
                 </div>
             </footer>
