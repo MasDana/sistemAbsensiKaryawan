@@ -479,37 +479,21 @@ function selisih($jam_masuk, $jam_keluar)
             </div>
 
              <!-- Menu-bar -->
-             <h1>Rekap Presensi Bulan  {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}</h1> <br>
-             <div class="grid grid-cols-4 gap-24 mb-8">
+             <h1 class="text-xl font-semibold">Rekap Presensi Bulan  {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}</h1> <br>
+             <div class="grid grid-cols-2 gap-4 mb-8">
                 <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
                     <a href="#" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-user"></i> <!-- Ikon Profil -->
+                        <i class="fa-solid fa-pen-to-square"></i>
                     </a>
-                    <span class="text-sm font-semibold mt-2 block">Profil</span>
+                    <span class="text-sm font-semibold mt-2 block">Hadir</span>
                     <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi -> totalhadir }}</span>
                 </div>
 
                 <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
                     <a href="#" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-calendar-alt"></i> <!-- Ikon Cuti -->
+                        <i class="fa-solid fa-clock"></i>
                     </a>
-                    <span class="text-sm font-semibold mt-2 block">Cuti</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">1</span>
-                </div>
-
-                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
-                    <a href="presensi/histori" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-file-alt"></i> <!-- Ikon Histori -->
-                    </a>
-                    <span class="text-sm font-semibold mt-2 block">Histori</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">5</span>
-                </div>
-
-                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
-                    <a href="#" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-map-marker-alt"></i> <!-- Ikon Lokasi -->
-                    </a>
-                    <span class="text-sm font-semibold mt-2 block">Lokasi</span>
+                    <span class="text-sm font-semibold mt-2 block">Terlambat</span>
                     <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi -> jumlah_tlt}}</span>
                 </div>
             </div>
@@ -559,49 +543,43 @@ function selisih($jam_masuk, $jam_keluar)
                     </div>
                 </div>
             </div>
-            
-    
-    <!-- Bar bawah -->
-    <footer class="fixed bottom-0 w-full bg-white shadow-md flex items-center px-0.5 py-0.5">
-        <div class="grid grid-cols-5 gap-2 items-center justify-center w-full">
-            <div class="item-menu text-center">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
-                    <ion-icon name="file-tray-full-outline" class="text-4xl"></ion-icon>
-                </a>
-                <span class="text-xs font-semibold mt-1 block">Today</span>
-            </div>
-    
-            <div class="item-menu text-center">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
-                    <ion-icon name="calendar-outline" class="text-4xl"></ion-icon>
-                </a>
-                <span class="text-xs font-semibold mt-1 block">Calendar</span>
-            </div>
-    
-            <div class="item-menu text-center flex flex-col items-center transform -translate-y-4"> 
-                <a href="{{ url('/absensi') }}" class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg mx-auto">
-                    <ion-icon name="camera" class="text-3xl"></ion-icon>
-                </a>
-                <span class="text-xs font-semibold mt-1">Camera</span>
-            </div>
-    
-            <div class="item-menu text-center">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
-                    <ion-icon name="document-text-outline" class="text-4xl"></ion-icon>
-                </a>
-                <span class="text-xs font-semibold mt-1 block">Docs</span>
-            </div>
-    
-            <div class="item-menu text-center mt-3">
-                <a href="#" class="text-gray-700 hover:text-blue-500 h-5 w-10 flex items-center justify-center mx-auto">
-                    <i class="fa-regular fa-user text-2xl"></i> <!-- Mengubah dari text-4xl menjadi text-2xl -->
-                </a>
-                <span class="text-xs font-semibold mt-2 block">Profile</span>
-            </div>            
-        </div>
-    </footer>
     
     <script src="js/karyawan.js"></script>
 </body>
 
-</html> 
+<footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md flex items-center px-0 py-0.5">
+    <div class="grid grid-cols-5 gap-2 items-center justify-center w-full">
+        <div class="item-menu text-center">
+            <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
+                <ion-icon name="file-tray-full-outline" class="text-7xl"></ion-icon>
+            </a>
+        </div>
+
+        <div class="item-menu text-center">
+            <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
+                <ion-icon name="calendar-outline" class="text-7xl"></ion-icon>
+            </a>
+        </div>
+
+        <div class="item-menu text-center flex flex-col items-center transform -translate-y-4">
+            <a href="{{ url('/absensi') }}" class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg mx-auto">
+                <ion-icon name="camera" class="text-3xl"></ion-icon>
+            </a>
+        </div>
+
+        <div class="item-menu text-center">
+            <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
+                <ion-icon name="document-text-outline" class="text-7xl"></ion-icon>
+            </a>
+        </div>
+
+        <div class="item-menu text-center mt-3">
+            <a href="{{ url ('/editprofile')}}" class="text-gray-700 hover:text-blue-500 mb-3 w-10 flex items-center justify-center mx-auto">
+                <i class="fa-regular fa-user text-2xl"></i>
+            </a>
+        </div>
+    </div>
+</footer>
+
+
+</html>
