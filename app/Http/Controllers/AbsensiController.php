@@ -297,4 +297,14 @@ class AbsensiController extends Controller
     {
         return view('absensi.buatizin');
     }
+
+    public function tampilkanpeta(Request $request)
+    {
+        $id = $request->id;
+        $presensi = DB::table('presensi')->where('id', $id)->first();
+    
+        return view('absensi.showmap', compact('presensi'));
+    }
+    
 }
+

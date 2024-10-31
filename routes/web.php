@@ -53,6 +53,8 @@ Route::get('/konfigurasi/lokasikantor', [KonfigurasiController::class, 'lokasika
 Route::post('/konfigurasi/updatelok', [KonfigurasiController::class, 'updatelokasi']);
 
 Route::post('/store/karyawan-data', [KaryawanController::class, 'simpan']);
+Route::post('/tampilkanpeta', [AbsensiController::class, 'tampilkanpeta']);
+
 
 
 

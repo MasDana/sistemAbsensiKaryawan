@@ -18,7 +18,9 @@
     {{-- <script src="{{ asset('js/dashboard.js') }}"></script> <!-- Hanya untuk menyertakan file eksternal --> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
 
     @vite('resources/css/app.css')
 
@@ -121,6 +123,7 @@
                             <th class="border border-gray-300 px-4 py-2 text-center">Jam Keluar</th>
                             <th class="border border-gray-300 px-4 py-2 text-center">Foto</th>
                             <th class="border border-gray-300 px-4 py-2 text-center">Keterangan</th>
+                            <th class="border border-gray-300 px-4 py-2 text-center">Lokasi</th>
                         </tr>
                     </thead>
                     <tbody id="loadpresensi"></tbody>
@@ -140,29 +143,43 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-tampilkanpeta" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Lokasi Presensi User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="map"></div> 
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @section('java')
 <script src="{{ asset('js/dashboard.js') }}"></script>
 @endsection
 
 
     <script>
-        // Inisialisasi datepicker dengan mode range
         const datepicker = flatpickr("#tanggal", {
-            mode: "range", // Aktifkan pemilihan rentang tanggal
-            dateFormat: "Y-m-d", // Format yang dikirimkan dalam format 'YYYY-MM-DD'
+            mode: "range", 
+            dateFormat: "Y-m-d", 
             onChange: function(selectedDates) {
-                // Pastikan ada dua tanggal yang dipilih
                 if (selectedDates.length === 2) {
-                    const startDate = selectedDates[0].toLocaleDateString('en-CA'); // Format YYYY-MM-DD
+                    const startDate = selectedDates[0].toLocaleDateString('en-CA');
                     const endDate = selectedDates[1].toLocaleDateString('en-CA');    
-                    // Kirim permintaan AJAX setelah kedua tanggal dipilih
                     if (startDate === endDate) {
                 $.ajax({
                     type: 'POST',
                     url: '/getpresensi',
                     data: {
                         _token: "{{ csrf_token() }}",
-                        tanggal_presensi: startDate // Kirim satu tanggal
+                        tanggal_presensi: startDate 
                     },
                     cache: false,
                     success: function(respond) {
@@ -206,5 +223,7 @@
     </script>
     
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 </body>
