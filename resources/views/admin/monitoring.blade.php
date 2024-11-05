@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
      crossorigin=""/>
+  
 
     @vite('resources/css/app.css')
 
@@ -113,7 +114,7 @@
 
                 <!-- Tabel -->
                 <table class="min-w-full border-collapse border border-gray-300 rounded-lg shadow-lg overflow-hidden">
-                    <thead>
+                    <!-- <thead>
                         <tr class="bg-indigo-600 text-white">
                             <th class="border border-gray-300 px-4 py-2 text-center">No.</th>
                             <th class="border border-gray-300 px-4 py-2 text-center">ID</th>
@@ -125,7 +126,7 @@
                             <th class="border border-gray-300 px-4 py-2 text-center">Keterangan</th>
                             <th class="border border-gray-300 px-4 py-2 text-center">Lokasi</th>
                         </tr>
-                    </thead>
+                    </thead> -->
                     <tbody id="loadpresensi"></tbody>
                 </table>
             </main>
@@ -144,19 +145,6 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-tampilkanpeta" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Lokasi Presensi User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="map"></div> 
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
@@ -220,7 +208,12 @@
             calendarPrevMonthNav.className = `${calendarPrevMonthNav.className} absolute !top-2.5 !left-1.5 h-6 w-6 bg-transparent hover:bg-blue-gray-50 !p-1 rounded-md transition-colors duration-300`;
             calendarDaysContainer.className = `${calendarDaysContainer.className} [&_span.flatpickr-day]:!rounded-md [&_span.flatpickr-day.selected]:!bg-gray-900 [&_span.flatpickr-day.selected]:!border-gray-900`;
         });
+
+
+     
+
     </script>
+    
     
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
