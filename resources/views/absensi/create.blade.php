@@ -28,22 +28,6 @@
 </head>
 <body>
 <div class="body bg-gray-100 min-h-screen flex flex-col">
-
-    {{-- <header class="bg-indigo-600 text-white p-4 flex items-center">
-        <!-- Kontainer Kiri: Ikon Panah -->
-        <a href="{{ url('/dashkar') }}" class="text-white text-2xl ml-4">
-            <i class="fas fa-arrow-left"></i>
-        </a>
-    
-        <!-- Kontainer Tengah: Teks Blank Page -->
-        <div class="flex-grow flex items-center justify-center">
-            <h1 class="text-xl font-semibold">Absensi</h1>
-        </div>
-    
-        <!-- Kontainer Kanan: Ruang Kosong -->
-        <div class="w-10"></div>
-    </header> --}}
-
     <!-- Header -->
     <header class="bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-20 shadow-md flex-none">
         <div class="container mx-auto flex justify-between items-center">
@@ -77,7 +61,7 @@
         <div class="p-8 flex lg:space-x-10">
             
             <!-- Kamera Section -->
-            <div class="webcam-section w-[700px] lg:mb-0"> <!-- Ukuran disamakan dengan peta -->
+            <div class="webcam-secti    on w-[700px] lg:mb-0"> <!-- Ukuran disamakan dengan peta -->
                 <h2 class="text-xl font-semibold mb-2 text-gray-900">Webcam</h2>
                 <div class="webcam-container rounded-lg overflow-hidden">
                     <input type="text" name="" id="lokasi" hidden>
@@ -170,44 +154,6 @@
             console.log("Marker for user location added.");
         }
 
-
-    //     function successCallback(position) {
-    //         lokasi.value = position.coords.latitude + "," + position.coords.longitude;
-    //         var map = L.map('map').setView([position.coords.latitude, position.coords.longitude], 13);
-
-
-    //         // Marker untuk lokasi pengguna
-    //         var marker = L.marker([position.coords.latitude, position.coords.longitude]).addTo(map);
-
-    //         var map = L.map('map').setView([latitudekantor, longitudekantor], 13);
-
-    //         // Marker dan lingkaran untuk lokasi kantor
-    //         var kantorMarker = L.marker([latitudekantor, longitudekantor]).addTo(map);
-    //         var kantorCircle = L.circle([latitudekantor, longitudekantor], {
-    //             color: 'red',
-    //             fillColor: '#f03',
-    //             fillOpacity: 0.5,
-    //             radius: radius
-    //         }).addTo(map);
-
-    //         var lokasi_kantor = "{{$lok_kantor->lokasi_kantor}}";
-    //         var lok = lokasi_kantor.split(",");
-    //         var latitudekantor = lok[0];
-    //         var longitudekantor = lok[1];
-    //         var radius = "{{$lok_kantor->radius}}";
-
-    //         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    //             maxZoom: 19,
-    //             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    //         }).addTo(map);
-    //         var circle = L.circle([position.coords.latitude, position.coords.longitude], {
-    //             color: 'red',
-    //             fillColor: '#f03',
-    //             fillOpacity: 0.5,
-    //             radius: radius
-    //         }).addTo(map);
-
-    // }
         function errorCallback() {
             swal("Error", "Geolocation gagal. Tidak dapat mengambil lokasi.", "error");
         }

@@ -131,7 +131,8 @@
 
 <!-- Tombol Search -->
 <div class="flex justify-center mt-4">
-    <button type="button" class="bg-indigo-600 hover:bg-indigo-60 text-white font-semibold py-2 px-4 w-full max-w-lg h-12 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" id="cari">
+    <button type="button" class="bg-indigo-600 hover:bg-indigo-60 text-white font-semibold py-2 px-4 w-full 
+    max-w-lg h-12 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500" id="cari">
         Cari
     </button>
 </div>

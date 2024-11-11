@@ -53,6 +53,11 @@ Route::get('/konfigurasi/lokasikantor', [KonfigurasiController::class, 'lokasika
 Route::post('/konfigurasi/updatelok', [KonfigurasiController::class, 'updatelokasi']);
 
 Route::post('/store/karyawan-data', [KaryawanController::class, 'simpan']);
+Route::get('/rekapjabatan', [KaryawanController::class, 'rekapjabatan']);
+Route::post('/store/jabatan-data', [KaryawanController::class, 'simpanjabatan']);
+Route::get('/jabatan/edit/{id}', [KaryawanController::class, 'edit'])->name('jabatan.edit');
+Route::put('/update/jabatan-data/{id}', [KaryawanController::class, 'updatejabatan'])->name('jabatan.update');
+
 
 
 

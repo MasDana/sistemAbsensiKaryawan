@@ -199,6 +199,7 @@ class AbsensiController extends Controller
 
     public function monitoring()
     {
+        $user = Auth::guard('user')->user();
         return view('admin.monitoring');
     }
 

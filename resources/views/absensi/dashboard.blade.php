@@ -420,42 +420,6 @@ function selisih($jam_masuk, $jam_keluar)
                 </div>
             </div>
 
-            {{-- <!-- Menu-bar -->
-            <div class="grid grid-cols-4 gap-24 mb-8">
-                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
-                    <a href="#" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-user"></i> <!-- Ikon Profil -->
-                    </a>
-                    <span class="text-sm font-semibold mt-2 block">Profil</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">3</span>
-                </div>
-
-                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
-                    <a href="#" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-calendar-alt"></i> <!-- Ikon Cuti -->
-                    </a>
-                    <span class="text-sm font-semibold mt-2 block">Cuti</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">1</span>
-                </div>
-
-                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
-                    <a href="presensi/histori" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-file-alt"></i> <!-- Ikon Histori -->
-                    </a>
-                    <span class="text-sm font-semibold mt-2 block">Histori</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">5</span>
-                </div>
-
-                <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
-                    <a href="#" class="text-indigo-800 text-4xl">
-                        <i class="fas fa-map-marker-alt"></i> <!-- Ikon Lokasi -->
-                    </a>
-                    <span class="text-sm font-semibold mt-2 block">Lokasi</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">2</span>
-                </div>
-            </div> --}}
-
-           
             {{-- Absen Masuk dan Pulang --}}     
             <div class="card bg-white p-6 rounded-lg shadow-md mb-8 flex flex-col">
                 <div class="grid grid-cols-2 gap-6 mb-4"> <!-- Grid untuk dua kolom tanpa flex-grow -->
