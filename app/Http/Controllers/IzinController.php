@@ -60,6 +60,32 @@ class IzinController extends Controller
         }
     }
 
+    public function editizin($kode_izin)
+    {
+        $dataizin = DB::table('pengajuan_izin')->where('id', $kode_izin)->first();
+        return view('izin.editizin', compact('dataizin'));
+    }
+
+    public function updateizin($id, Request $request)
+    {
+        $tgl_izin_dari = $request->tgl_izin_dari;
+        $tgl_izin_sampai = $request->tgl_izin_sampai;
+        $keterangan = $request->keterangan;
+
+        try {
+            $data = [
+                'tanggal_izin_dari' => $tgl_izin_dari,
+                'tanggal_izin_sampai' => $tgl_izin_sampai,
+                'keterangan' => $keterangan,
+            ];
+
+            DB::table('pengajuan_izin')->where('id', $id)->update($data);
+            return redirect('/presensi/izin');
+        } catch (\Exception $e) {
+            return redirect('/presensi/izin')->with('error', 'Something went wrong!');
+        }
+    }
+
     public function createsakit()
 
     {
@@ -139,4 +165,30 @@ class IzinController extends Controller
             return redirect('/sakit')->with(['error' => 'Gagal menyimpan data: ' . $e->getMessage()]);
         }
     }
+
+    public function editsakit($kode_sakit)
+    {
+        $datasakit = DB::table('pengajuan_izin')->where('id', $kode_sakit)->first();
+        return view('izin.editsakit', compact('datasakit'));
+    }
+
+    // public function updateizin($id, Request $request)
+    // {
+    //     $tgl_izin_dari = $request->tgl_izin_dari;
+    //     $tgl_izin_sampai = $request->tgl_izin_sampai;
+    //     $keterangan = $request->keterangan;
+
+    //     try {
+    //         $data = [
+    //             'tanggal_izin_dari' => $tgl_izin_dari,
+    //             'tanggal_izin_sampai' => $tgl_izin_sampai,
+    //             'keterangan' => $keterangan,
+    //         ];
+
+    //         DB::table('pengajuan_izin')->where('id', $id)->update($data);
+    //         return redirect('/presensi/izin');
+    //     } catch (\Exception $e) {
+    //         return redirect('/presensi/izin')->with('error', 'Something went wrong!');
+    //     }
+    // }
 }

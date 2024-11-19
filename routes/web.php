@@ -60,9 +60,18 @@ Route::post('/presensi/storeizin', [AbsensiController::class, 'storeizin']);
 
 Route::get('/izin', [IzinController::class, 'createizin']);
 Route::post('/izin/store', [IzinController::class, 'storeizin']);
+Route::get('/izin/edit/{id}', [IzinController::class, 'editizin'])->name('izin.edit');
+Route::delete('/izin/delete/{id}', [IzinController::class, 'deleteizin'])->name('izin.delete');
+Route::post('izin/{id}/update', [IzinController::class, 'updateizin']);
+
+
 
 Route::get('/sakit', [IzinController::class, 'createsakit']);
 Route::post('/sakit/store', [IzinController::class, 'storesakit']);
+Route::get('/sakit/edit/{id}', [IzinController::class, 'editsakit'])->name('sakit.edit');
+Route::delete('/sakit/delete/{id}', [IzinController::class, 'deletesakit'])->name('sakit.delete');
+Route::post('sakit/{id}/update', [IzinController::class, 'updatesakit']);
+
 
 
 

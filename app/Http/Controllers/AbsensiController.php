@@ -331,4 +331,5 @@ class AbsensiController extends Controller
             return redirect('/presensi/izin')->with(['error' => 'gagal']);
         }
     }
+
 }
