@@ -336,7 +336,7 @@
 </html> --}}
 
 
-    
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -347,8 +347,10 @@
     <link href="../dist/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+        integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../path/to/sweetalert.min.js"></script>
@@ -358,26 +360,26 @@
 
     @vite('resources/css/app.css')
 
-  </head>
+</head>
 
-  <body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-gray-100 min-h-screen flex flex-col">
 
     @php
-function selisih($jam_masuk, $jam_keluar)
-{
-    list($h, $m, $s) = explode(":", $jam_masuk);
-    $dtAwal = mktime($h, $m, $s, "1", "1", "1");
-    list($h, $m, $s) = explode(":", $jam_keluar);
-    $dtAkhir = mktime($h, $m, $s, "1", "1", "1");
-    $dtSelisih = $dtAkhir - $dtAwal;
-    $totalmenit = $dtSelisih / 60;
-    $jam = explode(".", $totalmenit / 60);
-    $sisamenit = ($totalmenit / 60) - $jam[0];
-    $sisamenit2 = $sisamenit * 60;
-    $jml_jam = $jam[0];
-    return $jml_jam . ":" . round($sisamenit2);
-}
-@endphp
+        function selisih($jam_masuk, $jam_keluar)
+        {
+            [$h, $m, $s] = explode(':', $jam_masuk);
+            $dtAwal = mktime($h, $m, $s, '1', '1', '1');
+            [$h, $m, $s] = explode(':', $jam_keluar);
+            $dtAkhir = mktime($h, $m, $s, '1', '1', '1');
+            $dtSelisih = $dtAkhir - $dtAwal;
+            $totalmenit = $dtSelisih / 60;
+            $jam = explode('.', $totalmenit / 60);
+            $sisamenit = $totalmenit / 60 - $jam[0];
+            $sisamenit2 = $sisamenit * 60;
+            $jml_jam = $jam[0];
+            return $jml_jam . ':' . round($sisamenit2);
+        }
+    @endphp
 
 
     <!-- Header -->
@@ -386,13 +388,14 @@ function selisih($jam_masuk, $jam_keluar)
             <div class="flex items-center">
                 <h1 class="text-black text-2xl font-bold">Sistem Manajemen Karyawan</h1>
             </div>
-            <div class="header-right flex items-center space-x-2 md:space-x-4"> 
+            <div class="header-right flex items-center space-x-2 md:space-x-4">
                 <div class="profile flex items-center space-x-2 md:space-x-4">
-                    <img src= "{{ asset('gambar/profile1.jpg')}}" alt="Profile" class="w-12 h-12 rounded-full">
+                    <img src= "{{ asset('gambar/profile1.jpg') }}" alt="Profile" class="w-12 h-12 rounded-full">
                     <span class="text-black">Sariwati</span>
                 </div>
                 <form action="/sesi/logout" method="get">
-                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+                    <button type="submit"
+                        class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
                         Logout
                     </button>
                 </form>
@@ -408,19 +411,22 @@ function selisih($jam_masuk, $jam_keluar)
 
             <!-- Card Profil -->
             <div class="card flex items-center bg-white p-6 rounded-lg shadow-md w-full mb-8">
-                <div class="image-section flex-shrink-0 flex items-center justify-center bg-indigo-600 p-1.5 w-40 h-40 rounded-full">
-                    <img src= "{{ asset('gambar/profile1.jpg')}}" alt="Profile picture" class="w-full h-full rounded-full">
+                <div
+                    class="image-section flex-shrink-0 flex items-center justify-center bg-indigo-600 p-1.5 w-40 h-40 rounded-full">
+                    <img src= "{{ asset('gambar/profile1.jpg') }}" alt="Profile picture"
+                        class="w-full h-full rounded-full">
                 </div>
                 <div class="text-section ml-8 flex flex-col justify-center">
                     <h2 class="text-2xl font-bold">I Putu Putri Kumala Sari</h2>
                     <h3 class="text-lg font-bold text-gray-600 mt-2">Business Analyst Strategy Development</h3>
                     <p class="text-black text-lg mt-4 leading-relaxed">
-                        "The key to success in business analysis is the ability to accurately interpret data, understand needs, and turn opportunities into solid, sustainable strategies for business growth."
+                        "The key to success in business analysis is the ability to accurately interpret data, understand
+                        needs, and turn opportunities into solid, sustainable strategies for business growth."
                     </p>
                 </div>
             </div>
 
-            {{-- Absen Masuk dan Pulang --}}     
+            {{-- Absen Masuk dan Pulang --}}
             <div class="card bg-white p-6 rounded-lg shadow-md mb-8 flex flex-col">
                 <div class="grid grid-cols-2 gap-6 mb-4"> <!-- Grid untuk dua kolom tanpa flex-grow -->
                     <!-- Card Absen Masuk -->
@@ -442,15 +448,17 @@ function selisih($jam_masuk, $jam_keluar)
                 </div>
             </div>
 
-             <!-- Menu-bar -->
-             <h1 class="text-xl font-semibold">Rekap Presensi Bulan  {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}</h1> <br>
-             <div class="grid grid-cols-2 gap-4 mb-8">
+            <!-- Menu-bar -->
+            <h1 class="text-xl font-semibold">Rekap Presensi Bulan {{ $namabulan[$bulanini] }} Tahun {{ $tahunini }}
+            </h1> <br>
+            <div class="grid grid-cols-2 gap-4 mb-8">
                 <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
                     <a href="#" class="text-indigo-800 text-4xl">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
                     <span class="text-sm font-semibold mt-2 block">Hadir</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi -> totalhadir }}</span>
+                    <span
+                        class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi->totalhadir }}</span>
                 </div>
 
                 <div class="relative card bg-white py-4 px-4 rounded-xl shadow-md text-center">
@@ -458,87 +466,98 @@ function selisih($jam_masuk, $jam_keluar)
                         <i class="fa-solid fa-clock"></i>
                     </a>
                     <span class="text-sm font-semibold mt-2 block">Terlambat</span>
-                    <span class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi -> jumlah_tlt}}</span>
+                    <span
+                        class="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">{{ $rekappresensi->jumlah_tlt }}</span>
                 </div>
             </div>
 
 
-            {{-- Rincian Absen --}} 
+            {{-- Rincian Absen --}}
             <div class="card presencetab bg-white px-4 py-2 mb-24 rounded-lg shadow-md flex flex-col overflow-y-auto">
                 <div class="tab-content mt-1 p-2">
                     <div class="tab-pane fade show active" id="home" role="tabpanel">
                         <ul class="listview image-listview">
                             @foreach ($historibulanini as $item)
-                            <li class="mb-4"> <!-- Tambahkan margin bawah -->
-                                <div class="item flex items-center space-x-4">
-                                    <div class="icon-box bg-primary">
-                                        <i class="fa-solid fa-fingerprint text-indigo-700 text-4xl"></i> <!-- Ikon -->
-                                    </div>
-                                    <div class="in flex-grow flex justify-between items-center">
-                                        <div class="text-lg font-semibold">
-                                            {{ date("d-m-y", strtotime($item->tanggal_presensi)) }}
+                                <li class="mb-4"> <!-- Tambahkan margin bawah -->
+                                    <div class="item flex items-center space-x-4">
+                                        <div class="icon-box bg-primary">
+                                            <i class="fa-solid fa-fingerprint text-indigo-700 text-4xl"></i>
+                                            <!-- Ikon -->
                                         </div>
-                                        <div class="flex space-x-2 items-center justify-end">
-                                            <span class="badge bg-green-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
-                                                {{ $item->jam_masuk }}
-                                            </span>
-                                            <span class="badge bg-red-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
-                                                {{ $presensihariini != null && $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
-                                            </span>
-                                            <span class="badge bg-blue-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
-                                                @if (strtotime($item->jam_masuk) >= strtotime('09:00:00'))
-                                                    @php
-                                                        $jamterlambat = selisih('09:00:00', $item->jam_masuk);
-                                                    @endphp
-                                                    <span>Terlambat {{ $jamterlambat }}</span>
-                                                @elseif (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
-                                                    <span>Tepat waktu</span>
-                                                @else
-                                                    <span>Terlambat {{ selisih('09:00:00', $item->jam_masuk) }}</span>
-                                                @endif
-                                            </span>
+                                        <div class="in flex-grow flex justify-between items-center">
+                                            <div class="text-lg font-semibold">
+                                                {{ date('d-m-y', strtotime($item->tanggal_presensi)) }}
+                                            </div>
+                                            <div class="flex space-x-2 items-center justify-end">
+                                                <span
+                                                    class="badge bg-green-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                    {{ $item->jam_masuk }}
+                                                </span>
+                                                <span
+                                                    class="badge bg-red-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                    {{ $presensihariini != null && $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
+                                                </span>
+                                                <span
+                                                    class="badge bg-blue-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                    @if (strtotime($item->jam_masuk) >= strtotime('09:00:00'))
+                                                        @php
+                                                            $jamterlambat = selisih('09:00:00', $item->jam_masuk);
+                                                        @endphp
+                                                        <span>Terlambat {{ $jamterlambat }}</span>
+                                                    @elseif (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
+                                                        <span>Tepat waktu</span>
+                                                    @else
+                                                        <span>Terlambat
+                                                            {{ selisih('09:00:00', $item->jam_masuk) }}</span>
+                                                    @endif
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
                             @endforeach
-                            
+
                         </ul>
                     </div>
                 </div>
             </div>
-    
-    <script src="js/karyawan.js"></script>
+
+            <script src="js/karyawan.js"></script>
 </body>
 
 <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md flex items-center px-0 py-0.5">
     <div class="grid grid-cols-5 gap-2 items-center justify-center w-full">
         <div class="item-menu text-center">
-            <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
+            <a href="#"
+                class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                 <ion-icon name="file-tray-full-outline" class="text-7xl"></ion-icon>
             </a>
         </div>
 
         <div class="item-menu text-center">
-            <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
+            <a href="#"
+                class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                 <ion-icon name="calendar-outline" class="text-7xl"></ion-icon>
             </a>
         </div>
 
         <div class="item-menu text-center flex flex-col items-center transform -translate-y-4">
-            <a href="{{ url('/absensi') }}" class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg mx-auto">
+            <a href="{{ url('/absensi') }}"
+                class="w-16 h-16 bg-indigo-600 rounded-full flex items-center justify-center text-white shadow-lg mx-auto">
                 <ion-icon name="camera" class="text-3xl"></ion-icon>
             </a>
         </div>
 
         <div class="item-menu text-center">
-            <a href="#" class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
+            <a href="#"
+                class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                 <ion-icon name="document-text-outline" class="text-7xl"></ion-icon>
             </a>
         </div>
 
         <div class="item-menu text-center mt-3">
-            <a href="{{ url ('/editprofile')}}" class="text-gray-700 hover:text-blue-500 mb-3 w-10 flex items-center justify-center mx-auto">
+            <a href="{{ url('/editprofile') }}"
+                class="text-gray-700 hover:text-blue-500 mb-3 w-10 flex items-center justify-center mx-auto">
                 <i class="fa-regular fa-user text-2xl"></i>
             </a>
         </div>

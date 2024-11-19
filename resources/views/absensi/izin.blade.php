@@ -64,8 +64,10 @@
     <title>Karyawan</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+        integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../path/to/sweetalert.min.js"></script>
@@ -73,13 +75,13 @@
     <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
 
-    
-  </head>
 
-  <body class="bg-gray-100 min-h-screen ">
+</head>
 
-       <!-- Header -->
-       <header class="bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-20 shadow-md flex-none">
+<body class="bg-gray-100 min-h-screen ">
+
+    <!-- Header -->
+    <header class="bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-20 shadow-md flex-none">
         <div class="container mx-auto flex justify-between items-center">
             <div class="flex items-center space-x-6">
                 <a href="{{ url('/dashkar') }}" class="text-black text-2xl">
@@ -87,13 +89,14 @@
                 </a>
                 <h1 class="text-black text-2xl font-bold">Sistem Manajemen Karyawan</h1>
             </div>
-            <div class="header-right flex items-center space-x-2 md:space-x-4"> 
+            <div class="header-right flex items-center space-x-2 md:space-x-4">
                 <div class="profile flex items-center space-x-2 md:space-x-4">
                     <img src="{{ asset('gambar/profile1.jpg') }}" alt="Profile" class="w-12 h-12 rounded-full">
                     <span class="text-black">Sariwati</span>
                 </div>
                 <form action="/sesi/logout" method="get">
-                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+                    <button type="submit"
+                        class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
                         Logout
                     </button>
                 </form>
@@ -102,11 +105,64 @@
     </header>
 
     <div>
-        <a href="/presensi/buatizin">
-            <button>buat izin</button>
-        </a>
+        @foreach ($data_izin as $item)
+            <!-- Pastikan ini adalah loop untuk menampilkan data -->
+            @php
+                if ($item->status == 'i') {
+                    $status = 'Izin';
+                } elseif ($item->status == 's') {
+                    $status = 'Sakit';
+                } else {
+                    $status = 'Not Found';
+                }
+            @endphp
+            <li class="bg-white shadow-md rounded-lg p-4 flex items-center space-x-4 mb-2">
+                <div class="flex-grow flex justify-between items-center">
+                    <!-- Tanggal di sebelah kiri -->
+                    <div class="text-lg font-bold">
+                        <b> {{ date('d-m-Y', strtotime($item->tanggal_izin_dari)) }} ({{ $status }}) </b><br>
+                        <small>{{ date('d-m-Y', strtotime($item->tanggal_izin_dari)) }} s/d
+                            {{ date('d-m-Y', strtotime($item->tanggal_izin_sampai)) }}</small>
+                        <p>{{ $item->keterangan }}</p>
+                    </div>
+
+                    <div class="flex items-center space-x-2 justify-end">
+                        @if ($item->status_approved == 0)
+                            <span class="badge bg-warning">Waiting</span>
+                        @elseif($item->status_approved == 1)
+                            <span class="badge bg-warning">Approved</span>
+                        @elseif($item->status_approved == 2)
+                            <span class="badge bg-warning">Rejected</span>
+                        @endif
+                    </div>
+                </div>
+            </li>
+        @endforeach
     </div>
-    
+
+    <div class="fixed bottom-16 right-16 dropdown">
+        <button class="bg-blue-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg"
+            data-toggle="dropdown">
+            <ion-icon name="add-outline" class="w-6 h-6"></ion-icon>
+        </button>
+        <div class="dropdown-menu hidden mt-2 bg-white shadow-lg rounded-lg py-2">
+            <a class="dropdown-item flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100" href="/izin">
+                <ion-icon name="document-outline" class="w-5 h-5 mr-2"></ion-icon>
+                <p>Izin Absen</p>
+            </a>
+            <a class="dropdown-item flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100" href="/sakit">
+                <ion-icon name="document-outline" class="w-5 h-5 mr-2"></ion-icon>
+                <p>Sakit</p>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelector('[data-toggle="dropdown"]').addEventListener('click', function() {
+            const dropdownMenu = this.nextElementSibling;
+            dropdownMenu.classList.toggle('hidden');
+        });
+    </script>
 </body>
 
 </html>

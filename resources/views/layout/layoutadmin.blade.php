@@ -1,10 +1,11 @@
 @php
-$user = Auth::guard('user')->user();
+    $user = Auth::guard('user')->user();
 @endphp
 
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,17 +14,19 @@ $user = Auth::guard('user')->user();
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js" integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
+        integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
-@yield('css')
+    @yield('css')
 
-@vite('resources/css/app.css')
+    @vite('resources/css/app.css')
 
 </head>
 
@@ -38,18 +41,19 @@ $user = Auth::guard('user')->user();
                             <i class="fas fa-bars text-2xl"></i>
                         </button>
                     </div>
-                    <div class="text-black text-2xl font-bold flex items-center"> 
+                    <div class="text-black text-2xl font-bold flex items-center">
                         <h1>Sistem Manajemen Karyawan</h1>
                     </div>
                 </div>
-                <div class="header-right flex items-center space-x-2 md:space-x-4"> 
+                <div class="header-right flex items-center space-x-2 md:space-x-4">
                     <div class="profile flex items-center space-x-2 md:space-x-4">
                         <img src="{{ asset('gambar/tara.png') }}" alt="Profile" class="w-12 h-12 rounded-full">
-                        <span class="text-black">{{ $user -> name }}</span>
+                        <span class="text-black">{{ $user->name }}</span>
                     </div>
                     <div class="logout">
                         <form action="/sesi/logout" method="get">
-                            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
+                            <button type="submit"
+                                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
                                 Logout
                             </button>
                         </form>
@@ -64,30 +68,35 @@ $user = Auth::guard('user')->user();
                 <ul>
                     <li class="sidebar-title text-lg font-semibold mb-2">Report</li>
                     <li class="mb-2">
-                        <a href="{{ url('/dashboard') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                        <a href="{{ url('/dashboard') }}"
+                            class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                             <i class="fas fa-home mr-2"></i> Beranda
                         </a>
                     </li>
                     <li class="sidebar-title text-lg font-semibold mb-2 mt-4">Manage</li>
                     <li class="mb-2">
-                        <a href="{{ url('/rekapkaryawan') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                        <a href="{{ url('/rekapkaryawan') }}"
+                            class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                             <i class="fas fa-users mr-2"></i> Karyawan
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ url('/presensi/monitoring') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                        <a href="{{ url('/presensi/monitoring') }}"
+                            class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                             <i class="fas fa-calendar-check mr-2"></i> Monitor Presensi
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ url('/rekapjabatan') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                        <a href="{{ url('/rekapjabatan') }}"
+                            class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                             <i class="fas fa-briefcase mr-2"></i> Jabatan
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ url('/konfigurasi/lokasikantor') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                        <a
+                            href="{{ url('/konfigurasi/lokasikantor') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                             <i class="fas fa-clock mr-2"></i> Lokasi
-                        </a>    
+                        </a>
                     </li>
                 </ul>
             </nav>
@@ -108,9 +117,10 @@ $user = Auth::guard('user')->user();
     </div>
 
 
-<script src="{{ asset('js/dashboard.js') }}"></script>
+    <script src="{{ asset('js/dashboard.js') }}"></script>
 
-@yield('java')
+    @yield('java')
 
 </body>
+
 </html>

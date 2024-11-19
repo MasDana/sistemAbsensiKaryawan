@@ -291,11 +291,44 @@ class AbsensiController extends Controller
 
     public function izin()
     {
-        return view('absensi.izin');
+        $karyawan = Auth::guard('karyawan')->user()->id;
+        $data_izin = DB::table('pengajuan_izin')->where('karyawan_id', $karyawan)->get();
+        return view('absensi.izin', compact('data_izin'));
     }
 
     public function buatizin()
     {
         return view('absensi.buatizin');
+    }
+
+    public function storeizin(Request $request)
+    {
+        // Ambil ID karyawan
+        $karyawan_id = Auth::guard('karyawan')->user()->id;
+
+        // Validasi data
+        $request->validate([
+            'tgl_izin' => 'required|date',
+            'status' => 'required',
+            'keterangan' => 'required',
+        ]);
+
+        // Konversi tanggal jika diperlukan
+        $tgl_izin = date('Y-m-d', strtotime($request->tgl_izin));
+
+        // Simpan data
+        $data = [
+            'karyawan_id' => $karyawan_id,
+            'tanggal_izin' => $tgl_izin,
+            'status' => $request->status,
+            'keterangan' => $request->keterangan
+        ];
+
+        $simpan = DB::table('pengajuan_izin')->insert($data);
+        if ($simpan) {
+            return redirect('/presensi/izin')->with(['success' => 'berhasil']);
+        } else {
+            return redirect('/presensi/izin')->with(['error' => 'gagal']);
+        }
     }
 }

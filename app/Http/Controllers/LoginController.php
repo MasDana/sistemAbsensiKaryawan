@@ -14,6 +14,11 @@ class LoginController extends Controller
         return view("sesi/index");
     }
 
+    function adminindex()
+    {
+        return view('admin.login');
+    }
+
     // Fungsi untuk login
     function login(Request $request)
     {
@@ -79,7 +84,7 @@ class LoginController extends Controller
             return redirect('/dashboard');
         } else {
             // Jika gagal, kembali ke halaman login dengan pesan error
-            return redirect('admin.login')->withErrors(['default' => 'Email atau password yang Anda masukkan salah']);
+            return redirect('/panel')->withErrors(['default' => 'Email atau password yang Anda masukkan salah']);
         }
     }
 }

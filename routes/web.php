@@ -3,6 +3,7 @@
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeDashboardController;
+use App\Http\Controllers\IzinController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\LoginController;
@@ -13,10 +14,10 @@ use App\Http\Middleware\CekLevel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    $user = Auth::guard('karyawan')->user();
-    return view('sesi/index');
-});
+// Route::get('/', function () {
+//     $user = Auth::guard('karyawan')->user();
+//     return view('sesi/index');
+// });
 
 
 
@@ -25,28 +26,22 @@ Route::get('/sesi', [LoginController::class, 'index']);
 Route::post('/sesi/login', [LoginController::class, 'login']);
 Route::get('/register', [RegisterController::class, 'register']);
 Route::post('/sesi/create', [RegisterController::class, 'create']);
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('ceklevel');
 Route::get('/absensi', [AbsensiController::class, 'index']);
 Route::post('/absensi/store', [AbsensiController::class, 'store']);
 Route::get('/dashkar', [AbsensiController::class, 'dashboard']);
 Route::get('/presensi/histori', [AbsensiController::class, 'histori']);
 Route::post('/gethistori', [AbsensiController::class, 'gethistori']);
-Route::middleware(['guest'])->group(function () {
-    Route::get('/panel', function () {
-        return view('admin.login');
-    })->name('loginadmin');
-    Route::get('/dashboard', [AbsensiController::class, 'dashboardadmin']);
 
-    Route::post('/sesi/loginadmin', [LoginController::class, 'loginadmin']);
-    Route::get('/editprofile', [AbsensiController::class, 'editprofile']);
-    Route::post('/presensi/{id}/updateprofile', [AbsensiController::class, 'updateprofile']);
-});
+Route::get('/panel', [LoginController::class, 'adminindex']);
+Route::get('/dashboard', [AbsensiController::class, 'dashboardadmin']);
+Route::post('/sesi/loginadmin', [LoginController::class, 'loginadmin']);
+Route::get('/editprofile', [AbsensiController::class, 'editprofile']);
+Route::post('/presensi/{id}/updateprofile', [AbsensiController::class, 'updateprofile']);
+
 Route::get('/presensi/monitoring', [AbsensiController::class, 'monitoring']);
 Route::post('/getpresensi', [AbsensiController::class, 'getpresensi']);
 Route::get('/karyawan/{id}/edit', [AbsensiController::class, 'editprofile']);
 Route::post('/karyawan/{id}', [AbsensiController::class, 'updateprofile']);
-Route::get('/presensi/izin', [AbsensiController::class, 'izin']);
-Route::get('/presensi/buatizin', [AbsensiController::class, 'buatizin']);
 Route::get('/rekapkaryawan', [KaryawanController::class, 'index']);
 
 Route::get('/konfigurasi/lokasikantor', [KonfigurasiController::class, 'lokasikantor']);
@@ -59,7 +54,15 @@ Route::get('/jabatan/edit/{id}', [KaryawanController::class, 'edit'])->name('jab
 Route::put('/update/jabatan-data/{id}', [KaryawanController::class, 'updatejabatan'])->name('jabatan.update');
 
 
+Route::get('/presensi/izin', [AbsensiController::class, 'izin']);
+Route::get('/presensi/buatizin', [AbsensiController::class, 'buatizin']);
+Route::post('/presensi/storeizin', [AbsensiController::class, 'storeizin']);
 
+Route::get('/izin', [IzinController::class, 'createizin']);
+Route::post('/izin/store', [IzinController::class, 'storeizin']);
+
+Route::get('/sakit', [IzinController::class, 'createsakit']);
+Route::post('/sakit/store', [IzinController::class, 'storesakit']);
 
 
 
