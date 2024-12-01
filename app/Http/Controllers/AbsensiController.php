@@ -292,12 +292,29 @@ class AbsensiController extends Controller
         }
     }
 
-    public function izin()
+    public function izin(Request $request)
     {
         $karyawan = Auth::guard('karyawan')->user()->id;
-        $data_izin = DB::table('pengajuan_izin')->where('karyawan_id', $karyawan)->get();
-        return view('absensi.izin', compact('data_izin'));
+
+        if (!empty($request->bulan) && !empty($request->tahun)) {
+            $data_izin = DB::table('pengajuan_izin')
+                ->where('karyawan_id', $karyawan)
+                ->whereRaw('MONTH(tanggal_izin_dari) = ?', [$request->bulan]) // Gunakan parameter binding
+                ->whereRaw('YEAR(tanggal_izin_dari) = ?', [$request->tahun])
+                ->orderBy('tanggal_izin_dari', 'desc')
+                ->limit(5)
+                ->get();
+        } else {
+            $data_izin = DB::table('pengajuan_izin')
+                ->where('karyawan_id', $karyawan)
+                ->orderBy('tanggal_izin_dari', 'desc') // Urutkan data meskipun tanpa filter
+                ->get();
+        }
+
+        $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        return view('absensi.izin', compact('data_izin', 'namabulan'));
     }
+
 
     public function buatizin()
     {
@@ -361,6 +378,7 @@ class AbsensiController extends Controller
         $query->orderBy('tanggal_izin_dari', 'desc');
         $izinsakit = $query->paginate(10);
         $izinsakit->appends($request->all());
+
 
         return view('admin.izinsakit', compact('izinsakit'));
     }

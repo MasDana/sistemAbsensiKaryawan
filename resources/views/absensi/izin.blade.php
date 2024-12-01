@@ -49,98 +49,137 @@
         <div class="text-center mb-8">
             <h2 class="text-4xl text-left font-bold text-gray-800 mb-2">Pengajuan Izin Karyawan</h2>
             <p class="text-xl text-left text-gray-600">Daftar pengajuan izin karyawan yang sedang diproses</p>
+
         </div>
-
-        <!-- Daftar Izin -->
-        <div class="space-y-6 max-h-[600px] overflow-y-auto">
-            @foreach ($data_izin as $item)
-                @php
-                    $status = $item->status == 'i' ? 'Izin' : ($item->status == 's' ? 'Sakit' : 'Not Found');
-                @endphp
-                <div
-                    class="bg-white p-4 flex flex-col md:flex-row items-center space-x-6 hover:bg-gray-200 transition duration-300 max-h-96 overflow-y-auto">
-                    <div class="flex-grow">
-                        <div class="text-xl font-semibold text-gray-900">
-                            <b>{{ date('d-m-Y', strtotime($item->tanggal_izin_dari)) }} ({{ $status }})</b><br>
-                            <small class="text-gray-500">{{ date('d-m-Y', strtotime($item->tanggal_izin_dari)) }} s/d
-                                {{ date('d-m-Y', strtotime($item->tanggal_izin_sampai)) }}</small>
-                            <p class="mt-2 text-gray-700">{{ $item->keterangan }}</p>
-                        </div>
+        <div class="row">
+            <div class="col">
+                <form method="GET" action="/presensi/izin">
+                    <div class="form-group">
+                        <select name="bulan" id="bulan" class="form-control selectmaterialize">
+                            <option value="">Bulan</option>
+                            @for ($i = 1; $i <= 12; $i++)
+                                <option {{ Request('bulan') == $i ? 'selected' : '' }} value = "{{ $i }}">
+                                    {{ $namabulan[$i] }}</option>
+                            @endfor
+                        </select>
                     </div>
-                    <div class="flex items-center space-x-4 justify-end">
-                        @if ($item->status_approved == 0)
-                            <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">Waiting</span>
-                        @elseif($item->status_approved == 1)
-                            <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full">Approved</span>
-                        @elseif($item->status_approved == 2)
-                            <span class="bg-red-500 text-white text-xs px-3 py-1 rounded-full">Rejected</span>
-                        @endif
-                        <div class="flex items-center space-x-4 justify-end">
-                            @if ($item->status == 'i')
-                                <!-- Untuk izin -->
-                                <a href="{{ url('/izin/edit/' . $item->id) }}"
-                                    class="bg-yellow-400 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-200 ease-in-out flex items-center space-x-2">
-                                    <i class="fas fa-edit"></i><span>Edit Izin</span>
-                                </a>
-                                <form action="{{ url('/izin/delete/' . $item->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus data izin?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
-                                        <i class="fas fa-trash"></i><span>Hapus Izin</span>
-                                    </button>
-                                </form>
-                            @elseif ($item->status == 's')
-                                <!-- Untuk sakit -->
-                                <a href="{{ url('/sakit/edit/' . $item->id) }}"
-                                    class="bg-yellow-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out flex items-center space-x-2">
-                                    <i class="fas fa-edit"></i><span>Edit Sakit</span>
-                                </a>
-                                <form action="{{ url('/sakit/delete/' . $item->id) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus data sakit?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200 ease-in-out flex items-center space-x-2">
-                                        <i class="fas fa-trash"></i><span>Hapus Sakit</span>
-                                    </button>
-                                </form>
-                            @endif
-                        </div>
+                    <div class="form-group">
+                        <select name="tahun" id="tahun" class="form-control selectmaterialize">
+                            <option value="">Tahun</option>
+                            @php
+                                $tahun_awal = 2022;
+                                $tahun_sekarang = date('Y');
+                                for ($t = $tahun_awal; $t <= $tahun_sekarang; $t++) {
+                                    if (Request('tahun') == $t) {
+                                        $selected = 'selected';
+                                    } else {
+                                        $selected = '';
+                                    }
+
+                                    echo "<option $selected value='$t'>$t</option>";
+                                }
+                            @endphp
+                        </select>
                     </div>
-                </div>
 
-                <!-- Garis Pemisah -->
-                <hr class="border-t-2 border-gray-200 my-4">
-            @endforeach
-        </div>
+                    <button type="submit">Cari Data</button>
 
-        <!-- Button Lingkaran di Pojok Kanan Bawah -->
-        <!-- Tombol Lingkaran di Pojok Kanan Bawah -->
-        <div>
-            <button id="scrollToTopBtn"
-                class="fixed bottom-6 right-6 bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
-                <i class="fas fa-chevron-up"></i>
-            </button>
-
-            <!-- Dropdown Lingkaran di Pojok Kanan Bawah -->
-            <div id="dropdownMenu" class="fixed bottom-16 right-6 flex flex-col space-y-2 mb-6 z-10 hidden">
-                <!-- Tombol Sakit -->
-                <button id="sakitBtn"
-                    class="bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
-                    Sakit
-                </button>
-                <!-- Tombol Izin -->
-                <button id="izinBtn"
-                    class="bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
-                    Izin
-                </button>
+                </form>
             </div>
 
-            <!-- Overlay Gelap -->
-            <div id="overlay" class="fixed inset-0 bg-gray-950 bg-opacity-50 hidden z-0"></div>
-        </div>
+            <!-- Daftar Izin -->
+            <div class="space-y-6 max-h-[600px] overflow-y-auto">
+                @foreach ($data_izin as $item)
+                    @php
+                        $status = $item->status == 'i' ? 'Izin' : ($item->status == 's' ? 'Sakit' : 'Not Found');
+                    @endphp
+                    <div
+                        class="bg-white p-4 flex flex-col md:flex-row items-center space-x-6 hover:bg-gray-200 transition duration-300 max-h-96 overflow-y-auto">
+                        <div class="flex-grow">
+                            <div class="text-xl font-semibold text-gray-900">
+                                <b>{{ date('d-m-Y', strtotime($item->tanggal_izin_dari)) }}
+                                    ({{ $status }})
+                                </b><br>
+                                <small class="text-gray-500">{{ date('d-m-Y', strtotime($item->tanggal_izin_dari)) }}
+                                    s/d
+                                    {{ date('d-m-Y', strtotime($item->tanggal_izin_sampai)) }}</small>
+                                <p class="mt-2 text-gray-700">{{ $item->keterangan }}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4 justify-end">
+                            @if ($item->status_approved == 0)
+                                <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full">Waiting</span>
+                            @elseif($item->status_approved == 1)
+                                <span class="bg-green-500 text-white text-xs px-3 py-1 rounded-full">Approved</span>
+                            @elseif($item->status_approved == 2)
+                                <span class="bg-red-500 text-white text-xs px-3 py-1 rounded-full">Rejected</span>
+                            @endif
+                            <div class="flex items-center space-x-4 justify-end">
+                                @if ($item->status == 'i')
+                                    <!-- Untuk izin -->
+                                    <a href="{{ url('/izin/edit/' . $item->id) }}"
+                                        class="bg-yellow-400 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-200 ease-in-out flex items-center space-x-2">
+                                        <i class="fas fa-edit"></i><span>Edit Izin</span>
+                                    </a>
+                                    <form action="{{ url('/izin/delete/' . $item->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus data izin?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
+                                            <i class="fas fa-trash"></i><span>Hapus Izin</span>
+                                        </button>
+                                    </form>
+                                @elseif ($item->status == 's')
+                                    <!-- Untuk sakit -->
+                                    <a href="{{ url('/sakit/edit/' . $item->id) }}"
+                                        class="bg-yellow-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out flex items-center space-x-2">
+                                        <i class="fas fa-edit"></i><span>Edit Sakit</span>
+                                    </a>
+                                    <form action="{{ url('/sakit/delete/' . $item->id) }}" method="POST"
+                                        onsubmit="return confirm('Yakin ingin menghapus data sakit?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                            class="bg-red-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200 ease-in-out flex items-center space-x-2">
+                                            <i class="fas fa-trash"></i><span>Hapus Sakit</span>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Garis Pemisah -->
+                    <hr class="border-t-2 border-gray-200 my-4">
+                @endforeach
+            </div>
+
+            <!-- Button Lingkaran di Pojok Kanan Bawah -->
+            <!-- Tombol Lingkaran di Pojok Kanan Bawah -->
+            <div>
+                <button id="scrollToTopBtn"
+                    class="fixed bottom-6 right-6 bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
+                    <i class="fas fa-chevron-up"></i>
+                </button>
+
+                <!-- Dropdown Lingkaran di Pojok Kanan Bawah -->
+                <div id="dropdownMenu" class="fixed bottom-16 right-6 flex flex-col space-y-2 mb-6 z-10 hidden">
+                    <!-- Tombol Sakit -->
+                    <button id="sakitBtn"
+                        class="bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
+                        Sakit
+                    </button>
+                    <!-- Tombol Izin -->
+                    <button id="izinBtn"
+                        class="bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
+                        Izin
+                    </button>
+                </div>
+
+                <!-- Overlay Gelap -->
+                <div id="overlay" class="fixed inset-0 bg-gray-950 bg-opacity-50 hidden z-0"></div>
+            </div>
 
     </main>
 
