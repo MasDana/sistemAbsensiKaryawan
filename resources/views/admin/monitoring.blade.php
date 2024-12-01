@@ -21,10 +21,7 @@
     {{-- <script src="{{ asset('js/dashboard.js') }}"></script> <!-- Hanya untuk menyertakan file eksternal --> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-  
+
 
     @vite('resources/css/app.css')
 
@@ -40,98 +37,9 @@
                         <button id="toggleButton" class="text-gray-700 focus:outline-none">
                             <i class="fas fa-bars text-2xl"></i>
                         </button>
-<<<<<<< HEAD
                     </div>
                     <div class="text-black text-2xl font-bold flex items-center">
                         <h1>Sistem Manajemen Karyawan</h1>
-=======
-                    </form>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="flex flex-grow">
-        <!-- Sidebar -->
-        <nav class="sidebar bg-white text-black w-60 p-8 shadow-right flex-none">
-            <ul>
-                <li class="sidebar-title text-lg font-semibold mb-2">Report</li>
-                <li class="mb-2">
-                    <a href="{{ url('/dashboard') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-home mr-2"></i> Beranda
-                    </a>
-                </li>
-                <li class="sidebar-title text-lg font-semibold mb-2 mt-4">Manage</li>
-                <li class="mb-2">
-                    <a href="#" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-users mr-2"></i> Karyawan
-                    </a>
-                </li>
-                <li class="mb-2">
-                    <a href="{{ url('/presensi/monitoring') }}" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-calendar-check mr-2"></i> Monitor Presensi
-                    </a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-briefcase mr-2"></i> Jabatan
-                    </a>
-                </li>
-                <li class="mb-2">
-                    <a href="{{ url('/konfigurasi/lokasikantor') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                        <i class="fas fa-clock mr-2"></i> Lokasi
-                    </a>    
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Konten Utama -->
-        <div class="flex-grow flex flex-col">
-            <main class="main-dashboard transition-all p-8">
-                <!-- Judul -->
-                <h2 class="text-3xl font-bold mb-6">Monitoring Presensi</h2>
-
-                <div class="relative mb-6">
-                    <input
-                        id="tanggal"
-                        class="peer h-full w-full rounded-lg border border-gray-300 px-4 py-2.5 bg-white text-sm text-gray-700 placeholder-gray-400 transition-all focus:border-indigo-600 focus:outline-none"
-                        placeholder=""
-                    />
-                    <label for="tanggal"
-                        class="absolute left-3 -top-2.5 bg-white px-1 text-xs text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:left-4 peer-placeholder-shown:text-sm peer-placeholder-shown:text-gray-400 peer-focus:-top-2.5 peer-focus:left-3 peer-focus:text-xs peer-focus:text-indigo-600 rounded-lg">
-                        Pilih Rentang Tanggal
-                    </label>
-                    
-                </div>
-                
-
-                <!-- Tabel -->
-                <table class="min-w-full border-collapse border border-gray-300 rounded-lg shadow-lg overflow-hidden">
-                    <!-- <thead>
-                        <tr class="bg-indigo-600 text-white">
-                            <th class="border border-gray-300 px-4 py-2 text-center">No.</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">ID</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Nama</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Jam Masuk</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Foto</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Jam Keluar</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Foto</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Keterangan</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Lokasi</th>
-                        </tr>
-                    </thead> -->
-                    <tbody id="loadpresensi"></tbody>
-                </table>
-            </main>
-
-            <!-- Footer -->
-            <footer class="footer bg-white text-black py-4 px-4 sm:px-6 md:px-8 lg:px-20 mt-auto">
-                <div class="container mx-auto flex justify-between items-center">
-                    <div class="copyright">&copy; 2024 Manajemen Karyawan</div>
-                    <div class="links space-x-4">
-                        <a href="#" class="hover:text-indigo-400">Terms of Service</a>
-                        <a href="#" class="hover:text-indigo-400">Privacy Policy</a>
->>>>>>> 1810a14b4ebeca20e72c6c531eb0f0038e66bcd6
                     </div>
                 </div>
                 <div class="header-right flex items-center space-x-2 md:space-x-4">
@@ -238,41 +146,48 @@
             </div>
         </div>
     </div>
-<<<<<<< HEAD
-=======
-</div>
-
-
-
-
-@section('java')
-<script src="{{ asset('js/dashboard.js') }}"></script>
-@endsection
-
->>>>>>> 1810a14b4ebeca20e72c6c531eb0f0038e66bcd6
 
     @section('java')
         <script src="{{ asset('js/dashboard.js') }}"></script>
     @endsection
     <script>
+        // Inisialisasi datepicker dengan mode range
         const datepicker = flatpickr("#tanggal", {
-            mode: "range", 
-            dateFormat: "Y-m-d", 
+            mode: "range", // Aktifkan pemilihan rentang tanggal
+            dateFormat: "Y-m-d", // Format yang dikirimkan dalam format 'YYYY-MM-DD'
             onChange: function(selectedDates) {
+                // Pastikan ada dua tanggal yang dipilih
                 if (selectedDates.length === 2) {
-                    const startDate = selectedDates[0].toLocaleDateString('en-CA');
-                    const endDate = selectedDates[1].toLocaleDateString('en-CA');    
+                    const startDate = selectedDates[0].toLocaleDateString('en-CA'); // Format YYYY-MM-DD
+                    const endDate = selectedDates[1].toLocaleDateString('en-CA');
+                    // Kirim permintaan AJAX setelah kedua tanggal dipilih
                     if (startDate === endDate) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/getpresensi',
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        tanggal_presensi: startDate 
-                    },
-                    cache: false,
-                    success: function(respond) {
-                        $("#loadpresensi").html(respond);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/getpresensi',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                tanggal_presensi: startDate // Kirim satu tanggal
+                            },
+                            cache: false,
+                            success: function(respond) {
+                                $("#loadpresensi").html(respond);
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/getpresensi',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                start_date: startDate,
+                                end_date: endDate
+                            },
+                            cache: false,
+                            success: function(respond) {
+                                $("#loadpresensi").html(respond);
+                            }
+                        });
                     }
                 }
             }
@@ -297,15 +212,8 @@
             calendarDaysContainer.className +=
                 " [&_span.flatpickr-day]:!rounded-md [&_span.flatpickr-day.selected]:!bg-gray-900 [&_span.flatpickr-day.selected]:!border-gray-900";
         });
-
-
-     
-
     </script>
-    
-    
+
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
+
 </body>

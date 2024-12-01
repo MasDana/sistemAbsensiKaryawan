@@ -29,7 +29,7 @@ class KaryawanController extends Controller
         }
 
         // Mendapatkan hasil query dengan paginasi
-        $karyawan = $query->paginate(2);
+        $karyawan = $query->paginate(10);
 
         // Mengirimkan data ke view
         return view('admin.rekapkaryawan', compact('karyawan', 'jabatan', 'user'));

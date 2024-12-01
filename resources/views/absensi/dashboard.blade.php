@@ -528,7 +528,7 @@
 <footer class="fixed bottom-0 left-0 right-0 bg-white shadow-md flex items-center px-0 py-0.5">
     <div class="grid grid-cols-5 gap-2 items-center justify-center w-full">
         <div class="item-menu text-center">
-            <a href="#"
+            <a href="{{ url('/presensi/histori') }}"
                 class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                 <ion-icon name="file-tray-full-outline" class="text-7xl"></ion-icon>
             </a>
@@ -549,7 +549,7 @@
         </div>
 
         <div class="item-menu text-center">
-            <a href="#"
+            <a href="{{ url('/presensi/izin') }}"
                 class="text-gray-700 hover:text-blue-500 h-6 w-6 flex items-center justify-center mx-auto">
                 <ion-icon name="document-text-outline" class="text-7xl"></ion-icon>
             </a>

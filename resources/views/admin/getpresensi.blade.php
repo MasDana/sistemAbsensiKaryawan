@@ -1,5 +1,3 @@
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
 @php
     function selisih($jam_masuk, $jam_keluar)
     {
@@ -17,28 +15,27 @@
     }
 @endphp
 
-<div class="container mt-4">
-    <table class="table table-bordered table-striped">
-    <table class="min-w-full border-collapse border border-gray-300 rounded-lg shadow-lg overflow-hidden">
-                    <thead>
-                        <tr class="bg-indigo-600 text-white">
-                            <th class="border border-gray-300 px-4 py-2 text-center">No.</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">ID</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Nama</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Jam Masuk</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Foto</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Jam Keluar</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Foto</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Keterangan</th>
-                            <th class="border border-gray-300 px-4 py-2 text-center">Lokasi</th>
-                        </tr>
-                    </thead>
-                   
-        <tbody>
-            @foreach ($presensi as $item)
+
+@foreach ($presensi as $item)
+    @php
+        $foto_masuk = Storage::url('upload/absensi/' . $item->foto_masuk);
+        $foto_keluar = Storage::url('upload/absensi/' . $item->foto_keluar);
+
+    @endphp
+    <tr>
+        <td>{{ $loop->iteration }}</td>
+        <td>{{ $item->karyawan_id }}</td>
+        <td>{{ $item->nama_karyawan }}</td>
+        <td>{{ $item->jam_masuk != null ? $item->jam_masuk : 'Belum absen' }}</td>
+        {{-- <td>{{ $item->foto_masuk }}</td> --}}
+        <td><img src="{{ url($foto_masuk) }}" alt="" class="avatar"></td>
+        <td>{{ $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}</td>
+        {{-- <td>{{ $item->foto_keluar }}</td> --}}
+        <td><img src="{{ url($foto_keluar) }}" alt="" class="avatar"></td>
+        <td>
+            @if (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
                 @php
-                    $foto_masuk = Storage::url('upload/absensi/' . $item->foto_masuk);
-                    $foto_keluar = Storage::url('upload/absensi/' . $item->foto_keluar);
+                    $jamterlambat = selisih('06:00:00', $item->jam_masuk);
                 @endphp
                 <span>Terlambat {{ $jamterlambat }}</span>
             @else

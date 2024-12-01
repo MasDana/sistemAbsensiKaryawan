@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jabatan;
 use App\Models\Karyawan;
+use App\Models\Pengajuanizin;
 use GrahamCampbell\ResultType\Success;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -227,6 +229,7 @@ class AbsensiController extends Controller
 
     public function editprofile()
     {
+
         $id = Auth::guard('karyawan')->user()->id;
         $karyawan = DB::table('karyawan')->where('id', $id)->first();
 
@@ -299,5 +302,199 @@ class AbsensiController extends Controller
     public function buatizin()
     {
         return view('absensi.buatizin');
+    }
+
+    public function izinsakit(Request $request)
+    {
+        // $izinsakit  = DB::table('pengajuan_izin')
+        //     ->join('karyawan', 'pengajuan_izin.karyawan_id', '=', 'karyawan.id')
+        //     ->select(
+        //         'pengajuan_izin.id as izin_id',          // Alias untuk id pengajuan izin
+        //         'pengajuan_izin.karyawan_id',            // Karyawan id
+        //         'pengajuan_izin.tanggal_izin_dari',     // Tanggal izin dari
+        //         'pengajuan_izin.tanggal_izin_sampai',   // Tanggal izin sampai
+        //         'pengajuan_izin.status',                 // Status izin
+        //         'pengajuan_izin.keterangan',            // Keterangan izin
+        //         'pengajuan_izin.doc_sid',
+        //         'pengajuan_izin.status_approved',
+        //         'karyawan.nama_karyawan'
+        //     )
+        //     ->orderByDesc('tanggal_izin_dari')
+        //     ->get();
+
+        // $izinsakit  = DB::table('pengajuan_izin')
+        //     ->join('karyawan', 'pengajuan_izin.karyawan_id', '=', 'karyawan.id')
+        //     ->select(
+        //         'pengajuan_izin.id as izin_id',          // Alias untuk id pengajuan izin
+        //         'pengajuan_izin.karyawan_id',            // Karyawan id
+        //         'pengajuan_izin.tanggal_izin_dari',     // Tanggal izin dari
+        //         'pengajuan_izin.tanggal_izin_sampai',   // Tanggal izin sampai
+        //         'pengajuan_izin.status',                 // Status izin
+        //         'pengajuan_izin.keterangan',            // Keterangan izin
+        //         'pengajuan_izin.doc_sid',
+        //         'pengajuan_izin.status_approved',
+        //         'karyawan.nama_karyawan'
+        //     )
+        //     ->orderByDesc('tanggal_izin_dari')
+        //     ->get();
+
+        $request->validate([
+            'start' => 'date_format:Y-m-d|nullable',
+            'end' => 'date_format:Y-m-d|nullable',
+        ]);
+        $query = Pengajuanizin::query();
+        $query->select('pengajuan_izin.id', 'tanggal_izin_dari', 'tanggal_izin_sampai', 'nama_karyawan', 'status', 'keterangan', 'doc_sid', 'status_approved');
+        $query->join('karyawan', 'pengajuan_izin.karyawan_id', '=', 'karyawan.id');
+        if (!empty($request->start) && !empty($request->end)) {
+            $query->whereBetween('tanggal_izin_dari', [$request->start, $request->end]);
+        }
+        if (!empty($request->nama_karyawan)) {
+            $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan . '%');
+        }
+        // if ($request->status_approved  === '0' || $request->status_approved === '1' || $request->status_approved === '2') {
+        //     $query->where('status_approved', $request->status_approved);
+        // }
+        if (in_array($request->status_approved, ['0', '1', '2'], true)) {
+            $query->where('status_approved', $request->status_approved);
+        }
+
+        $query->orderBy('tanggal_izin_dari', 'desc');
+        $izinsakit = $query->paginate(10);
+        $izinsakit->appends($request->all());
+
+        return view('admin.izinsakit', compact('izinsakit'));
+    }
+
+
+    public function approveizinsakit(Request $request)
+    {
+        // Debug data yang diterima
+        // dd($request->all());
+
+        $status_approved = $request->status_approved;
+        $id_izinsakit_form = $request->id_izinsakit_form;
+
+
+        $update = DB::table('pengajuan_izin')->where('id', $id_izinsakit_form)->update([
+            'status_approved' => $status_approved
+        ]);
+
+        if ($update) {
+            return Redirect::back();
+        } else {
+            return Redirect::back();
+        }
+    }
+
+    public function batalkanizinsakit($id)
+    {
+        $update = DB::table('pengajuan_izin')->where('id', $id)->update([
+            'status_approved' => 0
+        ]);
+
+        if ($update) {
+            return Redirect::back();
+        } else {
+            return Redirect::back();
+        }
+    }
+
+
+    public function edit($id)
+    {
+        $karyawan = Karyawan::findOrFail($id);
+        return response()->json($karyawan);
+    }
+
+    public function update(Request $request)
+    {
+        $karyawan = Karyawan::findOrFail($request->id);
+
+        $karyawan->update([
+            'nama_karyawan' => $request->nama_karyawans,
+            'jabatan_id' => $request->jabatan_id,
+            'email' => $request->email,
+            'no_hp' => $request->no_hp,
+            'gender' => $request->gender,
+            'alamat' => $request->alamat,
+        ]);
+
+        return response()->json(['message' => 'Data karyawan berhasil diperbarui']);
+        return view('izin.createizin');
+    }
+
+    public function updateJabatan(Request $request, $id)
+    {
+
+        // Validasi input
+        $request->validate([
+            'nama_jabatans' => 'required|string|max:255',
+        ]);
+
+        // Temukan data berdasarkan ID
+        $jabatan = Jabatan::findOrFail($id);
+
+        // Update data
+        $jabatan->nama_jabatan = $request->nama_jabatans;
+        $jabatan->save();
+
+        // Berikan respons sukses
+        return Redirect::back();
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $karyawan = Karyawan::findOrFail($id);
+            $karyawan->delete();
+
+            return response()->json(['success' => 'Data karyawan berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Terjadi kesalahan saat menghapus data'], 500);
+        }
+    }
+
+    public function hapusJabatan($id)
+    {
+        try {
+            // Cari jabatan berdasarkan ID
+            $jabatan = Jabatan::findOrFail($id);
+
+
+            // Hapus jabatan
+            $jabatan->delete();
+
+            return response()->json(['message' => 'Data jabatan berhasil dihapus']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Terjadi kesalahan saat menghapus data.'], 500);
+        }
+    }
+
+    public function cekpengajuan(Request $request)
+    {
+        try {
+            $tanggal_izin_dari = $request->tanggal_izin_dari; // Tanggal yang diajukan
+            $id = Auth::guard('karyawan')->user()->id; // ID karyawan
+
+            // Validasi apakah $tanggal_izin_dari ada
+            if (!$tanggal_izin_dari) {
+                return response()->json(['error' => 'Tanggal tidak ditemukan'], 400);
+            }
+
+            // Periksa apakah tanggal bertabrakan
+            $cek = DB::table('pengajuan_izin')
+                ->where('karyawan_id', $id)
+                ->where(function ($query) use ($tanggal_izin_dari) {
+                    $query->whereRaw('? BETWEEN tanggal_izin_dari AND tanggal_izin_sampai', [$tanggal_izin_dari])
+                        ->orWhereBetween('tanggal_izin_dari', [$tanggal_izin_dari, $tanggal_izin_dari])
+                        ->orWhereBetween('tanggal_izin_sampai', [$tanggal_izin_dari, $tanggal_izin_dari]);
+                })
+                ->count();
+
+            return response()->json($cek > 0 ? 1 : 0);
+        } catch (\Exception $e) {
+            // Tangkap error jika ada masalah
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

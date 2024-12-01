@@ -62,15 +62,13 @@
                         <label class="block text-gray-600 font-medium mb-2 text-sm">Gender</label>
                         <div class="flex gap-4 mt-2">
                             <label class="flex items-center">
-                                <input type="radio" name="gender" value="Male"
-                                    {{ $karyawan->gender == 'Male' || is_null($karyawan->gender) ? 'checked' : '' }}
-                                    class="form-radio text-blue-500">
+                                <input type="radio" name="gender" value="male"
+                                    {{ $karyawan->gender == 'male' || is_null($karyawan->gender) ? 'checked' : '' }}>
                                 <span class="ml-2">Male</span>
                             </label>
                             <label class="flex items-center">
-                                <input type="radio" name="gender" value="Female"
-                                    {{ $karyawan->gender == 'Female' ? 'checked' : '' }}
-                                    class="form-radio text-blue-500">
+                                <input type="radio" name="gender" value="female"
+                                    {{ $karyawan->gender == 'female' ? 'checked' : '' }}>
                                 <span class="ml-2">Female</span>
                             </label>
                         </div>

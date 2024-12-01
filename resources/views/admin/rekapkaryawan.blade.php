@@ -1,8 +1,6 @@
 @extends('layout/layoutadmin')
 
 @section('konten')
-
-
     <!-- Main Content -->
     <main class="flex-grow p-8 ">
         <h2 class="text-3xl font-bold mb-6">Master Data Karyawan</h2>
@@ -46,9 +44,21 @@
                             <td class="border px-4 py-2">{{ $item->gender }}</td>
                             <td class="border px-4 py-2">{{ $item->alamat }}</td>
                             <td class="border px-4 py-2 text-center">
+                                <!-- Tombol Edit -->
                                 <button
-                                    class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition">Aksi</button>
+                                    class="btn-edit bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
+                                    data-id="{{ $item->id }}">
+                                    Edit
+                                </button>
+
+                                <!-- Tombol Hapus -->
+                                <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                                    onclick="confirmDelete({{ $item->id }})">
+                                    Hapus
+                                </button>
                             </td>
+
+
                         </tr>
                     @endforeach
                 </tbody>
@@ -189,7 +199,102 @@
         </div>
     </div>
 
+
+    {{-- EDIT KARYAWAN --}}
+
+    <!-- Modal Edit -->
+    <div id="edit-modal" tabindex="-1" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full h-auto overflow-hidden">
+            <!-- Modal Header -->
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Edit Data Karyawan</h3>
+                <button type="button" class="text-gray-400 hover:bg-gray-200 p-1 rounded" id="closeEditModal">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 8.586l4.95-4.95a1 1 0 111.415 1.415L11.414 10l4.95 4.95a1 1 0 01-1.415 1.415L10 11.414l-4.95 4.95a1 1 0 01-1.415-1.415L8.586 10 3.636 5.05a1 1 0 111.415-1.415L10 8.586z" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="p-4 max-h-96 overflow-y-auto">
+                <form action="{{ url('/update/karyawan-data') }}" method="POST" id="edit-form-karyawan">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="edit_id" name="id">
+
+                    <!-- Input Nama -->
+                    <div class="mb-4">
+                        <label for="edit_nama_karyawans" class="block text-sm font-medium text-gray-700">Nama</label>
+                        <input type="text" id="edit_nama_karyawans" name="nama_karyawans" required
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+
+                    <!-- Dropdown Jabatan -->
+                    <div class="mb-4">
+                        <label for="edit_jabatan_id" class="block text-sm font-medium text-gray-700">Jabatan</label>
+                        <select id="edit_jabatan_id" name="jabatan_id" required
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                            <option value="">Pilih Jabatan</option>
+                            @foreach ($jabatan as $item)
+                                <option value="{{ $item->id }}">{{ $item->nama_jabatan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Input Email -->
+                    <div class="mb-4">
+                        <label for="edit_email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="edit_email" name="email" required
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+
+                    <!-- Input No HP -->
+                    <div class="mb-4">
+                        <label for="edit_no_hp" class="block text-sm font-medium text-gray-700">No HP</label>
+                        <input type="tel" id="edit_no_hp" name="no_hp" required
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+
+                    <!-- Radio Button Gender -->
+                    <div class="mb-4">
+                        <h3 class="text-gray-700">Gender</h3>
+                        <div class="flex space-x-4">
+                            <label class="inline-flex items-center">
+                                <input type="radio" id="edit_male" name="gender" value="male" class="form-radio">
+                                <span class="ml-2">Laki-laki</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="radio" id="edit_female" name="gender" value="female"
+                                    class="form-radio">
+                                <span class="ml-2">Perempuan</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Input Alamat -->
+                    <div class="mb-4">
+                        <label for="edit_alamat" class="block text-sm font-medium text-gray-700">Alamat</label>
+                        <textarea id="edit_alamat" name="alamat" rows="3" required
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md"></textarea>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex justify-end p-4 border-t">
+                <button type="button" id="closeEditModalFooter"
+                    class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Batal</button>
+                <button type="submit" form="edit-form-karyawan"
+                    class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
+            </div>
+        </div>
+    </div>
+
+
 @section('java')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
@@ -252,6 +357,92 @@
                 });
             });
         });
+
+        $(document).ready(function() {
+            // Open edit modal and populate fields
+            $('.btn-edit').on('click', function() {
+                var id = $(this).data('id');
+
+                // Fetch data via AJAX
+                $.ajax({
+                    url: `/karyawan/${id}/edit`,
+                    type: 'GET',
+                    success: function(response) {
+                        // Populate the modal with response data
+                        $('#edit_id').val(response.id);
+                        $('#edit_nama_karyawans').val(response.nama_karyawan);
+                        $('#edit_jabatan_id').val(response.jabatan_id);
+                        $('#edit_email').val(response.email);
+                        $('#edit_no_hp').val(response.no_hp);
+                        $('#edit_alamat').val(response.alamat);
+
+                        if (response.gender === 'male') {
+                            $('#edit_male').prop('checked', true);
+                        } else {
+                            $('#edit_female').prop('checked', true);
+                        }
+
+                        // Show modal
+                        $('#edit-modal').removeClass('hidden');
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        alert('Gagal memuat data karyawan!');
+                    }
+                });
+            });
+
+            // Close modal
+            $('#closeEditModal, #closeEditModalFooter').on('click', function() {
+                $('#edit-modal').addClass('hidden');
+                $('#edit-form-karyawan')[0].reset();
+            });
+        });
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Konfirmasi Hapus',
+                text: "Apakah Anda yakin ingin menghapus data ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteKaryawan(id);
+                }
+            });
+        }
+
+        function deleteKaryawan(id) {
+            $.ajax({
+                type: "DELETE",
+                url: `/karyawan/${id}`, // Rute API untuk hapus data
+                data: {
+                    _token: "{{ csrf_token() }}",
+                },
+                success: function(response) {
+                    Swal.fire(
+                        'Berhasil!',
+                        'Data berhasil dihapus.',
+                        'success'
+                    ).then(() => {
+                        // Refresh halaman untuk menampilkan perubahan
+                        window.location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire(
+                        'Gagal!',
+                        'Terjadi kesalahan saat menghapus data.',
+                        'error'
+                    );
+                }
+            });
+        }
     </script>
 @endsection
 @endsection

@@ -3,10 +3,9 @@
 @section('konten')
 
 
-    <!-- Main Content -->
     <main class="flex-grow p-8 ">
         <h2 class="text-3xl font-bold mb-6">Master Data Jabatan</h2>
-        <!-- Tombol Tambah Data dan Form Pencarian -->
+
         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
             <button id="btntambahjabatan"
                 class="text-white bg-blue-700 
@@ -23,7 +22,7 @@
             </form>
         </div>
 
-        <!-- Tabel Karyawan -->
+
         <div class="overflow-x-auto bg-white shadow-md rounded-lg">
             <table class="min-w-full bg-white border rounded-lg">
                 <thead class="bg-gray-200">
@@ -39,7 +38,17 @@
                             <td class="border px-4 py-2">{{ $jabatan->firstItem() + $key }}</td>
                             <td class="border px-4 py-2">{{ $item->nama_jabatan }}</td>
                             <td class="border px-4 py-2 text-center">
-                                {{-- Tombol Edit --}}
+                                <button onclick="editJabatan({{ $item->id }}, '{{ $item->nama_jabatan }}')"
+                                    class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">
+                                    Edit
+                                </button>
+                                <button
+                                    class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2"
+                                    onclick="confirmDeleteJabatan({{ $item->id }})">
+                                    <!-- Mengubah hapusJabatan menjadi confirmDeleteJabatan -->
+                                    Hapus
+                                </button>
+
                             </td>
                         </tr>
                     @endforeach
@@ -78,7 +87,6 @@
     <div id="default-modal" tabindex="-1" aria-hidden="true"
         class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
         <div class="bg-white rounded-lg shadow-lg max-w-md w-full h-auto overflow-hidden">
-            <!-- Modal Header -->
             <div class="flex justify-between items-center p-4 border-b">
                 <h3 class="text-lg font-semibold">Tambah Data Jabatan</h3>
                 <button type="button" class="text-gray-400 hover:bg-gray-200 p-1 rounded" id="closeModal">
@@ -89,11 +97,10 @@
                 </button>
             </div>
 
-            <!-- Modal Body -->
             <div class="p-4 max-h-96 overflow-y-auto">
                 <form action="{{ url('/store/jabatan-data') }}" method="POST" id="form-jabatan">
                     @csrf
-                    <!-- Input Nama -->
+
                     <div class="mb-4">
                         <label for="nama_jabatans" class="block text-sm font-medium text-gray-700">Nama</label>
                         <input type="text" id="nama_jabatans" name="nama_jabatans" required
@@ -102,7 +109,6 @@
                 </form>
             </div>
 
-            <!-- Modal Footer -->
             <div class="flex justify-end p-4 border-t">
                 <button type="button" id="closeModalFooter"
                     class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Batal</button>
@@ -111,18 +117,59 @@
         </div>
     </div>
 
+    {{-- EDIT DATA --}}
+
+
+    <div id="edit-modal" tabindex="-1" aria-hidden="true"
+        class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full h-auto overflow-hidden">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold">Edit Data Jabatan</h3>
+                <button type="button" class="text-gray-400 hover:bg-gray-200 p-1 rounded" id="closeEditModal">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 8.586l4.95-4.95a1 1 0 111.415 1.415L11.414 10l4.95 4.95a1 1 0 01-1.415 1.415L10 11.414l-4.95 4.95a1 1 0 01-1.415-1.415L8.586 10 3.636 5.05a1 1 0 111.415-1.415L10 8.586z" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="p-4 max-h-96 overflow-y-auto">
+                <form id="form-edit-jabatan" action="/update/jabatan/{id}" method="POST">
+                    @csrf
+                    @method('PUT') <!-- Gunakan PUT untuk update data -->
+                    <input type="hidden" id="jabatan_id" name="jabatan_id">
+                    <div class="mb-4">
+                        <label for="edit_nama_jabatans" class="block text-sm font-medium text-gray-700">Nama Jabatan</label>
+                        <input type="text" id="edit_nama_jabatans" name="nama_jabatans" required
+                            class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="flex justify-end p-4 border-t">
+                <button type="button" id="closeEditModalFooter"
+                    class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Batal</button>
+                <button type="submit" form="form-edit-jabatan"
+                    class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
+            </div>
+        </div>
+    </div>
+
 
 @section('java')
-    <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         $(document).ready(function() {
-            // Set up CSRF token for all AJAX requests
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
+
 
             // Modal handlers
             $('#btntambahjabatan').on('click', function() {
@@ -134,14 +181,11 @@
                 $('#form-jabatan')[0].reset();
             });
 
-            // Form submit handler
             $("#form-jabatan").submit(function(e) {
                 e.preventDefault();
 
-                // Create FormData object
                 var formData = new FormData(this);
 
-                // Submit form using AJAX
                 $.ajax({
                     type: "POST",
                     url: "/store/jabatan-data",
@@ -149,23 +193,20 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        // Show success message if provided
+
                         if (response.message) {
                             alert(response.message);
                         }
 
-                        // Close modal and reset form
                         $('#default-modal').addClass('hidden');
                         $('#form-jabatan')[0].reset();
 
-                        // Reload page to show new data
                         window.location.reload();
                     },
                     error: function(xhr, status, error) {
-                        // Log error to console for debugging
+
                         console.error(xhr.responseText);
 
-                        // Show error message
                         if (xhr.responseJSON && xhr.responseJSON.message) {
                             alert(xhr.responseJSON.message);
                         } else {
@@ -175,6 +216,69 @@
                 });
             });
         });
+
+        $(document).ready(function() {
+
+            // Fungsi untuk membuka modal edit
+            window.editJabatan = function(id, namaJabatan) {
+                $('#edit-modal').removeClass('hidden'); // Tampilkan modal edit
+                $('#form-edit-jabatan').attr('action', `/update/jabatan/${id}`); // Update action
+                $('#edit_nama_jabatans').val(namaJabatan); // Isi nama jabatan
+            };
+
+            // Tutup modal edit saat tombol "x" atau "Batal" diklik
+            $('#closeEditModal, #closeEditModalFooter').on('click', function() {
+                $('#edit-modal').addClass('hidden'); // Tutup modal edit
+                $('#form-edit-jabatan')[0].reset(); // Reset form edit
+            });
+        });
+
+
+
+        function confirmDeleteJabatan(id) {
+            Swal.fire({
+                title: 'Konfirmasi Hapus',
+                text: "Apakah Anda yakin ingin menghapus jabatan ini?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteJabatan(id);
+                }
+            });
+        }
+
+        function deleteJabatan(id) {
+            $.ajax({
+                type: "DELETE",
+                url: `/jabatan/${id}`, // Gantilah URL ini dengan rute API untuk hapus jabatan
+                data: {
+                    _token: "{{ csrf_token() }}", // CSRF token untuk keamanan
+                },
+                success: function(response) {
+                    Swal.fire(
+                        'Berhasil!',
+                        'Jabatan berhasil dihapus.',
+                        'success'
+                    ).then(() => {
+                        // Refresh halaman untuk menampilkan perubahan
+                        window.location.reload();
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                    Swal.fire(
+                        'Gagal!',
+                        'Terjadi kesalahan saat menghapus jabatan.',
+                        'error'
+                    );
+                }
+            });
+        }
     </script>
     </body>
 

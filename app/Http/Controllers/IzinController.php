@@ -20,10 +20,6 @@ class IzinController extends Controller
     {
         // Ambil ID karyawan
         $karyawan_id = Auth::guard('karyawan')->user()->id;
-        $tgl_izin_dari = $request->tgl_izin_dari;
-        $tgl_izin_sampai = $request->tgl_izin_sampai;
-        $status = "s";
-        $keterangan = $request->keterangan;
 
         // Validasi data
         $request->validate([
@@ -42,22 +38,28 @@ class IzinController extends Controller
         $tgl_izin_dari = date('Y-m-d', strtotime($request->tgl_izin_dari));
         $tgl_izin_sampai = date('Y-m-d', strtotime($request->tgl_izin_sampai));
 
-
         // Simpan data
         $data = [
             'karyawan_id' => $karyawan_id,
             'tanggal_izin_dari' => $tgl_izin_dari,
             'tanggal_izin_sampai' => $tgl_izin_sampai,
-            'status' => $status,
-            'keterangan' => $keterangan,
+            'status' => $request->status,
+            'keterangan' => $request->keterangan,
         ];
 
         $simpan = DB::table('pengajuan_izin')->insert($data);
         if ($simpan) {
-            return redirect('/presensi/izin')->with(['success' => 'berhasil']);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Izin berhasil disimpan.'
+            ]);
         } else {
-            return redirect('/izin')->with(['error' => 'gagal']);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan, izin gagal disimpan.'
+            ], 500);
         }
+        return view('izin.createizin');
     }
 
     public function editizin($kode_izin)
@@ -68,6 +70,7 @@ class IzinController extends Controller
 
     public function updateizin($id, Request $request)
     {
+        $karyawan_id = Auth::guard('karyawan')->user()->id;
         $tgl_izin_dari = $request->tgl_izin_dari;
         $tgl_izin_sampai = $request->tgl_izin_sampai;
         $keterangan = $request->keterangan;
@@ -86,11 +89,26 @@ class IzinController extends Controller
         }
     }
 
+
+    public function deleteizin($kode_izin)
+    {
+        try {
+            DB::table('pengajuan_izin')->where('id', $kode_izin)->delete();
+            return redirect('/presensi/izin');
+        } catch (\Exception $e) {
+            // Optional: Log the exception message
+            // Log::error('Failed to delete izin: ' . $e->getMessage());
+
+            return redirect('/presensi/izin');
+        }
+    }
+
     public function createsakit()
 
     {
         return view('izin.createsakit');
     }
+
 
     public function storesakit(Request $request)
     {
@@ -114,9 +132,28 @@ class IzinController extends Controller
         $karyawan_id = Auth::guard('karyawan')->user()->id;
         $tgl_izin_dari = date('Y-m-d', strtotime($request->tgl_izin_dari));
         $tgl_izin_sampai = date('Y-m-d', strtotime($request->tgl_izin_sampai));
-        $status = "i";
+        $status = "s"; // Status untuk sakit
         $keterangan = $request->keterangan;
         $kode_izin = rand();
+
+        // // Periksa apakah sudah ada sakit/izin pada tanggal tersebut untuk karyawan yang sama
+        // $cekSakit = DB::table('pengajuan_izin')
+        //     ->where('karyawan_id', $karyawan_id)
+        //     ->where(function ($query) use ($tgl_izin_dari, $tgl_izin_sampai) {
+        //         $query->whereBetween('tanggal_izin_dari', [$tgl_izin_dari, $tgl_izin_sampai])
+        //             ->orWhereBetween('tanggal_izin_sampai', [$tgl_izin_dari, $tgl_izin_sampai])
+        //             ->orWhereRaw('? BETWEEN tanggal_izin_dari AND tanggal_izin_sampai', [$tgl_izin_dari])
+        //             ->orWhereRaw('? BETWEEN tanggal_izin_dari AND tanggal_izin_sampai', [$tgl_izin_sampai]);
+        //     })
+        //     ->exists();
+
+        // if ($cekSakit) {
+        //     // Return JSON jika ada duplikasi
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'Sudah ada izin yang diajukan untuk tanggal tersebut.'
+        //     ], 400);
+        // }
 
         // Proses upload file
         $sid = null;
@@ -166,29 +203,74 @@ class IzinController extends Controller
         }
     }
 
+
+
     public function editsakit($kode_sakit)
     {
         $datasakit = DB::table('pengajuan_izin')->where('id', $kode_sakit)->first();
         return view('izin.editsakit', compact('datasakit'));
     }
 
-    // public function updateizin($id, Request $request)
-    // {
-    //     $tgl_izin_dari = $request->tgl_izin_dari;
-    //     $tgl_izin_sampai = $request->tgl_izin_sampai;
-    //     $keterangan = $request->keterangan;
+    public function updatesakit($kode_sakit, Request $request)
+    {
+        $tgl_izin_dari = date('Y-m-d', strtotime($request->tgl_izin_dari));
+        $tgl_izin_sampai = date('Y-m-d', strtotime($request->tgl_izin_sampai));
+        $keterangan = $request->keterangan;
 
-    //     try {
-    //         $data = [
-    //             'tanggal_izin_dari' => $tgl_izin_dari,
-    //             'tanggal_izin_sampai' => $tgl_izin_sampai,
-    //             'keterangan' => $keterangan,
-    //         ];
+        // Proses upload file
+        $sid = null;
 
-    //         DB::table('pengajuan_izin')->where('id', $id)->update($data);
-    //         return redirect('/presensi/izin');
-    //     } catch (\Exception $e) {
-    //         return redirect('/presensi/izin')->with('error', 'Something went wrong!');
-    //     }
-    // }
+        if ($request->hasFile('file_input')) {
+            try {
+                $file = $request->file('file_input');
+                $sid = $kode_sakit . "." . $file->getClientOriginalExtension();
+
+                // Pastikan direktori ada
+                $storage_path = storage_path('app/public/uploads/sid');
+                if (!File::exists($storage_path)) {
+                    File::makeDirectory($storage_path, 0777, true);
+                }
+
+                // Upload file menggunakan move
+                $file->move($storage_path, $sid);
+
+                // Atau gunakan storeAs jika prefer menggunakan Laravel Storage
+                // $file->storeAs('public/uploads/sid', $sid);
+
+            } catch (\Exception $e) {
+                return redirect('/presensi/izin')->with(['error' => 'File gagal diunggah: ' . $e->getMessage()]);
+            }
+        }
+
+        // Data untuk diperbarui
+        $data = [
+            'tanggal_izin_dari' => $tgl_izin_dari,
+            'tanggal_izin_sampai' => $tgl_izin_sampai,
+            'keterangan' => $keterangan,
+            'doc_sid' => $sid, // Tetap null jika tidak ada file
+        ];
+
+        try {
+            DB::table('pengajuan_izin')
+                ->where('id', $kode_sakit)
+                ->update($data);
+
+            return redirect('/presensi/izin')->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return redirect('/presensi/izin')->with(['error' => 'Data Gagal Disimpan: ' . $e->getMessage()]);
+        }
+    }
+
+    public function deletesakit($kode_sakit)
+    {
+        try {
+            DB::table('pengajuan_izin')->where('id', $kode_sakit)->delete();
+            return redirect('/presensi/izin');
+        } catch (\Exception $e) {
+            // Optional: Log the exception message
+            // Log::error('Failed to delete izin: ' . $e->getMessage());
+
+            return redirect('/presensi/izin');
+        }
+    }
 }

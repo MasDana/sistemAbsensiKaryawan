@@ -64,13 +64,26 @@ Route::get('/izin/edit/{id}', [IzinController::class, 'editizin'])->name('izin.e
 Route::delete('/izin/delete/{id}', [IzinController::class, 'deleteizin'])->name('izin.delete');
 Route::post('izin/{id}/update', [IzinController::class, 'updateizin']);
 
-
-
 Route::get('/sakit', [IzinController::class, 'createsakit']);
 Route::post('/sakit/store', [IzinController::class, 'storesakit']);
 Route::get('/sakit/edit/{id}', [IzinController::class, 'editsakit'])->name('sakit.edit');
 Route::delete('/sakit/delete/{id}', [IzinController::class, 'deletesakit'])->name('sakit.delete');
 Route::post('sakit/{id}/update', [IzinController::class, 'updatesakit']);
+
+Route::get('/presensi/izinsakit', [AbsensiController::class, 'izinsakit']);
+Route::post('/presensi/approveizinsakit', [AbsensiController::class, 'approveizinsakit']);
+Route::get('/presensi/{id}/batalkanizinsakit', [AbsensiController::class, 'batalkanizinsakit']);
+
+
+Route::get('/karyawan/{id}/edit', [AbsensiController::class, 'edit']);
+Route::put('/update/karyawan-data', [AbsensiController::class, 'update']);
+Route::delete('/karyawan/{id}', [AbsensiController::class, 'destroy']);
+
+Route::put('/update/jabatan/{id}', [AbsensiController::class, 'updateJabatan']);
+Route::delete('/jabatan/{id}', [AbsensiController::class, 'hapusJabatan'])->name('jabatan.hapus');
+
+Route::post('/presensi/cekpengajuanizin', [AbsensiController::class, 'cekpengajuan']);
+
 
 
 
