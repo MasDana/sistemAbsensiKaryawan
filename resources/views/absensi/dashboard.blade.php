@@ -119,6 +119,7 @@
 
 @section('java')
     <script src="{{ asset('js/dashboard.js') }}"></script>
+    
 @endsection
 @endsection
 

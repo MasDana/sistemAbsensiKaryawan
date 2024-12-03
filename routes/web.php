@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware(['guest:karyawan'])->group(function () {
+
+});
     Route::get('/sesi', [LoginController::class, 'index'])->name('login');
     Route::post('/sesi/login', [LoginController::class, 'login']);
     Route::get('/register', [RegisterController::class, 'register']);
     Route::post('/sesi/create', [RegisterController::class, 'create']);
-});
-
-Route::middleware(['auth:karyawan'])->group(function () {
+    Route::middleware(['auth:karyawan'])->group(function () {
     Route::get('/dashkar', [AbsensiController::class, 'dashboard']);
     Route::get('/sesi/logout', [LoginController::class, 'logout']);
     Route::get('/absensi', [AbsensiController::class, 'index']);
