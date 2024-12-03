@@ -184,7 +184,7 @@ class AbsensiController extends Controller
 
 
         $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        return view('absensi.dashboard', compact('presensihariini', 'historibulanini', 'namabulan', 'bulanini', 'tahunini', 'rekappresensi'));
+        return view('absensi.dashboard', compact('karyawan_id', 'presensihariini', 'historibulanini', 'namabulan', 'bulanini', 'tahunini', 'rekappresensi'));
     }
 
     public function histori()

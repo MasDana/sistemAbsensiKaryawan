@@ -15,7 +15,7 @@
 @endif --}}
 
             <section class="bg-gray-100 flex items-center justify-center bg-cover bg-center bg-no-repeat "
-                style="background-image: url('{{ asset('gambar/bgloginblur.jpg') }}'); width: 100vw; height: 100vh; ">
+            style="background: linear-gradient(to right, #800080, #0000FF); width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat;">
                 <div class="flex w-full max-w-4xl bg-white shadow-xl rounded-3xl">
 
                     <div class="hidden md:block w-1/2 overflow-hidden rounded-3xl">
@@ -57,7 +57,7 @@
                                 <p>Belum punya akun? <a href="{{ url('/register') }}" class="text-blue-500">Register</a></p>
                             </div>
 
-                            <button type="submit" class="bg-green-400 text-white py-2 rounded-md w-full">Login</button>
+                            <button type="submit" class="bg-blue-600 text-white py-2 rounded-md w-full">Login</button>
 
                             <!-- Error Messages Below Login Button -->
                             <div class="mt-4">

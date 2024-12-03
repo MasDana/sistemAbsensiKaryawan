@@ -5,7 +5,7 @@
 
 @section('konten')
     <!-- Konten Utama -->
-    <div class="main-dashboard grid grid-cols-2 gap-8 p-8 w-full mx-auto transition-all">
+    <div class="main-dashboard grid grid-cols-2 gap-8 p-8 w-full mx-auto transition-all duration-300 ease-in-out">
         <!-- Card Karyawan -->
         <div class="main-card flex flex-col items-center justify-center bg-indigo-600 text-white rounded-lg shadow-lg h-40">
             <i class="fas fa-users text-6xl mb-2"></i>

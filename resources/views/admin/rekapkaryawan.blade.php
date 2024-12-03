@@ -7,8 +7,8 @@
         <!-- Tombol Tambah Data dan Form Pencarian -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-6">
             <button id="btntambahkaryawan"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 md:mb-0 md:mr-4">
-                Tambah Data
+                class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 md:mb-0 md:mr-4">
+                <b>+</b> Tambah Data Karyawan
             </button>
             <form action="/rekapkaryawan" method="get" class="flex items-center">
                 <input type="text" name="nama_karyawan" id="nama_karyawan" placeholder="Nama"
@@ -46,15 +46,13 @@
                             <td class="border px-4 py-2 text-center">
                                 <!-- Tombol Edit -->
                                 <button
-                                    class="btn-edit bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
+                                    class="fa fa-pencil-alt btn-edit bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
                                     data-id="{{ $item->id }}">
-                                    Edit
                                 </button>
 
                                 <!-- Tombol Hapus -->
-                                <button class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                                <button class="fa fa-trash bg-red-600 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                     onclick="confirmDelete({{ $item->id }})">
-                                    Hapus
                                 </button>
                             </td>
 

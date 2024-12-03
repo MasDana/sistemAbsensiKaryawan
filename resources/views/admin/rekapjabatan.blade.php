@@ -12,7 +12,7 @@
                 hover:bg-blue-800 focus:ring-4 
                 focus:outline-none focus:ring-blue-300 
                 font-medium rounded-lg text-sm px-5 py-2.5 mb-4 md:mb-0 md:mr-4">
-                Tambah Data
+                <b>+</b> Tambah Data Jabatan
             </button>
             <form action="/rekapjabatan" method="get" class="flex items-center">
                 <input type="text" name="nama_jabatan" id="nama_jabatan" placeholder="Nama"
@@ -35,18 +35,18 @@
                 <tbody>
                     @foreach ($jabatan as $key => $item)
                         <tr class="hover:bg-gray-100">
-                            <td class="border px-4 py-2">{{ $jabatan->firstItem() + $key }}</td>
+                            <td class="border px-4 py-2 text-center">{{ $jabatan->firstItem() + $key }}</td>
                             <td class="border px-4 py-2">{{ $item->nama_jabatan }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <button onclick="editJabatan({{ $item->id }}, '{{ $item->nama_jabatan }}')"
-                                    class="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">
-                                    Edit
+                                    class="fa fa-pencil bg-blue-600 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">
+                                    
                                 </button>
                                 <button
-                                    class="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2"
+                                    class="fa fa-trash bg-red-600 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                     onclick="confirmDeleteJabatan({{ $item->id }})">
                                     <!-- Mengubah hapusJabatan menjadi confirmDeleteJabatan -->
-                                    Hapus
+    
                                 </button>
 
                             </td>

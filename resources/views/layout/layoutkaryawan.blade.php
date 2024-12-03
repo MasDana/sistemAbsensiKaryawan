@@ -1,5 +1,5 @@
 @php
-    $user = Auth::guard('user')->user();
+    $user = Auth::guard('karyawan')->user();
 @endphp
 
 
@@ -32,6 +32,23 @@
 </head>
 
 <body>
+    
+@php
+        function selisih($jam_masuk, $jam_keluar)
+        {
+            [$h, $m, $s] = explode(':', $jam_masuk);
+            $dtAwal = mktime($h, $m, $s, '1', '1', '1');
+            [$h, $m, $s] = explode(':', $jam_keluar);
+            $dtAkhir = mktime($h, $m, $s, '1', '1', '1');
+            $dtSelisih = $dtAkhir - $dtAwal;
+            $totalmenit = $dtSelisih / 60;
+            $jam = explode('.', $totalmenit / 60);
+            $sisamenit = $totalmenit / 60 - $jam[0];
+            $sisamenit2 = $sisamenit * 60;
+            $jml_jam = $jam[0];
+            return $jml_jam . ':' . round($sisamenit2);
+        }
+    @endphp
 
     <div class="body bg-gray-100 min-h-screen flex flex-col">
         <header class="bg-white py-4 px-4 shadow-md">
@@ -49,7 +66,7 @@
                 <div class="header-right flex items-center space-x-2 md:space-x-4">
                     <div class="profile flex items-center space-x-2 md:space-x-4">
                     <i class="fa fa-user"></i> 
-                    <span>{{ $user->name }}</span>
+                    <span>{{ $user->nama_karyawan }}</span>
                     </div>
                     <div class="logout">
                         <form action="/sesi/logoutadmin" method="get">
@@ -67,42 +84,29 @@
             <!-- Sidebar -->
             <nav class="sidebar bg-white text-black w-60 p-8 shadow-right flex-none">
                 <ul>
-                    <li class="sidebar-title text-lg font-semibold mb-2">Report</li>
+                    <li class="sidebar-title text-lg font-semibold mb-2 mt-4">Absensi</li>
                     <li class="mb-2">
-                        <a href="{{ url('/dashboard') }}"
+                        <a href="{{ url('/absensi') }}"
                             class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-home mr-2"></i> Beranda
+                            <i class="fas fa-users mr-2"></i> Absen
                         </a>
                     </li>
-                    <li class="sidebar-title text-lg font-semibold mb-2 mt-4">Manage</li>
                     <li class="mb-2">
-                        <a href="{{ url('/rekapkaryawan') }}"
+                        <a href="{{ url('/presensi/histori') }}"
                             class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-users mr-2"></i> Karyawan
+                            <i class="fas fa-calendar-check mr-2"></i> Histori Absen
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ url('/presensi/monitoring') }}"
+                        <a href="{{ url('/presensi/izin') }}"
                             class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-calendar-check mr-2"></i> Monitor Presensi
+                            <i class="fas fa-briefcase mr-2"></i> Izin
                         </a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ url('/rekapjabatan') }}"
+                        <a href="{{ url('/editprofile') }}"
                             class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-briefcase mr-2"></i> Jabatan
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a
-                            href="{{ url('/presensi/izinsakit') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-bar-chart mr-2"></i> Izin
-                        </a>
-                    </li>
-                    <li class="mb-2">
-                        <a
-                            href="{{ url('/konfigurasi/lokasikantor') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-clock mr-2"></i> Lokasi
+                            <i class="fas fa-bar-chart mr-2"></i> Edit Profile
                         </a>
                     </li>
                 </ul>

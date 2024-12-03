@@ -3,29 +3,51 @@
 @section('konten')
     <!-- Main Content -->
     <main class="flex-grow p-8 ">
-        <h2 class="text-3xl font-bold mb-6">Master Data Karyawan</h2>
+        <h2 class="text-3xl font-bold mb-3">Master Data Karyawan</h2>
         <form action="/presensi/izinsakit" method="get" autocomplete="off">
-            <div>
+        <div class="grid grid-cols-1 gap-3">
+            <!-- Grid untuk input -->
+            <div class="grid grid-cols-4 gap-3 mb-4">
                 <div>
-                    <input type="date" name="start" id="start" placeholder="Start" value="{{ Request('start') }}">
+                    <label for="start" class="block text-sm font-medium text-gray-700">Start</label>
+                    <input type="date" name="start" id="start" placeholder="Start" value="{{ Request('start') }}" 
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                 </div>
 
                 <div>
-                    <input type="date" name="end" id="end" placeholder="End" value="{{ Request('start') }}">
+                    <label for="end" class="block text-sm font-medium text-gray-700">End</label>
+                    <input type="date" name="end" id="end" placeholder="End" value="{{ Request('end') }}" 
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label for="nama_karyawan" class="block text-sm font-medium text-gray-700">Nama Karyawan</label>
+                    <input type="text" name="nama_karyawan" id="nama_karyawan" placeholder="Nama" value="{{ Request::get('nama_karyawan') }}" 
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                </div>
+
+                <div>
+                    <label for="status_approved" class="block text-sm font-medium text-gray-700">Status</label>
+                    <select name="status_approved" id="status_approved" 
+                        class="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Pilih Status</option>
+                        <option value="0" {{ Request::get('status_approved') === '0' ? 'selected' : '' }}>Pending</option>
+                        <option value="1" {{ Request::get('status_approved') == 1 ? 'selected' : '' }}>Disetujui</option>
+                        <option value="2" {{ Request::get('status_approved') == 2 ? 'selected' : '' }}>Ditolak</option>
+                    </select>
                 </div>
             </div>
 
-            <input type="text" name="nama_karyawan" id="nama_karyawan" placeholder="Nama"
-                value="{{ Request::get('nama_karyawan') }}">
-            <select name="status_approved" id="status_approved">
-                <option value="">Pilih Status</option>
-                <option value="0" {{ Request::get('status_approved') === '0' ? 'selected' : '' }}>Pending</option>
-                <option value="1" {{ Request::get('status_approved') == 1 ? 'selected' : '' }}>Disetujui</option>
-                <option value="2" {{ Request::get('status_approved') == 2 ? 'selected' : '' }}>Ditolak</option>
-            </select>
+            <!-- Tombol Cari Data -->
+            <div class="mt-4">
+                <button type="submit" 
+                    class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    Cari Data
+                </button>
+            </div>
+        </div>
+</form>
 
-            <button type="submit">Cari data</button>
-        </form>
         <br>
         <!-- Tabel Karyawan -->
         <div class="overflow-x-auto bg-white shadow-md rounded-lg">

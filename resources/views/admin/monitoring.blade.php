@@ -133,16 +133,6 @@
                     </table>
                 </main>
 
-                <!-- Footer -->
-                <footer class="footer bg-white text-black py-4 px-4 sm:px-6 md:px-8 lg:px-20 mt-auto">
-                    <div class="container mx-auto flex justify-between items-center">
-                        <div class="copyright">&copy; 2024 Manajemen Karyawan</div>
-                        <div class="links space-x-4">
-                            <a href="#" class="hover:text-indigo-400">Terms of Service</a>
-                            <a href="#" class="hover:text-indigo-400">Privacy Policy</a>
-                        </div>
-                    </div>
-                </footer>
             </div>
         </div>
     </div>
