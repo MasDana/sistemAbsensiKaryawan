@@ -36,7 +36,16 @@ class AbsensiController extends Controller
     public function dashboardadmin()
     {
         $user = Auth::guard('user')->user();
-        return view('dashboard', compact('user'));
+
+        // Total karyawan
+        $totalKaryawan = DB::table('karyawan')->count();
+
+        // Total kehadiran hari ini
+        $totalKehadiranHariIni = DB::table('presensi')
+            ->whereDate('tanggal_presensi', now()->toDateString())
+            ->count();
+
+        return view('dashboard', compact('user', 'totalKaryawan', 'totalKehadiranHariIni'));
     }
 
 

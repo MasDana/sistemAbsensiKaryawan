@@ -52,7 +52,7 @@
                         <span class="text-black">{{ $user->name }}</span>
                     </div>
                     <div class="logout">
-                        <form action="/sesi/logout" method="get">
+                        <form action="/sesi/logoutadmin" method="get">
                             <button type="submit"
                                 class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
                                 Logout

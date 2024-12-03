@@ -14,10 +14,16 @@ class LoginController extends Controller
         return view("sesi/index");
     }
 
-    function adminindex()
+    public function adminindex()
     {
-        return view('admin.login');
+        // Pastikan pengguna tidak terautentikasi sebelum menampilkan halaman login
+        if (auth()->guard('user')->check()) {
+            return redirect()->route('/dashboard');  // Jika sudah login, arahkan ke dashboard admin
+        }
+
+        return view('admin.login');  // Jika belum login, tampilkan halaman login
     }
+
 
     // Fungsi untuk login
     function login(Request $request)
@@ -57,6 +63,15 @@ class LoginController extends Controller
 
         // Redirect ke halaman login setelah logout
         return redirect('sesi');
+    }
+
+    function logoutadmin()
+    {
+        Auth::guard('user')->logout();
+        Session::flush(); // Hapus semua session
+
+        // Redirect ke halaman login setelah logout
+        return redirect('dashboard');
     }
 
     function loginadmin(Request $request)

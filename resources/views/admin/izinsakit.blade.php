@@ -145,7 +145,7 @@
                         <form action="/presensi/approveizinsakit" method="post">
                             @csrf
                             <div class="space-y-4">
-                                <input type="text" id="id_izinsakit_form" name="id_izinsakit_form">
+                                <input type="text" hidden id="id_izinsakit_form" name="id_izinsakit_form">
                                 <select name="status_approved" id="status_approved"
                                     class="block w-full px-4 py-2 bg-white border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                     <option value="1">Disetujui</option>
