@@ -24,10 +24,12 @@
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
 
-    
+
     @yield('css')
 
     @vite('resources/css/app.css')
@@ -35,8 +37,8 @@
 </head>
 
 <body>
-    
-@php
+
+    @php
         function selisih($jam_masuk, $jam_keluar)
         {
             [$h, $m, $s] = explode(':', $jam_masuk);
@@ -68,8 +70,8 @@
                 </div>
                 <div class="header-right flex items-center space-x-2 md:space-x-4">
                     <div class="profile flex items-center space-x-2 md:space-x-4">
-                    <i class="fa fa-user"></i> 
-                    <span>{{ $user->nama_karyawan }}</span>
+                        <i class="fa fa-user"></i>
+                        <span>{{ $user->nama_karyawan }}</span>
                     </div>
                     <div class="logout">
                         <form action="/sesi/logout" method="get">

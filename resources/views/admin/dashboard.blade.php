@@ -4,6 +4,7 @@
 @endsection
 
 @section('konten')
+
     <!-- Konten Utama -->
     <div class="main-dashboard grid grid-cols-2 gap-8 p-8 w-full mx-auto transition-all duration-300 ease-in-out">
         <!-- Card Karyawan -->

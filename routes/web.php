@@ -20,13 +20,13 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::middleware(['guest:karyawan'])->group(function () {
-
-});
-    Route::get('/sesi', [LoginController::class, 'index'])->name('login');
+    Route::get('/sesi', [LoginController::class, 'index'])->name('logins');
     Route::post('/sesi/login', [LoginController::class, 'login']);
     Route::get('/register', [RegisterController::class, 'register']);
     Route::post('/sesi/create', [RegisterController::class, 'create']);
-    Route::middleware(['auth:karyawan'])->group(function () {
+});
+
+Route::middleware(['auth:karyawan'])->group(function () {
     Route::get('/dashkar', [AbsensiController::class, 'dashboard']);
     Route::get('/sesi/logout', [LoginController::class, 'logout']);
     Route::get('/absensi', [AbsensiController::class, 'index']);
@@ -58,6 +58,7 @@ Route::middleware(['guest:user'])->group(function () {
     Route::post('/sesi/loginadmin', [LoginController::class, 'loginadmin']);
 });
 
+
 Route::middleware(['auth:user'])->group(function () {
     Route::get('/dashboard', [AbsensiController::class, 'dashboardadmin']);
     Route::get('/sesi/logoutadmin', [LoginController::class, 'logoutadmin']);
@@ -75,7 +76,7 @@ Route::middleware(['auth:user'])->group(function () {
     Route::post('/store/jabatan-data', [KaryawanController::class, 'simpanjabatan']);
     Route::get('/jabatan/edit/{id}', [KaryawanController::class, 'edit'])->name('jabatan.edit');
     Route::put('/update/jabatan-data/{id}', [KaryawanController::class, 'updatejabatan'])->name('jabatan.update');
-    
+
     Route::get('/presensi/izinsakit', [AbsensiController::class, 'izinsakit']);
     Route::post('/presensi/approveizinsakit', [AbsensiController::class, 'approveizinsakit']);
     Route::get('/presensi/{id}/batalkanizinsakit', [AbsensiController::class, 'batalkanizinsakit']);
