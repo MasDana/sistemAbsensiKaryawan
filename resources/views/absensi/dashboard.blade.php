@@ -11,11 +11,11 @@
             <div class="card flex items-center bg-white p-6 rounded-lg shadow-md w-full mb-8">
                 <div
                     class="image-section flex-shrink-0 flex items-center justify-center bg-indigo-600 p-1.5 w-40 h-40 rounded-full">
-                    <img src= "{{ asset('gambar/profile1.jpg') }}" alt="Profile picture"
+                    <img src= "{{ asset('gambar/joko_satya.jpg') }}" alt="Profile picture"
                         class="w-full h-full rounded-full">
                 </div>
                 <div class="text-section ml-8 flex flex-col justify-center">
-                    <h2 class="text-2xl font-bold">I Putu Putri Kumala Sari</h2>
+                    <h2 class="text-2xl font-bold">Joko Satya </h2>
                     <h3 class="text-lg font-bold text-gray-600 mt-2">Business Analyst Strategy Development</h3>
                 </div>
             </div>

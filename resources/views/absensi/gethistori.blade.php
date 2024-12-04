@@ -22,13 +22,13 @@
                     <div class="flex items-center space-x-2 justify-end">
                         <!-- Jam masuk -->
                         <span
-                            class="badge {{ $item->jam_masuk < '07:00' ? 'bg-green-500' : 'bg-red-500' }} text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                            class="badge {{ $item->jam_masuk < '07:00' ? 'bg-green-600' : 'bg-red-600' }} text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
                             {{ $item->jam_masuk != null ? $item->jam_masuk : 'Belum absen' }}
                         </span>
 
                         <!-- Jam keluar dalam badge -->
                         <span
-                            class="badge {{ $item->jam_keluar != null ? 'bg-blue-500' : 'bg-gray-400' }} text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                            class="badge {{ $item->jam_keluar != null ? 'bg-blue-600' : 'bg-gray-400' }} text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
                             {{ $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
                         </span>
                     </div>

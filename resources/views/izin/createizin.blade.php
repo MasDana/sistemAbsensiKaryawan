@@ -14,20 +14,20 @@
 
 <body class="bg-gray-100 min-h-screen overflow-hidden">
     <section class="w-screen h-screen bg-cover bg-center bg-no-repeat"
-        style="background-image: url('{{ asset('gambar/bgloginblur.jpg') }}');">
+        style="background: linear-gradient(to right, #800080, #0000FF); width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat;">
 
         <form action="/izin/store" method="post" id="formizin">
             @csrf
 
             <div class="container mx-auto py-16">
-                <div class="bg-white shadow-lg rounded-lg p-6 max-w-4xl mx-auto"
-                    style="max-height: 450px; overflow-y: auto;">
-                    <h2 class="text-xl font-semibold mb-4 text-center">Form Izin</h2>
+                <div class="bg-white shadow-lg rounded-lg p-6 max-w-8xl mx-auto"
+                    style="max-height: 700x; overflow-y: auto;">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Form Izin</h2>
 
 
                     <!-- Start Datepicker -->
                     <div class="mb-4">
-                        <label for="start_date" class="block text-sm font-medium text-gray-700">Tanggal Mulai</label>
+                        <label for="start_date" class="block text-lg font-semibold text-black">Tanggal Mulai</label>
                         <input type="text" name="tgl_izin_dari" id="start_date"
                             class="datepicker mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                             required>
@@ -35,7 +35,7 @@
 
                     <!-- End Datepicker -->
                     <div class="mb-4">
-                        <label for="end_date" class="block text-sm font-medium text-gray-700">Tanggal Selesai</label>
+                        <label for="end_date" class="block text-lg font-semibold text-black">Tanggal Selesai</label>
                         <input type="text" name="tgl_izin_sampai" id="end_date"
                             class="datepicker mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                             required>
@@ -46,14 +46,14 @@
 
                     <!-- Jumlah Hari -->
                     <div class="mb-4">
-                        <label for="jml_hari" class="block text-sm font-medium text-gray-700">Jumlah Hari</label>
+                        <label for="jml_hari" class="block text-lg font-semibold text-black">Jumlah Hari</label>
                         <input type="text" name="jml_hari" id="jml_hari" readonly
                             class="mt-1 block w-full bg-gray-100 rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                     </div>
 
                     <!-- Keterangan -->
                     <div class="mb-4">
-                        <label for="keterangan" class="block text-sm font-medium text-gray-700">Keterangan</label>
+                        <label for="keterangan" class="block text-lg font-semibold text-black">Keterangan</label>
                         <textarea name="keterangan" id="keterangan" rows="4"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                             placeholder="Enter your description"></textarea>

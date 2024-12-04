@@ -15,7 +15,7 @@
 
     <section
         class="bg-gray-100 flex items-center justify-center bg-cover bg-center bg-no-repeat min-w-screen min-h-screen"
-        style="background-image: url('{{ asset('gambar/bgloginblur.jpg') }}');">
+        style="background: linear-gradient(to right, #800080, #0000FF); width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat;">
         <card class="w-full max-w-4xl h-auto p-12 bg-white shadow-xl rounded-3xl overflow-auto">
             <!-- Header Card -->
             <div class="mb-8 border-b-2 border-gray-400 pb-4 flex items-center">

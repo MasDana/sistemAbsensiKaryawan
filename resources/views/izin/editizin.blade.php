@@ -14,7 +14,8 @@
 
 <body class="bg-gray-100 min-h-screen overflow-hidden">
     <section class="w-screen h-screen bg-cover bg-center bg-no-repeat"
-        style="background-image: url('{{ asset('gambar/bgloginblur.jpg') }}');">
+        style="background: linear-gradient(to right, #800080, #0000FF); width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat;">
+
 
         <form action="/izin/{{ $dataizin->id }}/update" method="post" id="formizin">
             @csrf
@@ -33,20 +34,20 @@
                 </script>
             @endif
             <div class="container mx-auto py-16">
-                <div class="bg-white shadow-lg rounded-lg p-6 max-w-4xl mx-auto"
-                    style="max-height: 450px; overflow-y: auto;">
-                    <h2 class="text-xl font-semibold mb-4 text-center">Edit Form Izin</h2>
+                <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-[1200px] h-[2000px] mx-auto" 
+                style="max-height: 5000px; overflow-y: auto;">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Edit Form Izin</h2>
                     <div class="row">
                         <!-- Start Datepicker -->
                         <div class="input-field mb-4">
-                            <input type="text" name="tgl_izin_dari" id="start_date" class="datepicker" required
+                            <input type="text" name="tgl_izin_dari" id="start_date" class="datepicker text-base font-medium" required
                                 value="{{ $dataizin->tanggal_izin_dari }}">
                             <label for="start_date">Start Date</label>
                         </div>
 
                         <!-- End Datepicker -->
                         <div class="input-field mb-4">
-                            <input type="text" name="tgl_izin_sampai" id="end_date" class="datepicker" required
+                            <input type="text" name="tgl_izin_sampai" id="end_date" class="datepicker text-base font-medium" required
                                 value="{{ $dataizin->tanggal_izin_sampai }}">
                             <label for="end_date">End Date</label>
                         </div>
