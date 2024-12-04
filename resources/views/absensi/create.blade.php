@@ -29,6 +29,22 @@
     @vite('resources/css/app.css')
 
 </head>
+@php
+    function selisih($jam_masuk, $jam_keluar)
+    {
+        [$h, $m, $s] = explode(':', $jam_masuk);
+        $dtAwal = mktime($h, $m, $s, '1', '1', '1');
+        [$h, $m, $s] = explode(':', $jam_keluar);
+        $dtAkhir = mktime($h, $m, $s, '1', '1', '1');
+        $dtSelisih = $dtAkhir - $dtAwal;
+        $totalmenit = $dtSelisih / 60;
+        $jam = explode('.', $totalmenit / 60);
+        $sisamenit = $totalmenit / 60 - $jam[0];
+        $sisamenit2 = $sisamenit * 60;
+        $jml_jam = $jam[0];
+        return $jml_jam . ':' . round($sisamenit2);
+    }
+@endphp
 
 <body>
     <div class="body bg-gray-100 min-h-screen flex flex-col">
