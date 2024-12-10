@@ -1,56 +1,13 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layout/layoutkaryawan')
 
-@vite('resources/css/app.css')
+@section('css')
+@endsection
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Karyawan</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"
-        integrity="sha512-dQIiHSl2hr3NWKKLycPndtpbh5iaHLo6MwrXm7F0FM5e+kL2U16oE9uIwPHUl6fQBeCthiEuV/rzP3MiAB8Vfw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="../path/to/sweetalert.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
-    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
-</head>
+@section('konten')
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
-
-    <!-- Header -->
-    <header class="bg-white py-4 px-4 sm:px-6 md:px-8 lg:px-20 shadow-md flex-none">
-        <div class="container mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-6">
-                <a href="{{ url('/dashkar') }}" class="text-black text-2xl">
-                    <i class="fas fa-arrow-left"></i> <!-- Ikon panah -->
-                </a>
-                <h1 class="text-black text-2xl font-bold">Sistem Manajemen Karyawan</h1>
-            </div>
-            <div class="header-right flex items-center space-x-2 md:space-x-4">
-                <div class="profile flex items-center space-x-2 md:space-x-4">
-                    <img src="{{ asset('gambar/profile1.jpg') }}" alt="Profile" class="w-12 h-12 rounded-full">
-                    <span class="text-black">Sariwati</span>
-                </div>
-                <form action="/sesi/logout" method="get">
-                    <button type="submit"
-                        class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
-                        Logout
-                    </button>
-                </form>
-            </div>
-        </div>
-    </header>
-
-    <main class="bg-white p-8 rounded-xl shadow-xl w-full max-w-screen-xl mx-auto mt-12">
-
+<main class="flex-grow p-8">
         <div class="text-center mb-8">
-            <h2 class="text-4xl text-left font-bold text-gray-800 mb-2">Pengajuan Izin Karyawan</h2>
+            <h2 class="text-3xl text-left font-bold text-gray-800 mb-2">Pengajuan Izin Karyawan</h2>
             <p class="text-xl text-left text-gray-700">Daftar pengajuan izin karyawan yang sedang diproses</p>
 
         </div>
@@ -149,7 +106,7 @@
                     </div>
 
                     <!-- Modal -->
-                    <div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 flex items-center justify-center">
+                    <div id="confirmationModal" class="fixed inset-0 z-50 hidden bg-gray-800 bg-opacity-50 items-center justify-center">
                         <div class="bg-white rounded-lg shadow-lg max-w-sm w-full p-6">
                             <h2 class="text-lg font-bold text-gray-800">Konfirmasi Penghapusan</h2>
                             <p class="text-sm text-gray-600 my-4">Yakin ingin menghapus data ini?</p>
@@ -175,30 +132,29 @@
                 @endforeach
             </div>
 
-            <!-- Button Lingkaran di Pojok Kanan Bawah -->
             <!-- Tombol Lingkaran di Pojok Kanan Bawah -->
             <div>
                 <button id="scrollToTopBtn"
-                    class="fixed bottom-6 right-6 bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
-                    <i class="fas fa-chevron-up"></i>
-                </button>
+                class="fixed bottom-6 right-6 bg-blue-500 text-white rounded-full w-16 h-16 flex justify-center items-center shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
+                <i class="fas fa-chevron-up"></i>
+                 </button>
 
                 <!-- Dropdown Lingkaran di Pojok Kanan Bawah -->
-                <div id="dropdownMenu" class="fixed bottom-16 right-6 flex flex-col space-y-2 mb-6 z-10 hidden">
+                <div id="dropdownMenu" class="fixed bottom-24 right-8 flex flex-col space-y-2 z-10">
                     <!-- Tombol Sakit -->
                     <button id="sakitBtn"
-                        class="bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
+                        class="bg-blue-500 text-white rounded-full w-14 h-14 flex justify-center items-center shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
                         Sakit
                     </button>
                     <!-- Tombol Izin -->
                     <button id="izinBtn"
-                        class="bg-blue-500 text-white rounded-full p-4 shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
+                        class="bg-blue-500 text-white rounded-full w-14 h-14 flex justify-center items-center shadow-lg hover:bg-blue-600 focus:outline-none transition duration-300">
                         Izin
                     </button>
                 </div>
-
+                
                 <!-- Overlay Gelap -->
-                <div id="overlay" class="fixed inset-0 bg-gray-950 bg-opacity-50 hidden z-0"></div>
+                <div id="overlay" class="fixed inset-0 bg-gray-950 bg-opacity-50 hidden z-0"></div> 
             </div>
 
     </main>
@@ -244,9 +200,9 @@
             const modal = document.getElementById('confirmationModal');
             const deleteForm = document.getElementById('deleteForm');
             if (type === 'izin') {
-                deleteForm.action = `/izin/delete/${id}`;
+                deleteForm.action = /izin/delete/${id};
             } else if (type === 'sakit') {
-                deleteForm.action = `/sakit/delete/${id}`;
+                deleteForm.action = /sakit/delete/${id};
             }
             modal.classList.remove('hidden');
         }
@@ -257,7 +213,8 @@
         }
     </script>
 
-
-</body>
-
 </html>
+@section('java')
+<script src="{{ asset('js/dashboard.js') }}"></script>
+@endsection
+@endsection

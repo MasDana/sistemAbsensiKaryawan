@@ -37,9 +37,23 @@ class IzinController extends Controller
         // Konversi tanggal jika diperlukan
         $tgl_izin_dari = date('Y-m-d', strtotime($request->tgl_izin_dari));
         $tgl_izin_sampai = date('Y-m-d', strtotime($request->tgl_izin_sampai));
+        $bulan = date("m", strtotime($tgl_izin_dari));
+        $tahun = date("Y", strtotime($tgl_izin_dari));
+        $thn = substr($tahun, 2, 2);
+
+
+        $lastizin = DB::table('pengajuan_izin')
+            ->whereRaw('MONTH(tanggal_izin_dari)="' . $bulan . '"')
+            ->whereRaw('YEAR(tanggal_izin_dari)="' . $tahun . '"')
+            ->orderBy('kode_izin', 'desc')
+            ->first();
+        $lastkodeizin = $lastizin != null ? $lastizin->kode_izin : "";
+        $format = "IZ" . $bulan . $thn;
+        $kode_izin = buatkode($lastkodeizin, $format, 3);
 
         // Simpan data
         $data = [
+            'kode_izin' => $kode_izin,
             'karyawan_id' => $karyawan_id,
             'tanggal_izin_dari' => $tgl_izin_dari,
             'tanggal_izin_sampai' => $tgl_izin_sampai,
@@ -62,11 +76,24 @@ class IzinController extends Controller
         return view('izin.createizin');
     }
 
+    // public function editizin($kode_izin)
+    // {
+    //     $dataizin = DB::table('pengajuan_izin')->where('id', $kode_izin)->first();
+    //     return view('izin.editizin', compact('dataizin'));
+    // }
+
     public function editizin($kode_izin)
     {
-        $dataizin = DB::table('pengajuan_izin')->where('id', $kode_izin)->first();
+        $dataizin = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
+
+        // Cek apakah status_approved adalah 1 atau 2
+        if ($dataizin && ($dataizin->status_approved == 1 || $dataizin->status_approved == 2)) {
+            return redirect('/presensi/izin')->with('error', 'Data izin tidak dapat diedit karena sudah disetujui.');
+        }
+
         return view('izin.editizin', compact('dataizin'));
     }
+
 
     public function updateizin($id, Request $request)
     {
@@ -92,14 +119,21 @@ class IzinController extends Controller
 
     public function deleteizin($kode_izin)
     {
+        // Cek apakah status_approved adalah 1 atau 2
+        $dataizin = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
+
+        // Jika data ditemukan dan status_approved adalah 1 atau 2, batalkan penghapusan
+        if ($dataizin && ($dataizin->status_approved == 1 || $dataizin->status_approved == 2)) {
+            return redirect('/presensi/izin')->with('error', 'Data izin tidak dapat dihapus karena sudah disetujui.');
+        }
+
         try {
-            DB::table('pengajuan_izin')->where('id', $kode_izin)->delete();
+            // Hapus data izin
+            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->delete();
             return redirect('/presensi/izin');
         } catch (\Exception $e) {
-            // Optional: Log the exception message
-            // Log::error('Failed to delete izin: ' . $e->getMessage());
-
-            return redirect('/presensi/izin');
+            // Jika terjadi kesalahan, arahkan kembali dengan pesan error
+            return redirect('/presensi/izin')->with('error', 'Something went wrong!');
         }
     }
 
@@ -134,26 +168,20 @@ class IzinController extends Controller
         $tgl_izin_sampai = date('Y-m-d', strtotime($request->tgl_izin_sampai));
         $status = "s"; // Status untuk sakit
         $keterangan = $request->keterangan;
-        $kode_izin = rand();
 
-        // // Periksa apakah sudah ada sakit/izin pada tanggal tersebut untuk karyawan yang sama
-        // $cekSakit = DB::table('pengajuan_izin')
-        //     ->where('karyawan_id', $karyawan_id)
-        //     ->where(function ($query) use ($tgl_izin_dari, $tgl_izin_sampai) {
-        //         $query->whereBetween('tanggal_izin_dari', [$tgl_izin_dari, $tgl_izin_sampai])
-        //             ->orWhereBetween('tanggal_izin_sampai', [$tgl_izin_dari, $tgl_izin_sampai])
-        //             ->orWhereRaw('? BETWEEN tanggal_izin_dari AND tanggal_izin_sampai', [$tgl_izin_dari])
-        //             ->orWhereRaw('? BETWEEN tanggal_izin_dari AND tanggal_izin_sampai', [$tgl_izin_sampai]);
-        //     })
-        //     ->exists();
+        $bulan = date("m", strtotime($tgl_izin_dari));
+        $tahun = date("Y", strtotime($tgl_izin_dari));
+        $thn = substr($tahun, 2, 2);
 
-        // if ($cekSakit) {
-        //     // Return JSON jika ada duplikasi
-        //     return response()->json([
-        //         'status' => 'error',
-        //         'message' => 'Sudah ada izin yang diajukan untuk tanggal tersebut.'
-        //     ], 400);
-        // }
+
+        $lastizin = DB::table('pengajuan_izin')
+            ->whereRaw('MONTH(tanggal_izin_dari)="' . $bulan . '"')
+            ->whereRaw('YEAR(tanggal_izin_dari)="' . $tahun . '"')
+            ->orderBy('kode_izin', 'desc')
+            ->first();
+        $lastkodeizin = $lastizin != null ? $lastizin->kode_izin : "";
+        $format = "IZ" . $bulan . $thn;
+        $kode_izin = buatkode($lastkodeizin, $format, 3);
 
         // Proses upload file
         $sid = null;
@@ -181,6 +209,7 @@ class IzinController extends Controller
 
         // Simpan data ke database
         $data = [
+            'kode_izin' => $kode_izin,
             'karyawan_id' => $karyawan_id,
             'tanggal_izin_dari' => $tgl_izin_dari,
             'tanggal_izin_sampai' => $tgl_izin_sampai,
@@ -188,6 +217,7 @@ class IzinController extends Controller
             'doc_sid' => $sid,
             'keterangan' => $keterangan
         ];
+
 
         try {
             $simpan = DB::table('pengajuan_izin')->insert($data);
@@ -199,7 +229,8 @@ class IzinController extends Controller
             if ($sid && File::exists(storage_path('app/public/uploads/sid/' . $sid))) {
                 File::delete(storage_path('app/public/uploads/sid/' . $sid));
             }
-            return redirect('/sakit')->with(['error' => 'Gagal menyimpan data: ' . $e->getMessage()]);
+            return response()->json(['message' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+            // return redirect('/sakit')->with(['error' => 'Gagal menyimpan data: ' . $e->getMessage()]);
         }
     }
 

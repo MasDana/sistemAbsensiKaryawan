@@ -25,7 +25,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
-    
+
     @yield('css')
 
     @vite('resources/css/app.css')
@@ -49,8 +49,8 @@
                 </div>
                 <div class="header-right flex items-center space-x-2 md:space-x-4">
                     <div class="profile flex items-center space-x-2 md:space-x-4">
-                    <i class="fa fa-user"></i> 
-                    <span>{{ $user->name }}</span>
+                        <i class="fa fa-user"></i>
+                        <span>{{ $user->name }}</span>
                     </div>
                     <div class="logout">
                         <form action="/sesi/logoutadmin" method="get">
@@ -105,6 +105,17 @@
                             href="{{ url('/konfigurasi/lokasikantor') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
                             <i class="fas fa-clock mr-2"></i> Lokasi
                         </a>
+                    </li>
+                    <li class="mb-2">
+                        <a
+                            href="{{ url('/rekappribadi') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                            <i class="fas fa-clock mr-2"></i> Rekap Absen 1
+                        </a>
+                        <a
+                            href="{{ url('/rekapsemua') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                            <i class="fas fa-clock mr-2"></i> Rekap Absen 2
+                        </a>
+
                     </li>
                 </ul>
             </nav>

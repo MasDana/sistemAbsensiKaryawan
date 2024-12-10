@@ -14,10 +14,11 @@
 
 <body class="bg-gray-100 min-h-screen overflow-hidden">
     <section class="w-screen h-screen bg-cover bg-center bg-no-repeat"
-    style="background: linear-gradient(to right, #800080, #0000FF); width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat;">
+        style="background: linear-gradient(to right, #800080, #0000FF); width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat;">
 
 
-        <form action="/sakit/{{ $datasakit->id }}/update" method="post" id="formizin" enctype="multipart/form-data">
+        <form action="/sakit/{{ $datasakit->kode_izin }}/update" method="post" id="formizin"
+            enctype="multipart/form-data">
             @csrf
             <div class="container mx-auto py-20">
                 <div class="bg-white shadow-lg rounded-lg p-6 max-w-8xl mx-auto"

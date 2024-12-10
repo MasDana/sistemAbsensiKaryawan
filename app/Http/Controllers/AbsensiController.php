@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\Node\Stmt\Return_;
 
 class AbsensiController extends Controller
 {
@@ -123,7 +124,8 @@ class AbsensiController extends Controller
                     'tanggal_presensi' => $tanggal_presensi,
                     'jam_masuk' => $jam,
                     'foto_masuk' => $fileName,
-                    'lokasi_in' => $lokasi
+                    'lokasi_in' => $lokasi,
+                    'status' => 'h'
                 ];
                 $simpan = DB::table('presensi')->insert($data_masuk);
                 if ($simpan) {
@@ -365,7 +367,7 @@ class AbsensiController extends Controller
             'end' => 'date_format:Y-m-d|nullable',
         ]);
         $query = Pengajuanizin::query();
-        $query->select('pengajuan_izin.id', 'tanggal_izin_dari', 'tanggal_izin_sampai', 'nama_karyawan', 'status', 'keterangan', 'doc_sid', 'status_approved');
+        $query->select('pengajuan_izin.kode_izin', 'tanggal_izin_dari', 'tanggal_izin_sampai', 'nama_karyawan', 'status', 'keterangan', 'doc_sid', 'status_approved');
         $query->join('karyawan', 'pengajuan_izin.karyawan_id', '=', 'karyawan.id');
         if (!empty($request->start) && !empty($request->end)) {
             $query->whereBetween('tanggal_izin_dari', [$request->start, $request->end]);
@@ -391,27 +393,69 @@ class AbsensiController extends Controller
 
     public function approveizinsakit(Request $request)
     {
-        // Debug data yang diterima
-        // dd($request->all());
-
         $status_approved = $request->status_approved;
-        $id_izinsakit_form = $request->id_izinsakit_form;
+        $kode_izin = $request->kode_izin_form;
+        $dataizin = DB::table('pengajuan_izin')
+            ->where('kode_izin', $kode_izin)
+            ->first();
+        $idkaryawan = $dataizin->karyawan_id;
+        $status = $dataizin->status;
+        $tgldari = $dataizin->tanggal_izin_dari;
+        $tglsampai = $dataizin->tanggal_izin_sampai;
 
-
-        $update = DB::table('pengajuan_izin')->where('id', $id_izinsakit_form)->update([
-            'status_approved' => $status_approved
-        ]);
-
-        if ($update) {
+        DB::beginTransaction();
+        try {
+            if ($status_approved == 1) {
+                while (strtotime($tgldari) <= strtotime($tglsampai)) {
+                    DB::table('presensi')->insert([
+                        'karyawan_id' => $idkaryawan,
+                        'tanggal_presensi' => $tgldari,
+                        'status' => $status,
+                        'kode_izin' => $kode_izin
+                    ]);
+                    $tgldari = date("Y-m-d", strtotime("+1 days", strtotime($tgldari)));
+                }
+            }
+            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                'status_approved' => $status_approved
+            ]);
+            DB::commit();
             return Redirect::back();
-        } else {
+        } catch (\Exception $e) {
+            DB::rollBack();
             return Redirect::back();
         }
+
+
+        // $update = DB::table('pengajuan_izin')->where('id', $id_izinsakit_form)->update([
+        //     'status_approved' => $status_approved
+        // ]);
+
+        // if ($update) {
+        //     return Redirect::back();
+        // } else {
+        //     return Redirect::back();
+        // }
     }
 
-    public function batalkanizinsakit($id)
+    public function batalkanizinsakit($kode_izin)
     {
-        $update = DB::table('pengajuan_izin')->where('id', $id)->update([
+
+        DB::beginTransaction();
+        try {
+            $update = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                'status_approved' => 0
+            ]);
+            DB::table('presensi')
+                ->where('kode_izin', $kode_izin)
+                ->delete();
+            DB::commit();
+            return Redirect::back();
+        } catch (\Throwable $th) {
+            DB::rollBack();
+        }
+
+        $update = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
             'status_approved' => 0
         ]);
 

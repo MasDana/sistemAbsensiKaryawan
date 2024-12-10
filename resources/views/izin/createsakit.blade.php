@@ -253,13 +253,14 @@
                             });
                         },
                         error: function(xhr) {
-                            if (xhr.status === 400) {
+                            if (xhr.status === 500) {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Gagal!',
                                     text: xhr.responseJSON.message,
                                 });
                             } else {
+
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error!',

@@ -8,23 +8,36 @@ use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KonfigurasiController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\RekapController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\SessionController;
 use App\Http\Middleware\CekLevel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// Route::get('/', function () {
+// Route::get('/sesi', function () {
 //     $user = Auth::guard('karyawan')->user();
-//     return view('sesi/index');
+//     return view('sesi/index')->name('login');
 // });
 
+Route::get('/sesi', function () {
+    // Check if the user is already logged in
+    if (Auth::guard('karyawan')->check()) {
+        // Redirect the logged-in user to a different page (e.g., dashboard)
+        return redirect('dashkar'); // Adjust this route as needed
+    }
+
+    // If not logged in, show the login page
+    return view('sesi.index');
+})->name('login');
+
 Route::middleware(['guest:karyawan'])->group(function () {
-    Route::get('/sesi', [LoginController::class, 'index'])->name('logins');
     Route::post('/sesi/login', [LoginController::class, 'login']);
     Route::get('/register', [RegisterController::class, 'register']);
     Route::post('/sesi/create', [RegisterController::class, 'create']);
 });
+
+
 
 Route::middleware(['auth:karyawan'])->group(function () {
     Route::get('/dashkar', [AbsensiController::class, 'dashboard']);
@@ -42,9 +55,9 @@ Route::middleware(['auth:karyawan'])->group(function () {
 
     Route::get('/izin', [IzinController::class, 'createizin']);
     Route::post('/izin/store', [IzinController::class, 'storeizin']);
-    Route::get('/izin/edit/{id}', [IzinController::class, 'editizin'])->name('izin.edit');
-    Route::delete('/izin/delete/{id}', [IzinController::class, 'deleteizin'])->name('izin.delete');
-    Route::post('izin/{id}/update', [IzinController::class, 'updateizin']);
+    Route::get('/izin/edit/{kode_izin}', [IzinController::class, 'editizin'])->name('izin.edit');
+    Route::delete('/izin/delete/{kode_izin}', [IzinController::class, 'deleteizin'])->name('izin.delete');
+    Route::post('izin/{kode_izin}/update', [IzinController::class, 'updateizin']);
 
     Route::get('/sakit', [IzinController::class, 'createsakit']);
     Route::post('/sakit/store', [IzinController::class, 'storesakit']);
@@ -79,7 +92,7 @@ Route::middleware(['auth:user'])->group(function () {
 
     Route::get('/presensi/izinsakit', [AbsensiController::class, 'izinsakit']);
     Route::post('/presensi/approveizinsakit', [AbsensiController::class, 'approveizinsakit']);
-    Route::get('/presensi/{id}/batalkanizinsakit', [AbsensiController::class, 'batalkanizinsakit']);
+    Route::get('/presensi/{kode_izin}/batalkanizinsakit', [AbsensiController::class, 'batalkanizinsakit']);
 
 
     Route::get('/karyawan/{id}/edit', [AbsensiController::class, 'edit']);
@@ -90,7 +103,14 @@ Route::middleware(['auth:user'])->group(function () {
     Route::delete('/jabatan/{id}', [AbsensiController::class, 'hapusJabatan'])->name('jabatan.hapus');
 
     Route::post('/presensi/cekpengajuanizin', [AbsensiController::class, 'cekpengajuan']);
+
+    Route::get('/rekappribadi', [RekapController::class, 'rekappribadi']);
+    Route::post('/presensi/laporanpribadi', [RekapController::class, 'laporanpribadi']);
+
+    Route::get('/rekapsemua', [RekapController::class, 'rekapsemua']);
+    Route::post('/presensi/laporansemua', [RekapController::class, 'laporansemua']);
 });
+
 
 // Route::get('/karyawan/{id}/edit', [KaryawanController::class, 'edit'])->name('karyawan.edit');
 // Route::put('/karyawan/{id}', [KaryawanController::class, 'update'])->name('karyawan.update');

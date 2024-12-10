@@ -63,6 +63,7 @@
                         <thead class="bg-gray-200">
                             <tr>
                                 <th class="border px-4 py-2 text-left">No</th>
+                                <th class="border px-4 py-2 text-left">Kode</th>
                                 <th class="border px-4 py-2 text-left">Nama</th>
                                 <th class="border px-4 py-2 text-left">Dari</th>
                                 <th class="border px-4 py-2 text-left">Sampai</th>
@@ -77,6 +78,7 @@
                             @foreach ($izinsakit as $item)
                                 <tr class="hover:bg-gray-100">
                                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                                    <td class="border px-4 py-2">{{ $item->kode_izin }}</td>
                                     <td class="border px-4 py-2">{{ $item->nama_karyawan }}</td>
                                     <td class="border px-4 py-2">{{ date('d-m-Y', strtotime($item->tanggal_izin_dari)) }}
                                     </td>
@@ -104,12 +106,12 @@
                                         @if ($item->status_approved == 0)
                                             <button data-modal-target="modal-izinsakit" data-modal-toggle="modal-izinsakit"
                                                 class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
-                                                id_izinsakit="{{ $item->id }}">
+                                                kode_izin="{{ $item->kode_izin }}">
                                                 Aksi
                                             </button>
                                         @else
                                             <button class="bg-red-500 text-white px-3 py-1 rounded"><a
-                                                    href="/presensi/{{ $item->id }}/batalkanizinsakit">Batalkan</a></button>
+                                                    href="/presensi/{{ $item->kode_izin }}/batalkanizinsakit">Batalkan</a></button>
                                         @endif
                                     </td>
                                 </tr>
@@ -177,7 +179,7 @@
                                 <form action="/presensi/approveizinsakit" method="post">
                                     @csrf
                                     <div class="space-y-4">
-                                        <input type="text" hidden id="id_izinsakit_form" name="id_izinsakit_form">
+                                        <input type="text" id="kode_izin_form" name="kode_izin_form">
                                         <select name="status_approved" id="status_approved"
                                             class="block w-full px-4 py-2 bg-white border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                                             <option value="1">Disetujui</option>
@@ -204,23 +206,21 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // ---- Bagian 2: Logika Modal ----
             const approveButtons = document.querySelectorAll('[data-modal-target="modal-izinsakit"]');
             const modal = document.getElementById('modal-izinsakit');
 
             approveButtons.forEach((button) => {
                 button.addEventListener('click', function() {
-                    // Ambil nilai id_izinsakit dari tombol yang diklik
-                    const idIzinSakit = this.getAttribute('id_izinsakit');
+                    const idIzinSakit = this.getAttribute('kode_izin');
+                    console.log('idIzinSakit:', idIzinSakit); // Log nilai yang diambil
                     if (idIzinSakit) {
-                        document.getElementById('id_izinsakit_form').value =
-                            idIzinSakit; // Set nilai ke form modal
+                        document.getElementById('kode_izin_form').value =
+                            idIzinSakit; // Perbarui nilai ke form modal
                         modal.classList.remove('hidden'); // Tampilkan modal
                     }
                 });
             });
 
-            // Event listener untuk menutup modal
             document.querySelectorAll('[data-modal-hide="modal-izinsakit"]').forEach((closeButton) => {
                 closeButton.addEventListener('click', function() {
                     modal.classList.add('hidden'); // Sembunyikan modal

@@ -26,9 +26,39 @@ class LoginController extends Controller
 
 
     // Fungsi untuk login
-    function login(Request $request)
+    // function login(Request $request)
+    // {
+    //     // Validasi input
+    //     $request->validate([
+    //         'email' => 'required|email',
+    //         'password' => 'required|min:3',
+    //     ], [
+    //         'email.required' => 'Email wajib diisi',
+    //         'email.email' => 'Format email tidak valid',
+    //         'password.required' => 'Password wajib diisi',
+    //         'password.min' => 'Password minimal 3 karakter',
+    //     ]);
+
+    //     // Info login yang dimasukkan
+    //     $credentials = [
+    //         'email' => $request->email,
+    //         'password' => $request->password
+    //     ];
+
+    //     // Cek login menggunakan guard 'karyawan'
+    //     if (Auth::guard('karyawan')->attempt($credentials)) {
+    //         // Jika login berhasil, redirect ke dashboard
+    //         return redirect('/dashkar');
+    //     } else {
+    //         // Jika gagal, kembali ke halaman login dengan pesan error
+    //         return redirect('sesi')->withErrors(['default' => 'Email atau password yang Anda masukkan salah']);
+    //     }
+    // }
+
+
+    public function login(Request $request)
     {
-        // Validasi input
+        // Validate input
         $request->validate([
             'email' => 'required|email',
             'password' => 'required|min:3',
@@ -36,24 +66,21 @@ class LoginController extends Controller
             'email.required' => 'Email wajib diisi',
             'email.email' => 'Format email tidak valid',
             'password.required' => 'Password wajib diisi',
-            'password.min' => 'Password minimal 3 karakter',
+            'password.min' => 'Password harus lebih dari 3 karakter',
         ]);
 
-        // Info login yang dimasukkan
-        $credentials = [
-            'email' => $request->email,
-            'password' => $request->password
-        ];
-
-        // Cek login menggunakan guard 'karyawan'
-        if (Auth::guard('karyawan')->attempt($credentials)) {
-            // Jika login berhasil, redirect ke dashboard
-            return redirect('/dashkar');
+        // Attempt to authenticate the user
+        if (Auth::guard('karyawan')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            // If authentication is successful, redirect to the intended page or dashboard
+            return redirect()->intended('/dashboard');  // Redirects to /dashboard if no prior URL, else to the one they tried to access
         } else {
-            // Jika gagal, kembali ke halaman login dengan pesan error
-            return redirect('sesi')->withErrors(['default' => 'Email atau password yang Anda masukkan salah']);
+            // If authentication fails, redirect back with an error message
+            return back()->withErrors([
+                'email' => 'Kredensial Anda tidak valid',
+            ]);
         }
     }
+
 
     // Fungsi untuk logout
     function logout()

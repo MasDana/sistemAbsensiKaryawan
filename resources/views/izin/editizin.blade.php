@@ -17,7 +17,7 @@
         style="background: linear-gradient(to right, #800080, #0000FF); width: 100vw; height: 100vh; background-size: cover; background-position: center; background-repeat: no-repeat;">
 
 
-        <form action="/izin/{{ $dataizin->id }}/update" method="post" id="formizin">
+        <form action="/izin/{{ $dataizin->kode_izin }}/update" method="post" id="formizin">
             @csrf
             @if (session('error'))
                 <script>
@@ -34,20 +34,22 @@
                 </script>
             @endif
             <div class="container mx-auto py-16">
-                <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-[1200px] h-[2000px] mx-auto" 
-                style="max-height: 5000px; overflow-y: auto;">
+                <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-[1200px] h-[2000px] mx-auto"
+                    style="max-height: 5000px; overflow-y: auto;">
                     <h2 class="text-2xl font-bold mb-4 text-center">Edit Form Izin</h2>
                     <div class="row">
                         <!-- Start Datepicker -->
                         <div class="input-field mb-4">
-                            <input type="text" name="tgl_izin_dari" id="start_date" class="datepicker text-base font-medium" required
+                            <input type="text" name="tgl_izin_dari" id="start_date"
+                                class="datepicker text-base font-medium" required
                                 value="{{ $dataizin->tanggal_izin_dari }}">
                             <label for="start_date">Start Date</label>
                         </div>
 
                         <!-- End Datepicker -->
                         <div class="input-field mb-4">
-                            <input type="text" name="tgl_izin_sampai" id="end_date" class="datepicker text-base font-medium" required
+                            <input type="text" name="tgl_izin_sampai" id="end_date"
+                                class="datepicker text-base font-medium" required
                                 value="{{ $dataizin->tanggal_izin_sampai }}">
                             <label for="end_date">End Date</label>
                         </div>
