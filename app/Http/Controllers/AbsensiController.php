@@ -166,7 +166,9 @@ class AbsensiController extends Controller
 
 
         $historibulanini = DB::table('presensi')
-            ->where('karyawan_id', $karyawan_id)
+            ->select('presensi.*', 'keterangan', 'doc_sid')
+            ->leftJoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin')
+            ->where('presensi.karyawan_id', $karyawan_id)
             ->whereRaw('MONTH(tanggal_presensi) = ?', [$bulanini])
             ->whereRaw('YEAR(tanggal_presensi) = ?', [$tahunini])
             ->orderBy('tanggal_presensi')
@@ -217,15 +219,17 @@ class AbsensiController extends Controller
         if ($request->has('tanggal_presensi')) {
             // Query untuk satu tanggal
             $presensi = DB::table('presensi')
-                ->select('presensi.*', 'nama_karyawan')
-                ->join('karyawan', 'presensi.karyawan_id', '=', 'karyawan.id')
+                ->select('presensi.*', 'nama_karyawan', 'keterangan')
+                ->leftJoin('karyawan', 'presensi.karyawan_id', '=', 'karyawan.id')
+                ->leftJoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin')
                 ->where('tanggal_presensi', $request->tanggal_presensi)
                 ->get();
         } else {
             // Query untuk rentang tanggal
             $presensi = DB::table('presensi')
-                ->select('presensi.*', 'nama_karyawan')
+                ->select('presensi.*', 'nama_karyawan', 'keterangan')
                 ->join('karyawan', 'presensi.karyawan_id', '=', 'karyawan.id')
+                ->leftJoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin')
                 ->whereBetween('tanggal_presensi', [$request->start_date, $request->end_date])
                 ->get();
         }

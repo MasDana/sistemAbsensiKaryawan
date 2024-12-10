@@ -22,28 +22,47 @@
         $foto_keluar = Storage::url('upload/absensi/' . $item->foto_keluar);
 
     @endphp
-    <tr>
-        <td>{{ $loop->iteration }}</td>
-        <td>{{ $item->karyawan_id }}</td>
-        <td>{{ $item->nama_karyawan }}</td>
-        <td>{{ $item->jam_masuk != null ? $item->jam_masuk : 'Belum absen' }}</td>
-        {{-- <td>{{ $item->foto_masuk }}</td> --}}
-        <td><img src="{{ url($foto_masuk) }}" alt="" class="avatar"></td>
-        <td>{{ $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}</td>
-        {{-- <td>{{ $item->foto_keluar }}</td> --}}
-        <td><img src="{{ url($foto_keluar) }}" alt="" class="avatar"></td>
-        <td>
-            @if (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
-                @php
-                    $jamterlambat = selisih('06:00:00', $item->jam_masuk);
-                @endphp
-                <span>Terlambat {{ $jamterlambat }}</span>
-            @else
-                <span>Tepat waktu</span>
-            @endif
-        </td>
 
-
-
-    </tr>
+    @if ($item->status == 'h')
+        <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $item->karyawan_id }}</td>
+            <td>{{ $item->nama_karyawan }}</td>
+            <td>{{ $item->jam_masuk != null ? $item->jam_masuk : 'Belum absen' }}</td>
+            {{-- <td>{{ $item->foto_masuk }}</td> --}}
+            <td><img src="{{ url($foto_masuk) }}" alt="" class="avatar"></td>
+            <td>{{ $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}</td>
+            {{-- <td>{{ $item->foto_keluar }}</td> --}}
+            <td><img src="{{ url($foto_keluar) }}" alt="" class="avatar"></td>
+            <td>{{ $item->status = 'Hadir' }}</td>
+            <td>
+                @if (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
+                    @php
+                        $jamterlambat = selisih('06:00:00', $item->jam_masuk);
+                    @endphp
+                    <span>Terlambat {{ $jamterlambat }}</span>
+                @else
+                    <span>Tepat waktu</span>
+                @endif
+            </td>
+        </tr>
+    @else
+        <tr>
+            <td>{{ $loop->iteration }}</td>
+            <td>{{ $item->karyawan_id }}</td>
+            <td>{{ $item->nama_karyawan }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>
+                @if ($item->status == 's')
+                    <p>Sakit</p>
+                @elseif($item->status == 'i')
+                    <p>Izin</p>
+                @endif
+            </td>
+            <td>{{ $item->keterangan }}</td>
+        </tr>
+    @endif
 @endforeach

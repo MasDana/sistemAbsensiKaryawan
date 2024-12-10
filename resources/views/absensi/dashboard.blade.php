@@ -20,8 +20,6 @@
             return $jml_jam . ':' . round($sisamenit2);
         }
     @endphp
-    <!-- Konten Utama -->
-    <!-- Konten Utama -->
     <div class="flex-grow overflow-y-auto p-6">
         <!-- Card Profil -->
         <div class="card flex items-center bg-white p-6 rounded-lg shadow-md w-full mb-8">
@@ -87,43 +85,77 @@
                 <div class="tab-pane fade show active" id="home" role="tabpanel">
                     <ul class="listview image-listview">
                         @foreach ($historibulanini as $item)
-                            <li class="mb-4"> <!-- Tambahkan margin bawah -->
-                                <div class="item flex items-center space-x-4">
-                                    <div class="icon-box bg-primary">
-                                        <i class="fa-solid fa-fingerprint text-indigo-700 text-4xl"></i>
-                                        <!-- Ikon -->
-                                    </div>
-                                    <div class="in flex-grow flex justify-between items-center">
-                                        <div class="text-lg font-semibold">
-                                            {{ date('d-m-y', strtotime($item->tanggal_presensi)) }}
+                            @if ($item->status == 'h')
+                                <li class="mb-4"> <!-- Tambahkan margin bawah -->
+                                    <div class="item flex items-center space-x-4">
+                                        <div class="icon-box bg-primary">
+                                            <i class="fa-solid fa-fingerprint text-indigo-700 text-4xl"></i>
+                                            <!-- Ikon -->
                                         </div>
-                                        <div class="flex space-x-2 items-center justify-end">
-                                            <span
-                                                class="badge bg-green-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
-                                                {{ $item->jam_masuk }}
-                                            </span>
-                                            <span
-                                                class="badge bg-red-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
-                                                {{ $presensihariini != null && $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
-                                            </span>
-                                            <span
-                                                class="badge bg-blue-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
-                                                @if (strtotime($item->jam_masuk) >= strtotime('09:00:00'))
-                                                    @php
-                                                        $jamterlambat = selisih('09:00:00', $item->jam_masuk);
-                                                    @endphp
-                                                    <span>Terlambat {{ $jamterlambat }}</span>
-                                                @elseif (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
-                                                    <span>Tepat waktu</span>
-                                                @else
-                                                    <span>Terlambat
-                                                        {{ selisih('09:00:00', $item->jam_masuk) }}</span>
-                                                @endif
-                                            </span>
+                                        <div class="in flex-grow flex justify-between items-center">
+                                            <div class="text-lg font-semibold">
+                                                {{ date('d-m-y', strtotime($item->tanggal_presensi)) }}
+                                            </div>
+                                            <div class="flex space-x-2 items-center justify-end">
+                                                <span
+                                                    class="badge bg-green-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                    {{ $item->jam_masuk }}
+                                                </span>
+                                                <span
+                                                    class="badge bg-red-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                    {{ $presensihariini != null && $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
+                                                </span>
+                                                <span
+                                                    class="badge bg-blue-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
+                                                    @if (strtotime($item->jam_masuk) >= strtotime('09:00:00'))
+                                                        @php
+                                                            $jamterlambat = selisih('09:00:00', $item->jam_masuk);
+                                                        @endphp
+                                                        <span>Terlambat {{ $jamterlambat }}</span>
+                                                    @elseif (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
+                                                        <span>Tepat waktu</span>
+                                                    @else
+                                                        <span>Terlambat
+                                                            {{ selisih('09:00:00', $item->jam_masuk) }}</span>
+                                                    @endif
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            @elseif($item->status == 's')
+                                <li class="mb-4"> <!-- Tambahkan margin bawah -->
+                                    <div class="item flex items-center space-x-4">
+                                        <div class="icon-box bg-primary">
+                                            <i class="fa-solid fa-fingerprint text-indigo-700 text-4xl"></i>
+                                            <!-- Ikon -->
+                                        </div>
+                                        <div class="in flex-grow flex justify-between items-center">
+                                            <div class="text-lg font-semibold">
+                                                <h2>SAKIT - {{ $item->kode_izin }}</h2>
+                                                {{ date('d-m-y', strtotime($item->tanggal_presensi)) }}
+                                                <p>{{ $item->keterangan }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @elseif($item->status == 'i')
+                                <li class="mb-4"> <!-- Tambahkan margin bawah -->
+                                    <div class="item flex items-center space-x-4">
+                                        <div class="icon-box bg-primary">
+                                            <i class="fa-solid fa-fingerprint text-indigo-700 text-4xl"></i>
+                                            <!-- Ikon -->
+                                        </div>
+                                        <div class="in flex-grow flex justify-between items-center">
+                                            <div class="text-lg font-semibold">
+                                                <h2>IZIN - {{ $item->kode_izin }}</h2>
+                                                {{ date('d-m-y', strtotime($item->tanggal_presensi)) }}
+                                                <p>{{ $item->keterangan }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            @endif
                         @endforeach
 
                     </ul>

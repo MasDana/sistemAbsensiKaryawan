@@ -99,7 +99,8 @@
                 <th>Jam Pulang</th>
                 <th>Foto Masuk</th>
                 <th>Foto Pulang</th>
-                <th>Lokasi</th>
+                <th>Status</th>
+                <th>Keterangan</th>
             </tr>
             @foreach ($presensi as $d)
                 @php
@@ -109,40 +110,63 @@
                     $jamterlambat =
                         strtotime($d->jam_masuk) > strtotime('10:00:00') ? selisih('10:00:00', $d->jam_masuk) : null;
                 @endphp
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ date('d-m-Y', strtotime($d->tanggal_presensi)) }}</td>
-                    <td>{{ $d->jam_masuk }}</td>
-                    <td>{{ $d->jam_keluar ? $d->jam_keluar : 'Belum Absen' }}</td>
-                    <td>
-                        @if ($d->foto_masuk)
-                            <img src="{{ url($path_in) }}" alt="Foto Masuk" class="foto" width="50">
-                        @else
-                            No Photo
-                        @endif
-                    </td>
-                    <td>
-                        @if ($d->foto_keluar)
-                            <img src="{{ url($path_out) }}" alt="Foto Pulang" class="foto" width="50">
-                        @else
-                            No Photo
-                        @endif
-                    </td>
-                    <td>
-                        @if (!$d->jam_keluar)
-                            <!-- Jika tidak ada jam keluar, hanya tampilkan jam terlambat jika ada -->
-                            @if ($jamterlambat)
-                                Terlambat {{ $jamterlambat }}
-                            @endif
-                        @elseif ($jamterlambat)
-                            <!-- Jika ada jam keluar dan terlambat, tampilkan jam terlambat -->
-                            Terlambat {{ $jamterlambat }}
-                        @else
-                            Tepat Waktu
-                        @endif
-                    </td>
 
-                </tr>
+                @if ($d->status == 'h')
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ date('d-m-Y', strtotime($d->tanggal_presensi)) }}</td>
+                        <td>{{ $d->jam_masuk }}</td>
+                        <td>{{ $d->jam_keluar ? $d->jam_keluar : 'Belum Absen' }}</td>
+                        <td>
+                            @if ($d->foto_masuk)
+                                <img src="{{ url($path_in) }}" alt="Foto Masuk" class="foto" width="50">
+                            @else
+                                No Photo
+                            @endif
+                        </td>
+                        <td>
+                            @if ($d->foto_keluar)
+                                <img src="{{ url($path_out) }}" alt="Foto Pulang" class="foto" width="50">
+                            @else
+                                No Photo
+                            @endif
+                        </td>
+                        <td>Hadir</td>
+
+                        <td>
+                            @if (!$d->jam_keluar)
+                                <!-- Jika tidak ada jam keluar, hanya tampilkan jam terlambat jika ada -->
+                                @if ($jamterlambat)
+                                    Terlambat {{ $jamterlambat }}
+                                @endif
+                            @elseif ($jamterlambat)
+                                <!-- Jika ada jam keluar dan terlambat, tampilkan jam terlambat -->
+                                Terlambat {{ $jamterlambat }}
+                            @else
+                                Tepat Waktu
+                            @endif
+                        </td>
+
+                    </tr>
+                @else
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ date('d-m-Y', strtotime($d->tanggal_presensi)) }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @if ($d->status == 's')
+                                <p>Sakit</p>
+                            @elseif($d->status == 'i')
+                                <p>Izin</p>
+                            @endif
+                        </td>
+                        <td>{{ $d->keterangan }}</td>
+
+                    </tr>
+                @endif
             @endforeach
         </table>
 
