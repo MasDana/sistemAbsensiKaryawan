@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    @vite('resources/css/app.css')
     <meta charset="utf-8">
     <title>Laporan Presensi Karyawan</title>
 
@@ -11,9 +12,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.4.1/paper.css">
 
     <!-- Custom Styles -->
+    @vite('resources/css/app.css')
     <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
         .tabelpresensi {
-            width: 100%;
             margin-top: 20px;
             border-collapse: collapse;
         }
@@ -21,7 +26,7 @@
         .tabelpresensi th,
         .tabelpresensi td {
             border: 2px solid #000000;
-            padding: 5px;
+            padding: 3px;
             text-align: left;
         }
     </style>
@@ -29,22 +34,22 @@
 
 <body class="A4 landscape">
     <!-- Header Section -->
-    <section class="sheet padding-10mm">
-        <table>
-            <tr>
-                <td>
-                    <img src="{{ asset('gambar/joko_satya.jpg') }}" alt="Logo" width="70" height="70">
+    <section class="sheet padding-10mm p-4">
+        <table class="w-full">
+            <tr class="w-full flex flex-row gap-4">
+                <td class="mr-4 flex justify-center items-center"> <!-- Menambahkan margin kanan -->
+                    <img src="{{ asset('gambar/logo_unud.png') }}" alt="Logo Udayana" class="" width="100px" height="100px">
                 </td>
-                <td>
-                    <h3>
+                <td class="flex flex-col justify-start items-start text-start">
+                    <h3 class="text-lg font-bold ">
                         LAPORAN PRESENSI KARYAWAN <br>
                         PERIODE BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}<br>
                         PT UDAYANA BALI SEJAHTERA <br>
                     </h3>
-                    <span>Jalan Universitas Udayana No 10 </span>
+                    <span class="text-sm">Jalan Universitas Udayana No 10</span>
                 </td>
             </tr>
-        </table>
+        </table>  
 
         <!-- Tabel Presensi -->
         <table class="tabelpresensi">
@@ -61,13 +66,13 @@
                 </tr>
                 <tr>
                     @foreach ($rangetanggal as $d)
-                        <th>{{ date('d', strtotime($d)) }}</th>
+                        <th class="w-1">{{ date('d', strtotime($d)) }}</th>
                     @endforeach
                 </tr>
             </thead>
             <tbody>
                 @foreach ($rekap as $d)
-                    <tr>
+                    <tr >
                         <td>{{ $d->nama_karyawan }}</td>
                         @php
                             $jmlhadir = 0;
@@ -104,7 +109,7 @@
                             @endphp
                             <td style="background-color: {{ $color }}">{{ $status }}</td>
                         @endfor
-                        <td>{{ !empty($jmlhadir) ? $jmlhadir : '' }}</td>
+                        <td class="">{{ !empty($jmlhadir) ? $jmlhadir : '' }}</td>
                         <td>{{ !empty($jmlizin) ? $jmlizin : '' }}</td>
                         <td>{{ !empty($jmlsakit) ? $jmlsakit : '' }}</td>
                         <td>{{ !empty($jmlalpa) ? $jmlalpa : '' }}</td>

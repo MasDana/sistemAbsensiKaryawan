@@ -20,6 +20,8 @@ class IzinController extends Controller
     {
         // Ambil ID karyawan
         $karyawan_id = Auth::guard('karyawan')->user()->id;
+        $tgl_izin_dari = $request->tgl_izin_dari;
+        $tgl_izin_sampai = $request->tgl_izin_sampai;
 
         // Validasi data
         $request->validate([
@@ -35,8 +37,8 @@ class IzinController extends Controller
         ]);
 
         // Konversi tanggal jika diperlukan
-        $tgl_izin_dari = date('Y-m-d', strtotime($request->tgl_izin_dari));
-        $tgl_izin_sampai = date('Y-m-d', strtotime($request->tgl_izin_sampai));
+        // $tgl_izin_dari = date('Y-m-d', strtotime($request->tgl_izin_dari));
+        // $tgl_izin_sampai = date('Y-m-d', strtotime($request->tgl_izin_sampai));
         $bulan = date("m", strtotime($tgl_izin_dari));
         $tahun = date("Y", strtotime($tgl_izin_dari));
         $thn = substr($tahun, 2, 2);
@@ -61,21 +63,30 @@ class IzinController extends Controller
             'keterangan' => $request->keterangan,
         ];
 
-        $simpan = DB::table('pengajuan_izin')->insert($data);
-        if ($simpan) {
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Izin berhasil disimpan.'
-            ]);
-        } else {
-            return response()->json([
-                'status' => 'error',
-                'message' => 'Terjadi kesalahan, izin gagal disimpan.'
-            ], 500);
-        }
-        return view('izin.createizin');
-    }
+        $cekpresensi = DB::table('presensi')
+            ->where('tanggal_presensi', '>=', $tgl_izin_dari)
+            ->where('tanggal_presensi', '<=', $tgl_izin_sampai)
+            ->count();
 
+        if ($cekpresensi > 0) {
+            return redirect('/presensi/izin');
+        } else {
+            $simpan = DB::table('pengajuan_izin')->insert($data);
+            if ($simpan) {
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Izin berhasil disimpan.'
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Terjadi kesalahan, izin gagal disimpan.'
+                ], 500);
+            }
+
+            return view('izin.createizin');
+        }
+    }
     // public function editizin($kode_izin)
     // {
     //     $dataizin = DB::table('pengajuan_izin')->where('id', $kode_izin)->first();

@@ -41,7 +41,13 @@
                             <td class="border px-4 py-2">{{ $item->nama_jabatan }}</td>
                             <td class="border px-4 py-2">{{ $item->email }}</td>
                             <td class="border px-4 py-2">{{ $item->no_hp }}</td>
-                            <td class="border px-4 py-2">{{ $item->gender }}</td>
+                            <td class="border px-4 py-2">
+                                @if ($item->gender == 'male')
+                                    <p>Male</p>
+                                @else
+                                    <p>Female</p>
+                                @endif
+                            </td>
                             <td class="border px-4 py-2">{{ $item->alamat }}</td>
                             <td class="border px-4 py-2 text-center">
                                 <!-- Tombol Edit -->

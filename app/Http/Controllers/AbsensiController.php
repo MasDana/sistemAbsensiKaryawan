@@ -513,17 +513,93 @@ class AbsensiController extends Controller
         return Redirect::back();
     }
 
+    // public function destroy($id)
+    // {
+    //     try {
+    //         $karyawan = Karyawan::findOrFail($id);
+    //         $karyawan->delete();
+
+    //         return response()->json(['success' => 'Data karyawan berhasil dihapus']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'Terjadi kesalahan saat menghapus data'], 500);
+    //     }
+    // }
+
+    // public function hapusJabatan($id)
+    // {
+    //     try {
+    //         // Cari jabatan berdasarkan ID
+    //         $jabatan = Jabatan::findOrFail($id);
+
+
+    //         // Hapus jabatan
+    //         $jabatan->delete();
+
+    //         return response()->json(['message' => 'Data jabatan berhasil dihapus']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'Terjadi kesalahan saat menghapus data.'], 500);
+    //     }
+    // }
+
+
+    // public function destroy($id)
+    // {
+    //     try {
+    //         $karyawan = Karyawan::findOrFail($id);
+    //         $karyawan->delete();
+
+    //         return response()->json(['success' => 'Data karyawan berhasil dihapus']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['error' => 'Terjadi kesalahan saat menghapus data'], 500);
+    //     }
+    // }
+
     public function destroy($id)
     {
         try {
+            // Cari data karyawan berdasarkan ID
             $karyawan = Karyawan::findOrFail($id);
+
+            // Backup data ke tabel backupkaryawan
+            DB::table('backupkaryawan')->insert([
+                'id_karyawan' => $karyawan->id,
+                'nama_karyawan' => $karyawan->nama_karyawan,
+                'jabatan_id' => $karyawan->jabatan_id,
+                'email' => $karyawan->email,
+                'no_hp' => $karyawan->no_hp,
+                'password' => $karyawan->password, // Backup hash password
+                'tanggal_lahir' => $karyawan->tanggal_lahir,
+                'gender' => $karyawan->gender,
+                'alamat' => $karyawan->alamat,
+                'created_at' => $karyawan->created_at,
+                'updated_at' => $karyawan->updated_at,
+            ]);
+
+            // Hapus data karyawan dari tabel utama
             $karyawan->delete();
 
-            return response()->json(['success' => 'Data karyawan berhasil dihapus']);
+            return response()->json(['success' => 'Data karyawan berhasil dihapus dan di-backup']);
         } catch (\Exception $e) {
+            // Tangani error jika terjadi masalah
             return response()->json(['error' => 'Terjadi kesalahan saat menghapus data'], 500);
         }
     }
+
+    // public function hapusJabatan($id)
+    // {
+    //     try {
+    //         // Cari jabatan berdasarkan ID
+    //         $jabatan = Jabatan::findOrFail($id);
+
+
+    //         // Hapus jabatan
+    //         $jabatan->delete();
+
+    //         return response()->json(['message' => 'Data jabatan berhasil dihapus']);
+    //     } catch (\Exception $e) {
+    //         return response()->json(['message' => 'Terjadi kesalahan saat menghapus data.'], 500);
+    //     }
+    // }
 
     public function hapusJabatan($id)
     {
@@ -531,11 +607,18 @@ class AbsensiController extends Controller
             // Cari jabatan berdasarkan ID
             $jabatan = Jabatan::findOrFail($id);
 
+            // Backup data ke tabel backupjabatan
+            DB::table('backupjabatan')->insert([
+                'id_jabatan' => $jabatan->id,
+                'nama_jabatan' => $jabatan->nama_jabatan,
+                'created_at' => $jabatan->created_at,
+                'updated_at' => $jabatan->updated_at,
+            ]);
 
             // Hapus jabatan
             $jabatan->delete();
 
-            return response()->json(['message' => 'Data jabatan berhasil dihapus']);
+            return response()->json(['message' => 'Data jabatan berhasil dihapus dan di-backup']);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Terjadi kesalahan saat menghapus data.'], 500);
         }

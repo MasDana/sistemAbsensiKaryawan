@@ -109,11 +109,11 @@
                     <li class="mb-2">
                         <a
                             href="{{ url('/rekappribadi') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-clock mr-2"></i> Rekap Absen 1
+                            <i class="fas fa-clipboard mr-2"></i> Rekap Absen 1
                         </a>
                         <a
                             href="{{ url('/rekapsemua') }}"class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
-                            <i class="fas fa-clock mr-2"></i> Rekap Absen 2
+                            <i class="fas fa-clipboard-list mr-2"></i> Rekap Absen 2
                         </a>
 
                     </li>

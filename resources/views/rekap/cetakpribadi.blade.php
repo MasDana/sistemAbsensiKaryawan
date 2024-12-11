@@ -27,6 +27,7 @@
             text-align: left;
         }
     </style>
+        @vite('resources/css/app.css')
 </head>
 
 <body class="A4">
@@ -47,50 +48,47 @@
     }
     ?>
 
-    <!-- Each sheet element should have the class "sheet" -->
-    <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
-    <section class="sheet padding-10mm">
+    <section class="sheet padding-20mm">
 
         <!-- Write HTML just like a web page -->
-        <table>
-            <tr>
-                <td>
-                    <img src="{{ asset('gambar/joko_satya.jpg') }}" alt="" width="70" height="70">
+        <table class="w-full">
+            <tr class="w-full flex flex-row gap-4">
+                <td class="mr-4 flex justify-center items-center"> <!-- Menambahkan margin kanan -->
+                    <img src="{{ asset('gambar/logo_unud.png') }}" alt="Logo Udayana" class="" width="100px" height="100px">
                 </td>
-                <td>
-                    <h3>
+                <td class="flex flex-col justify-start items-start text-start">
+                    <h3 class="text-lg font-bold ">
                         LAPORAN PRESENSI KARYAWAN <br>
                         PERIODE BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}<br>
                         PT UDAYANA BALI SEJAHTERA <br>
                     </h3>
-                    <span>Jalan Universitas Udayana No 10 </span>
+                    <span class="text-sm">Jalan Universitas Udayana No 10</span>
                 </td>
             </tr>
+        </table>        
+        
+        <table class="mt-4">
+            <tr>
+                <td class="pr-4">Nama</td>
+                <td class="pr-2">:</td>
+                <td class="pl-14">{{ $karyawan->nama_karyawan }}</td>
+            </tr>
+            <tr>
+                <td class="pr-2">Jabatan</td>
+                <td class="pr-2">:</td>
+                <td class="pl-14">{{ $karyawan->nama_jabatan }}</td>
+            </tr>
+            <tr>
+                <td class="pr-2">Email</td>
+                <td class="pr-2">:</td>
+                <td class="pl-14">{{ $karyawan->email }}</td>
+            </tr>
+            <tr>
+                <td class="pr-2">No Hp</td>
+                <td class="pr-2">:</td>
+                <td class="pl-14">{{ $karyawan->no_hp }}</td>
+            </tr>
         </table>
-
-        <table>
-            <tr>
-                <td>Nama</td>
-                <td>:</td>
-                <td>{{ $karyawan->nama_karyawan }}</td>
-            </tr>
-            <tr>
-                <td>Jabatan</td>
-                <td>:</td>
-                <td>{{ $karyawan->nama_jabatan }}</td>
-            </tr>
-            <tr>
-                <td>Email</td>
-                <td>:</td>
-                <td>{{ $karyawan->email }}</td>
-            </tr>
-            <tr>
-                <td>No Hp</td>
-                <td>:</td>
-                <td>{{ $karyawan->no_hp }}</td>
-            </tr>
-        </table>
-
         <table class="tabelpresensi">
             <tr>
                 <th>No.</th>
