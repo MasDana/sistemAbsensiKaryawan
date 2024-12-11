@@ -31,8 +31,6 @@
                 <div class="flex gap-4 mt-4">
                     <!-- Tambahkan atribut name untuk tombol print -->
                     <button type="submit" name="action" value="print"  class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none">Print</button>
-                    <!-- Tambahkan atribut name untuk tombol excel -->
-                    <button type="submit" name="action" value="excel"  class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-blue-700 focus:outline-none">Excel</button>
                 </div>
             </form>
         </div>    

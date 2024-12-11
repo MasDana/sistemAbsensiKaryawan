@@ -72,6 +72,13 @@
             <!-- Sidebar -->
             <nav class="sidebar bg-white text-black w-60 p-8 shadow-right flex-none">
                 <ul>
+                    <li class="sidebar-title text-lg font-semibold mb-2 mt-4">Dashboard</li>
+                    <li class="mb-2">
+                        <a href="{{ url('/dashkar') }}"
+                            class="flex items-center p-2 hover:bg-indigo-600 rounded transition">
+                            <i class="fas fa-house mr-2"></i> Beranda
+                        </a>
+                    </li>
                     <li class="sidebar-title text-lg font-semibold mb-2 mt-4">Absensi</li>
                     <li class="mb-2">
                         <a href="{{ url('/absensi') }}"
