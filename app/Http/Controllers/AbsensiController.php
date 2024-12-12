@@ -30,8 +30,12 @@ class AbsensiController extends Controller
             ->where('id', 1)
             ->first();
 
+        $nama_karyawan = DB::table('karyawan')
+            ->select('karyawan.nama_karyawan')
+            ->where('karyawan.id', $karyawan_id)
+            ->first();
 
-        return view('absensi.create', compact('cek', 'lok_kantor'));
+        return view('absensi.create', compact('cek', 'lok_kantor', 'nama_karyawan'));
     }
 
     public function dashboardadmin()
@@ -160,6 +164,12 @@ class AbsensiController extends Controller
         $tahunini = date("Y");
         $karyawan_id = Auth::guard('karyawan')->user()->id;
 
+        $karyawan = DB::table('karyawan')
+            ->select('karyawan.*', 'jabatan.nama_jabatan')
+            ->join('jabatan', 'karyawan.jabatan_id', '=', 'jabatan.id')
+            ->where('karyawan.id', $karyawan_id)
+            ->first();
+
         $presensihariini = DB::table('presensi')
             ->where('tanggal_presensi', $hariini)
             ->first();
@@ -184,7 +194,7 @@ class AbsensiController extends Controller
 
 
         $namabulan = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        return view('absensi.dashboard', compact('karyawan_id', 'presensihariini', 'historibulanini', 'namabulan', 'bulanini', 'tahunini', 'rekappresensi'));
+        return view('absensi.dashboard', compact('karyawan_id', 'presensihariini', 'historibulanini', 'namabulan', 'bulanini', 'tahunini', 'rekappresensi', 'karyawan'));
     }
 
     public function histori()

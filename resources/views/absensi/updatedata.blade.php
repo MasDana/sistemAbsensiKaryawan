@@ -19,7 +19,7 @@
         <card class="w-full max-w-4xl h-auto p-12 bg-white shadow-xl rounded-3xl overflow-auto">
             <!-- Header Card -->
             <div class="mb-8 border-b-2 border-gray-400 pb-4 flex items-center">
-                <h1 class="mr-5 text-2xl font-semibold text-gray-900">Edit Profile Karyawan</h1>
+                <h1 class="mr-5 text-2xl font-semibold text-gray-900 font-sans">Edit Profile Karyawan</h1>
                 <i class="fa-solid fa-pen text-gray-900"></i> <!-- Ikon di sebelah kanan -->
             </div>
 

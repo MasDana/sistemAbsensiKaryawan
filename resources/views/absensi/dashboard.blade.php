@@ -28,8 +28,8 @@
                 <img src= "{{ asset('gambar/joko_satya.jpg') }}" alt="Profile picture" class="w-full h-full rounded-full">
             </div>
             <div class="text-section ml-8 flex flex-col justify-center">
-                <h2 class="text-2xl font-bold">Joko Satya </h2>
-                <h3 class="text-lg font-bold text-gray-600 mt-2">Business Analyst Strategy Development</h3>
+                <h2 class="text-2xl font-bold">{{ $karyawan->nama_karyawan }}</h2>
+                <h3 class="text-lg font-bold text-gray-600 mt-2">{{ $karyawan->nama_jabatan }}</h3>
             </div>
         </div>
 
