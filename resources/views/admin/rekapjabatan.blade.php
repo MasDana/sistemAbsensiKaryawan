@@ -40,13 +40,13 @@
                             <td class="border px-4 py-2 text-center">
                                 <button onclick="editJabatan({{ $item->id }}, '{{ $item->nama_jabatan }}')"
                                     class="fa fa-pencil bg-blue-600 text-white px-3 py-1 rounded hover:bg-yellow-600 transition">
-                                    
+
                                 </button>
                                 <button
                                     class="fa fa-trash bg-red-600 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                     onclick="confirmDeleteJabatan({{ $item->id }})">
                                     <!-- Mengubah hapusJabatan menjadi confirmDeleteJabatan -->
-    
+
                                 </button>
 
                             </td>
@@ -163,13 +163,12 @@
 
     <script>
         $(document).ready(function() {
-
+            // Setup CSRF token untuk semua permintaan AJAX
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-
 
             // Modal handlers
             $('#btntambahjabatan').on('click', function() {
@@ -181,6 +180,7 @@
                 $('#form-jabatan')[0].reset();
             });
 
+            // Form submit handler untuk tambah jabatan
             $("#form-jabatan").submit(function(e) {
                 e.preventDefault();
 
@@ -193,32 +193,30 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-
-                        if (response.message) {
-                            alert(response.message);
-                        }
-
-                        $('#default-modal').addClass('hidden');
-                        $('#form-jabatan')[0].reset();
-
-                        window.location.reload();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message || 'Data jabatan berhasil disimpan.',
+                        }).then(() => {
+                            $('#default-modal').addClass('hidden');
+                            $('#form-jabatan')[0].reset();
+                            window.location.reload();
+                        });
                     },
-                    error: function(xhr, status, error) {
-
+                    error: function(xhr) {
                         console.error(xhr.responseText);
-
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            alert(xhr.responseJSON.message);
-                        } else {
-                            alert("Terjadi kesalahan saat menyimpan data");
-                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: xhr.responseJSON?.message ||
+                                'Terjadi kesalahan saat menyimpan data.',
+                        });
                     }
                 });
             });
         });
 
         $(document).ready(function() {
-
             // Fungsi untuk membuka modal edit
             window.editJabatan = function(id, namaJabatan) {
                 $('#edit-modal').removeClass('hidden'); // Tampilkan modal edit
@@ -231,7 +229,43 @@
                 $('#edit-modal').addClass('hidden'); // Tutup modal edit
                 $('#form-edit-jabatan')[0].reset(); // Reset form edit
             });
+
+            // Form submit handler untuk edit jabatan
+            $("#form-edit-jabatan").submit(function(e) {
+                e.preventDefault();
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr('action'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message || 'Data jabatan berhasil diupdate.',
+                        }).then(() => {
+                            $('#edit-modal').addClass('hidden');
+                            $('#form-edit-jabatan')[0].reset();
+                            window.location.reload();
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: xhr.responseJSON?.message ||
+                                'Terjadi kesalahan saat mengupdate data.',
+                        });
+                    }
+                });
+            });
         });
+
 
 
 

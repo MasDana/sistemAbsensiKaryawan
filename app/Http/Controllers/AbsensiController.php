@@ -211,7 +211,7 @@ class AbsensiController extends Controller
     public function monitoring()
     {
         $user = Auth::guard('user')->user();
-        return view('admin.monitoring');
+        return view('admin.monitoring', compact('user'));
     }
 
     public function getpresensi(Request $request)
@@ -490,8 +490,8 @@ class AbsensiController extends Controller
             'alamat' => $request->alamat,
         ]);
 
-        return response()->json(['message' => 'Data karyawan berhasil diperbarui']);
-        return view('izin.createizin');
+        // Kirim respons JSON untuk SweetAlert2
+        return response()->json(['message' => 'Data karyawan berhasil diperbarui.']);
     }
 
     public function updateJabatan(Request $request, $id)

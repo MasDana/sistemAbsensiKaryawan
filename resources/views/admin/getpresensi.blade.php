@@ -30,10 +30,12 @@
             <td>{{ $item->nama_karyawan }}</td>
             <td>{{ $item->jam_masuk != null ? $item->jam_masuk : 'Belum absen' }}</td>
             {{-- <td>{{ $item->foto_masuk }}</td> --}}
-            <td><img src="{{ url($foto_masuk) }}" alt="" class="avatar"></td>
+            <td class="flex justify-center items-center"><img src="{{ url($foto_masuk) }}" alt=""
+                    class="w-[100px] h-[100px] rounded-md object-cover"></td>
             <td>{{ $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}</td>
             {{-- <td>{{ $item->foto_keluar }}</td> --}}
-            <td><img src="{{ url($foto_keluar) }}" alt="" class="avatar"></td>
+            <td class="flex justify-center items-center"><img src="{{ url($foto_keluar) }}" alt=""
+                    class="w-[100px] h-[100px] rounded-md object-cover"></td>
             <td>{{ $item->status = 'Hadir' }}</td>
             <td>
                 @if (strtotime($item->jam_masuk) >= strtotime('06:00:00'))

@@ -57,7 +57,8 @@
                                 </button>
 
                                 <!-- Tombol Hapus -->
-                                <button class="fa fa-trash bg-red-600 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+                                <button
+                                    class="fa fa-trash bg-red-600 text-white px-3 py-1 rounded hover:bg-red-600 transition"
                                     onclick="confirmDelete({{ $item->id }})">
                                 </button>
                             </td>
@@ -335,28 +336,27 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        // Show success message if provided
-                        if (response.message) {
-                            alert(response.message);
-                        }
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message || 'Data berhasil disimpan.',
+                        }).then(() => {
+                            // Close modal and reset form
+                            $('#default-modal').addClass('hidden');
+                            $('#form-karyawan')[0].reset();
 
-                        // Close modal and reset form
-                        $('#default-modal').addClass('hidden');
-                        $('#form-karyawan')[0].reset();
-
-                        // Reload page to show new data
-                        window.location.reload();
+                            // Reload page to show new data
+                            window.location.reload();
+                        });
                     },
-                    error: function(xhr, status, error) {
-                        // Log error to console for debugging
+                    error: function(xhr) {
                         console.error(xhr.responseText);
-
-                        // Show error message
-                        if (xhr.responseJSON && xhr.responseJSON.message) {
-                            alert(xhr.responseJSON.message);
-                        } else {
-                            alert("Terjadi kesalahan saat menyimpan data");
-                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: xhr.responseJSON?.message ||
+                                'Terjadi kesalahan saat menyimpan data.',
+                        });
                     }
                 });
             });
@@ -391,7 +391,11 @@
                     },
                     error: function(xhr) {
                         console.error(xhr.responseText);
-                        alert('Gagal memuat data karyawan!');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: 'Gagal memuat data karyawan!',
+                        });
                     }
                 });
             });
@@ -401,7 +405,46 @@
                 $('#edit-modal').addClass('hidden');
                 $('#edit-form-karyawan')[0].reset();
             });
+
+            // Handle form submission for editing data
+            $('#edit-form-karyawan').on('submit', function(e) {
+                e.preventDefault();
+
+                // Gather form data
+                var formData = $(this).serialize();
+
+                // Submit form via AJAX
+                $.ajax({
+                    url: `/update/karyawan-data`,
+                    type: 'PUT',
+                    data: formData,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil!',
+                            text: response.message || 'Data berhasil diperbarui.',
+                        }).then(() => {
+                            // Close modal and reset form
+                            $('#edit-modal').addClass('hidden');
+                            $('#edit-form-karyawan')[0].reset();
+
+                            // Reload page to show updated data
+                            window.location.reload();
+                        });
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal!',
+                            text: xhr.responseJSON?.message ||
+                                'Terjadi kesalahan saat memperbarui data.',
+                        });
+                    }
+                });
+            });
         });
+
 
         function confirmDelete(id) {
             Swal.fire({
@@ -428,22 +471,22 @@
                     _token: "{{ csrf_token() }}",
                 },
                 success: function(response) {
-                    Swal.fire(
-                        'Berhasil!',
-                        'Data berhasil dihapus.',
-                        'success'
-                    ).then(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil!',
+                        text: response.message || 'Data berhasil dihapus.',
+                    }).then(() => {
                         // Refresh halaman untuk menampilkan perubahan
                         window.location.reload();
                     });
                 },
-                error: function(xhr, status, error) {
+                error: function(xhr) {
                     console.error(xhr.responseText);
-                    Swal.fire(
-                        'Gagal!',
-                        'Terjadi kesalahan saat menghapus data.',
-                        'error'
-                    );
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal!',
+                        text: xhr.responseJSON?.message || 'Terjadi kesalahan saat menghapus data.',
+                    });
                 }
             });
         }

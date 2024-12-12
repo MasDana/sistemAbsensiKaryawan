@@ -17,6 +17,8 @@ class KonfigurasiController extends Controller
         return view('konfigurasi.lokasikantor', compact('lok_kantor', 'user'));
     }
 
+
+
     public function updatelokasi(Request $request)
     {
         $lokasi_kantor = $request->lokasi_kantor;
@@ -29,9 +31,11 @@ class KonfigurasiController extends Controller
             ]);
 
         if ($update) {
-            return Redirect::back()->with('success', 'Berhasil');
+            // Berhasil diupdate
+            return Redirect::back()->with('success', 'Data lokasi berhasil diperbarui.');
         } else {
-            return Redirect::back()->with('warning', 'Gagal');
+            // Gagal diupdate
+            return Redirect::back()->with('warning', 'Data lokasi gagal diperbarui.');
         }
     }
 }

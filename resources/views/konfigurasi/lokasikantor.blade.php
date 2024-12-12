@@ -5,7 +5,8 @@
     <main class="main-dashboard flex-grow p-8 bg-gray-100">
         <h2 class="text-3xl font-bold mb-6">Master Data Lokasi</h2>
         <div class="w-full p-4">
-            <form action="/konfigurasi/updatelok" method="post" class="space-y-4 bg-white rounded shadow-md p-6">
+            <form action="/konfigurasi/updatelok" method="post" class="space-y-4 bg-white rounded shadow-md p-6"
+                id="lokasi">
                 @csrf
 
                 <!-- Input Lokasi Kantor -->
@@ -34,4 +35,21 @@
             </form>
         </div>
     </main>
+
+    <script>
+        // Cek apakah ada pesan flash dari Laravel
+        @if (session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+            });
+        @elseif (session('warning'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal!',
+                text: "{{ session('warning') }}",
+            });
+        @endif
+    </script>
 @endsection
