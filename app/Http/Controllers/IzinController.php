@@ -130,21 +130,17 @@ class IzinController extends Controller
 
     public function deleteizin($kode_izin)
     {
-        // Cek apakah status_approved adalah 1 atau 2
         $dataizin = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
 
-        // Jika data ditemukan dan status_approved adalah 1 atau 2, batalkan penghapusan
         if ($dataizin && ($dataizin->status_approved == 1 || $dataizin->status_approved == 2)) {
             return redirect('/presensi/izin')->with('error', 'Data izin tidak dapat dihapus karena sudah disetujui.');
         }
 
         try {
-            // Hapus data izin
             DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->delete();
-            return redirect('/presensi/izin');
+            return redirect('/presensi/izin')->with('success', 'Data izin berhasil dihapus.');
         } catch (\Exception $e) {
-            // Jika terjadi kesalahan, arahkan kembali dengan pesan error
-            return redirect('/presensi/izin')->with('error', 'Something went wrong!');
+            return redirect('/presensi/izin')->with('error', 'Terjadi kesalahan saat menghapus data izin.');
         }
     }
 
@@ -306,13 +302,10 @@ class IzinController extends Controller
     public function deletesakit($kode_sakit)
     {
         try {
-            DB::table('pengajuan_izin')->where('id', $kode_sakit)->delete();
-            return redirect('/presensi/izin');
+            DB::table('pengajuan_izin')->where('kode_izin', $kode_sakit)->delete();
+            return redirect('/presensi/izin')->with('success', 'Data sakit berhasil dihapus.');
         } catch (\Exception $e) {
-            // Optional: Log the exception message
-            // Log::error('Failed to delete izin: ' . $e->getMessage());
-
-            return redirect('/presensi/izin');
+            return redirect('/presensi/izin')->with('error', 'Terjadi kesalahan saat menghapus data sakit.');
         }
     }
 }

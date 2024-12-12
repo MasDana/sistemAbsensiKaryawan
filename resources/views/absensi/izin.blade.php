@@ -80,32 +80,23 @@
                                     class="bg-yellow-400 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-200 ease-in-out flex items-center space-x-2">
                                     <i class="fas fa-edit"></i><span>Edit</span>
                                 </a>
-                                <form action="{{ url('/izin/delete/' . $item->kode_izin) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus data izin?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
-                                        <i class="fas fa-trash"></i><span>Hapus</span>
-                                    </button>
-                                </form>
+                                <button onclick="confirmDelete('izin', '{{ $item->kode_izin }}')"
+                                    class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
+                                    <i class="fas fa-trash"></i><span>Hapus</span>
+                                </button>
                             @elseif ($item->status == 's')
                                 <!-- Untuk sakit -->
                                 <a href="{{ url('/sakit/edit/' . $item->kode_izin) }}"
                                     class="bg-yellow-400 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out flex items-center space-x-2">
                                     <i class="fas fa-edit"></i><span>Edit</span>
                                 </a>
-                                <form action="{{ url('/sakit/delete/' . $item->kode_izin) }}" method="POST"
-                                    onsubmit="return confirm('Yakin ingin menghapus data sakit?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
-                                        <i class="fas fa-trash"></i><span>Hapus</span>
-                                    </button>
-                                </form>
+                                <button onclick="confirmDelete('sakit', '{{ $item->kode_izin }}')"
+                                    class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
+                                    <i class="fas fa-trash"></i><span>Hapus</span>
+                                </button>
                             @endif
                         </div>
+
                     </div>
                 </div>
 
@@ -120,12 +111,12 @@
                                 class="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition duration-200">
                                 Batal
                             </button>
-                            <form id="deleteForm" method="POST" action="">
+                            <form id="deleteForm" data-type="izin" data-id="{{ $item->kode_izin }}">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit"
-                                    class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200">
-                                    Hapus
+                                <button type="button"
+                                    class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2 delete-button">
+                                    <i class="fas fa-trash"></i><span>Hapus</span>
                                 </button>
                             </form>
                         </div>
@@ -164,10 +155,12 @@
 
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
     <!-- Scroll to Top JavaScript -->
-    <script>
+    {{-- <script>
         // Mendapatkan tombol, dropdown, dan overlay
         const scrollToTopBtn = document.getElementById('scrollToTopBtn');
         const dropdownMenu = document.getElementById('dropdownMenu');
@@ -200,6 +193,49 @@
         });
     </script>
 
+
+    <script>
+        // Fungsi untuk menangani konfirmasi penghapusan data izin
+        function confirmDelete(type, id) {
+            Swal.fire({
+                title: 'Konfirmasi Penghapusan',
+                text: 'Apakah Anda yakin ingin menghapus data ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika dikonfirmasi, kirimkan form untuk menghapus data
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = type === 'izin' ?
+                        `/izin/delete/${id}` :
+                        `/sakit/delete/${id}`;
+
+                    const csrfField = document.createElement('input');
+                    csrfField.type = 'hidden';
+                    csrfField.name = '_token';
+                    csrfField.value = '{{ csrf_token() }}';
+
+                    const methodField = document.createElement('input');
+                    methodField.type = 'hidden';
+                    methodField.name = '_method';
+                    methodField.value = 'DELETE';
+
+                    form.appendChild(csrfField);
+                    form.appendChild(methodField);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+    </script>
+
+
     <script>
         function openModal(type, id) {
             const modal = document.getElementById('confirmationModal');
@@ -220,7 +256,96 @@
             const modal = document.getElementById('confirmationModal');
             modal.classList.add('hidden');
         }
+    </script> --}}
+
+    <script>
+        // Mendapatkan tombol, dropdown, dan overlay
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+        const overlay = document.getElementById('overlay');
+
+        // Toggle dropdown visibility saat tombol lingkaran diklik
+        scrollToTopBtn.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+            overlay.classList.toggle('hidden'); // Tampilkan atau sembunyikan overlay
+        });
+
+        // Tombol Sakit dan Izin
+        const sakitButton = document.getElementById('sakitBtn');
+        const izinButton = document.getElementById('izinBtn');
+
+        // Redirect saat tombol sakit diklik
+        sakitButton.addEventListener('click', () => {
+            window.location.href = '/sakit'; // Redirect ke /sakit
+        });
+
+        // Redirect saat tombol izin diklik
+        izinButton.addEventListener('click', () => {
+            window.location.href = '/izin'; // Redirect ke /izin
+        });
+
+        // Menutup overlay dan dropdown jika overlay diklik
+        overlay.addEventListener('click', () => {
+            dropdownMenu.classList.add('hidden');
+            overlay.classList.add('hidden');
+        });
+
+        // Fungsi untuk menangani konfirmasi penghapusan data izin atau sakit
+        function confirmDelete(type, id) {
+            Swal.fire({
+                title: 'Konfirmasi Penghapusan',
+                text: 'Apakah Anda yakin ingin menghapus data ini?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jika dikonfirmasi, kirimkan form untuk menghapus data
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = type === 'izin' ? `/izin/delete/${id}` : `/sakit/delete/${id}`;
+
+                    // Tambahkan CSRF token dan method field
+                    const csrfField = document.createElement('input');
+                    csrfField.type = 'hidden';
+                    csrfField.name = '_token';
+                    csrfField.value = '{{ csrf_token() }}';
+
+                    const methodField = document.createElement('input');
+                    methodField.type = 'hidden';
+                    methodField.name = '_method';
+                    methodField.value = 'DELETE';
+
+                    form.appendChild(csrfField);
+                    form.appendChild(methodField);
+
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+
+        // Fungsi untuk membuka modal konfirmasi hapus
+        function openModal(type, id) {
+            const modal = document.getElementById('confirmationModal');
+            const deleteForm = document.getElementById('deleteForm');
+
+            // Atur URL form sesuai jenis data
+            deleteForm.action = type === 'izin' ? `/izin/delete/${id}` : `/sakit/delete/${id}`;
+
+            modal.classList.remove('hidden');
+        }
+
+        // Fungsi untuk menutup modal konfirmasi hapus
+        function closeModal() {
+            const modal = document.getElementById('confirmationModal');
+            modal.classList.add('hidden');
+        }
     </script>
+
 
     </html>
 @section('java')

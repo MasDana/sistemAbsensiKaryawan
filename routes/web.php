@@ -56,14 +56,17 @@ Route::middleware(['auth:karyawan'])->group(function () {
     Route::get('/izin', [IzinController::class, 'createizin']);
     Route::post('/izin/store', [IzinController::class, 'storeizin']);
     Route::get('/izin/edit/{kode_izin}', [IzinController::class, 'editizin'])->name('izin.edit');
-    Route::delete('/izin/delete/{kode_izin}', [IzinController::class, 'deleteizin'])->name('izin.delete');
+    Route::delete('/izin/delete/{id}', [IzinController::class, 'deleteizin'])->name('izin.delete');
     Route::post('izin/{kode_izin}/update', [IzinController::class, 'updateizin']);
 
     Route::get('/sakit', [IzinController::class, 'createsakit']);
     Route::post('/sakit/store', [IzinController::class, 'storesakit']);
-    Route::get('/sakit/edit/{id}', [IzinController::class, 'editsakit'])->name('sakit.edit');
+    Route::get('/sakit/edit/{kode_izin}', [IzinController::class, 'editsakit'])->name('sakit.edit');
     Route::delete('/sakit/delete/{id}', [IzinController::class, 'deletesakit'])->name('sakit.delete');
-    Route::post('sakit/{id}/update', [IzinController::class, 'updatesakit']);
+    Route::post('sakit/{kode_izin}/update', [IzinController::class, 'updatesakit']);
+
+    Route::get('/karyawan/{id}/edit', [AbsensiController::class, 'editprofile']);
+    Route::post('/karyawan/{id}', [AbsensiController::class, 'updateprofile']);
 });
 
 Route::middleware(['guest:user'])->group(function () {
@@ -77,8 +80,6 @@ Route::middleware(['auth:user'])->group(function () {
     Route::get('/sesi/logoutadmin', [LoginController::class, 'logoutadmin']);
     Route::get('/presensi/monitoring', [AbsensiController::class, 'monitoring']);
     Route::post('/getpresensi', [AbsensiController::class, 'getpresensi']);
-    Route::get('/karyawan/{id}/edit', [AbsensiController::class, 'editprofile']);
-    Route::post('/karyawan/{id}', [AbsensiController::class, 'updateprofile']);
     Route::get('/rekapkaryawan', [KaryawanController::class, 'index']);
 
     Route::get('/konfigurasi/lokasikantor', [KonfigurasiController::class, 'lokasikantor']);
