@@ -103,7 +103,8 @@
                                                 </span>
                                                 <span
                                                     class="badge bg-red-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">
-                                                    {{ $presensihariini != null && $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
+                                                    {{-- {{ $presensihariini != null && $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }} --}}
+                                                    {{ $item->jam_keluar != null ? $item->jam_keluar : 'Belum absen' }}
                                                 </span>
                                                 <span
                                                     class="badge bg-blue-500 text-white px-3 py-2 rounded-lg w-40 h-12 flex items-center justify-center">

@@ -38,15 +38,16 @@
                     class="w-[100px] h-[100px] rounded-md object-cover"></td>
             <td>{{ $item->status = 'Hadir' }}</td>
             <td>
-                @if (strtotime($item->jam_masuk) >= strtotime('06:00:00'))
+                @if (strtotime($item->jam_masuk) >= strtotime('09:00:00'))
                     @php
-                        $jamterlambat = selisih('06:00:00', $item->jam_masuk);
+                        $jamterlambat = selisih('09:00:00', $item->jam_masuk);
                     @endphp
                     <span>Terlambat {{ $jamterlambat }}</span>
                 @else
                     <span>Tepat waktu</span>
                 @endif
             </td>
+
         </tr>
     @else
         <tr>

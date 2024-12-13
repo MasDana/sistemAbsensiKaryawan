@@ -174,7 +174,6 @@ class AbsensiController extends Controller
             ->where('tanggal_presensi', $hariini)
             ->first();
 
-
         $historibulanini = DB::table('presensi')
             ->select('presensi.*', 'keterangan', 'doc_sid')
             ->leftJoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin')
@@ -183,7 +182,6 @@ class AbsensiController extends Controller
             ->whereRaw('YEAR(tanggal_presensi) = ?', [$tahunini])
             ->orderBy('tanggal_presensi')
             ->get();
-
 
         $rekappresensi = DB::table('presensi')
             ->selectRaw('COUNT(karyawan_id) as totalhadir, SUM(IF(jam_masuk > "09:00:00", 1, 0)) as jumlah_tlt')

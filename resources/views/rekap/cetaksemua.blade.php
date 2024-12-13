@@ -14,10 +14,11 @@
     <!-- Custom Styles -->
     @vite('resources/css/app.css')
     <style>
-        *{
+        * {
             margin: 0;
             padding: 0;
         }
+
         .tabelpresensi {
             margin-top: 20px;
             border-collapse: collapse;
@@ -38,7 +39,8 @@
         <table class="w-full">
             <tr class="w-full flex flex-row gap-4">
                 <td class="mr-4 flex justify-center items-center"> <!-- Menambahkan margin kanan -->
-                    <img src="{{ asset('gambar/logo_unud.png') }}" alt="Logo Udayana" class="" width="100px" height="100px">
+                    <img src="{{ asset('gambar/logo_unud.png') }}" alt="Logo Udayana" class="" width="100px"
+                        height="100px">
                 </td>
                 <td class="flex flex-col justify-start items-start text-start">
                     <h3 class="text-lg font-bold ">
@@ -49,7 +51,7 @@
                     <span class="text-sm">Jalan Universitas Udayana No 10</span>
                 </td>
             </tr>
-        </table>  
+        </table>
 
         <!-- Tabel Presensi -->
         <table class="tabelpresensi">
@@ -61,7 +63,6 @@
                     <th rowspan="2">I</th>
                     <th rowspan="2">S</th>
                     <th rowspan="2">A</th>
-                    <th rowspan="2">T</th>
 
                 </tr>
                 <tr>
@@ -72,7 +73,7 @@
             </thead>
             <tbody>
                 @foreach ($rekap as $d)
-                    <tr >
+                    <tr>
                         <td>{{ $d->nama_karyawan }}</td>
                         @php
                             $jmlhadir = 0;
