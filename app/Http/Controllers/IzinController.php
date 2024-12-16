@@ -67,8 +67,7 @@ class IzinController extends Controller
             ->where('tanggal_presensi', '>=', $tgl_izin_dari)
             ->where('tanggal_presensi', '<=', $tgl_izin_sampai)
             ->count();
-
-        if ($cekpresensi > 0) {
+        if ($cekpresensi < 1) {
             return redirect('/presensi/izin');
         } else {
             $simpan = DB::table('pengajuan_izin')->insert($data);
@@ -245,7 +244,7 @@ class IzinController extends Controller
 
     public function editsakit($kode_sakit)
     {
-        $datasakit = DB::table('pengajuan_izin')->where('id', $kode_sakit)->first();
+        $datasakit = DB::table('pengajuan_izin')->where('kode_izin', $kode_sakit)->first();
         return view('izin.editsakit', compact('datasakit'));
     }
 

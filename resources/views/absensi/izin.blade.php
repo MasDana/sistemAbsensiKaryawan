@@ -76,20 +76,20 @@
                         <div class="flex items-center space-x-4 justify-end">
                             @if ($item->status == 'i')
                                 <!-- Untuk izin -->
-                                <a href="{{ url('/izin/edit/' . $item->kode_izin) }}"
+                                {{-- <a href="{{ url('/izin/edit/' . $item->kode_izin) }}"
                                     class="bg-yellow-400 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-500 transition duration-200 ease-in-out flex items-center space-x-2">
                                     <i class="fas fa-edit"></i><span>Edit</span>
-                                </a>
+                                </a> --}}
                                 <button onclick="confirmDelete('izin', '{{ $item->kode_izin }}')"
                                     class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
                                     <i class="fas fa-trash"></i><span>Hapus</span>
                                 </button>
                             @elseif ($item->status == 's')
-                                <!-- Untuk sakit -->
+                                {{-- <!-- Untuk sakit -->
                                 <a href="{{ url('/sakit/edit/' . $item->kode_izin) }}"
                                     class="bg-yellow-400 text-white text-sm px-4 py-2 rounded-lg hover:bg-yellow-600 transition duration-200 ease-in-out flex items-center space-x-2">
                                     <i class="fas fa-edit"></i><span>Edit</span>
-                                </a>
+                                </a> --}}
                                 <button onclick="confirmDelete('sakit', '{{ $item->kode_izin }}')"
                                     class="bg-red-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200 ease-in-out flex items-center space-x-2">
                                     <i class="fas fa-trash"></i><span>Hapus</span>

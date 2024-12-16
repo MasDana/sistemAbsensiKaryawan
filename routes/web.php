@@ -55,7 +55,7 @@ Route::middleware(['auth:karyawan'])->group(function () {
 
     Route::get('/izin', [IzinController::class, 'createizin']);
     Route::post('/izin/store', [IzinController::class, 'storeizin']);
-    Route::get('/izin/edit/{kode_izin}', [IzinController::class, 'editizin'])->name('izin.edit');
+    Route::get('/izin/edit/{id}', [IzinController::class, 'editizin'])->name('izin.edit');
     Route::delete('/izin/delete/{id}', [IzinController::class, 'deleteizin'])->name('izin.delete');
     Route::post('izin/{kode_izin}/update', [IzinController::class, 'updateizin']);
 
